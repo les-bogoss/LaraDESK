@@ -13,7 +13,7 @@ class ResetApi extends Command
      *
      * @var string
      */
-    protected $signature = 'week:reset_api';
+    protected $signature = 'daily:reset_api';
 
     /**
      * The console command description.
