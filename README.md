@@ -23,9 +23,9 @@
     <a href="https://github.com/les-bogoss/LaraDESK"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/les-bogoss/LaraDESK/issues/new?assignees=&labels=&template=feature_request.md&title=">Report Bug</a>
+    <a href="https://github.com/les-bogoss/LaraDESK/issues/new?assignees=&labels=&template=feature_request.md&title=">Request Feature</a>
     ·
-    <a href="https://github.com/les-bogoss/LaraDESK/issues/new?assignees=&labels=&template=bug_report.md&title=">Request Feature</a>
+    <a href="https://github.com/les-bogoss/LaraDESK/issues/new?assignees=&labels=&template=bug_report.md&title=">Report a Bug</a>
   </p>
 </div>
 
