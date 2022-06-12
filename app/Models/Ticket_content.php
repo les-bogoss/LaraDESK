@@ -12,10 +12,10 @@ class Ticket_content extends Model
     use HasFactory;
     public function User(): HasOne
     {
-        return $this->hasOne(User::Class);
+        return $this->hasOne(User::class);
     }
     public function Ticket(): HasOne
     {
-        return $this->hasOne(User::Class);
+        return $this->hasOne(User::class);
     }
 }

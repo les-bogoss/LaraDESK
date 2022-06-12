@@ -27,9 +27,18 @@ class AuthController extends Controller
     public function index(LoginRequest $request)
     {
         $user = User::where('email', request('email'))->first();
-        // update last login
-        $user->last_login = now();
-        $user->save();
+        if ($user) {
+            if (Hash::check(request('password'), $user->password)) {
+                $user->save();
+                return response()->json(['api_token' => $user->api_token], 200);
+            } else {
+                return response()->json(['error' => 'Verfiy password'], 403);
+            }
+        } else {
+            return response()->json(['error' => 'Verfiy email'], 403);
+        }
+
+
         return ['api_token' => $user->api_token];
     }
 
@@ -39,20 +48,18 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse 
      */
-     
+
     public function destroy(Request $request)
     {
-        
+
         $user = User::where('api_token', request('api_token'))->first();
         if ($user) {
             $user->api_token =  Str::random(60);
             $user->save();
             return ['message' => 'Logout successful'];
-
         } else {
             return response()->json(['error' => 'User not found'], 404);
         }
-      
     }
     /**
      * Create an user.
@@ -61,7 +68,8 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse 
      */
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -75,9 +83,9 @@ class AuthController extends Controller
             'api_token' => Str::random(60),
             'password' => Hash::make($request->password),
         ]);
-    
+
         event(new Registered($user));
 
-        return response()->json(['message' => 'User created successfully', 'api_token' => $user->api_token] , 201);
+        return response()->json(['message' => 'User created successfully', 'api_token' => $user->api_token], 201);
     }
 }

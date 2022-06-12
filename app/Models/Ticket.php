@@ -29,6 +29,6 @@ class Ticket extends Model
 
     public function assignedUser(): BelongsToMany
     {
-        return $this->belongsToMany(User::Class);
+        return $this->belongsToMany(User::class);
     }
 }

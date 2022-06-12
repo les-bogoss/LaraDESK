@@ -17,10 +17,14 @@ use App\Http\Controllers\API\TICKETS\TicketController;
 */
 
 //register route
-Route::post('/register',[AuthController::class, 'create']);
+Route::post('/register', [AuthController::class, 'create']);
 //login route
 Route::post('/login', [AuthController::class, 'index']);
 //logout route
 Route::post('/logout', [AuthController::class, 'destroy']);
 //get all tickets
 Route::get('/tickets', [TicketController::class, 'index']);
+//get ticket by id
+Route::get('/ticket/{id}', [TicketController::class, 'show']);
+//post ticket
+Route::post('/create/ticket', [TicketController::class, 'store']);
