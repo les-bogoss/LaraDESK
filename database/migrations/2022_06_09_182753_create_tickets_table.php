@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('category_id')->index();
-            $table->unsignedBigInteger('status_id')->index();
+            $table->unsignedBigInteger('status_id')->index()->default(1);
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('ticket_categories')->onDelete('cascade');
