@@ -17,10 +17,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::Class);
     }
 
-    public function ticket(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function assignedTicket(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Ticket::Class);
     }
+
+
+
 
     /**
      * The attributes that are mass assignable.
