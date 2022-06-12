@@ -62,8 +62,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+<p align="center">
 <img src='dessin.svg' height='300'>
-
+</p>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -145,10 +146,10 @@ See the [open issues](https://github.com/les-bogoss/LaraDESK/issues) for a full 
 <!-- CONTACT -->
 ## Contact
 
-* Célian HAMON    - email@email_client.com 
-* Théo TRUVELOT - email@email_client.com 
-* Alan COURTOIS  - email@email_client.com
-* Evan OSMONT     - email@email_client.com
+* Célian HAMON    - hamoncelian@gmail.com
+* Théo TRUVELOT - theotruvelott@gmail.com 
+* Alan COURTOIS  - alancrts27@gmail.com
+* Evan OSMONT     - evan.osmont@gmail.com
 
 Project Link: [https://github.com/les-bogoss/LaraDESK](https://github.com/les-bogoss/LaraDESK)
 
@@ -161,6 +162,7 @@ Project Link: [https://github.com/les-bogoss/LaraDESK](https://github.com/les-bo
 
 * [Aléxis PETIT](https://www.linkedin.com/in/alexispe/)
 * [Maxence MACHU](https://www.linkedin.com/in/maxence-machu/)
+* [Benoît BÉRENGER](https://www.linkedin.com/in/benoitberenger/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
