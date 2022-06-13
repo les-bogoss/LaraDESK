@@ -44,8 +44,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        User::factory()->count(5)->create();
+        //if the current env is not production, seed the database with fake data
+        if (env('APP_ENV') !== 'production') {
+            User::factory()->count(5)->create();
+            Ticket::factory()->count(10)->create();
+        }
 
-        Ticket::factory()->count(10)->create();
     }
 }
