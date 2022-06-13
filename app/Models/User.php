@@ -15,21 +15,22 @@ class User extends Authenticatable
 
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Role::Class, 'roles_users_join', 'user_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'roles_users_join', 'user_id', 'role_id');
     }
 
     public function assignedTicket(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Ticket::Class, 'assigned', 'ticket_id', 'user_id');
+        return $this->belongsToMany(Ticket::class, 'assigned', 'ticket_id', 'user_id');
     }
 
     public function ticket(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Ticket::Class);
+        return $this->hasMany(Ticket::class);
     }
 
     public function hasPerm($permission): bool
     {
+        // foreach role check if it contains the permission
         foreach ($this->roles()->get() as $role) {
             if ($role->permissions()->where('name', $permission)->first()) {
                 return true;
