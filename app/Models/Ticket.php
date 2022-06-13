@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Ticket extends Model
 {
+    protected $table = 'tickets';
     use HasFactory;
 
     public function user(): HasOne
@@ -29,6 +30,6 @@ class Ticket extends Model
 
     public function assignedUser(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'assigned', 'ticket_id', 'user_id');
     }
 }

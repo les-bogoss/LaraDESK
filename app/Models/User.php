@@ -10,16 +10,17 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    protected $table = 'users';
     use HasApiTokens, HasFactory, Notifiable;
 
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Role::Class);
+        return $this->belongsToMany(Role::Class, 'roles_users_join', 'user_id', 'role_id');
     }
 
     public function assignedTicket(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Ticket::Class);
+        return $this->belongsToMany(Ticket::Class, 'assigned', 'ticket_id', 'user_id');
     }
 
 
