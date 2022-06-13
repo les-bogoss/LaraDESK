@@ -12,7 +12,7 @@ class Role extends Model
 
     public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(User::Class,'roles_users_join', 'role_id', 'user_id');
+        return $this->belongsToMany(User::Class, 'roles_users_join', 'role_id', 'user_id');
     }
 
     public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany

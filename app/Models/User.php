@@ -23,6 +23,20 @@ class User extends Authenticatable
         return $this->belongsToMany(Ticket::Class, 'assigned', 'ticket_id', 'user_id');
     }
 
+    public function ticket(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Ticket::Class);
+    }
+
+    public function hasPerm($permission): bool
+    {
+        foreach ($this->roles()->get() as $role) {
+            if ($role->permissions()->where('name', $permission)->first()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 
