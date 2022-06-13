@@ -14,7 +14,7 @@ jobs:
     env:
       DB_DATABASE: LaraDESK
       DB_USER: root
-      DB_PASSWORD: golang27
+      DB_PASSWORD: root
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
