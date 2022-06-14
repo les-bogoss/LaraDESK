@@ -35,5 +35,5 @@ jobs:
       run: |
         sudo /etc/init.d/mysql start
         mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-    - name: Run Laravel Tests
-      run: vendor/bin/phpunit
+    #- name: Run Laravel Tests
+      #run: vendor/bin/phpunit
