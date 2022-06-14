@@ -15,7 +15,7 @@ class TicketController extends Controller
 {
 
     /**
-     * Handle an incoming authentication request.
+     * get all ticket header
      *
      *  $request
      * @return \Illuminate\Http\JsonResponse
@@ -27,7 +27,11 @@ class TicketController extends Controller
         $user = User::where('api_token', $api_token)->first();
         if ($user) {
             //get all ticket
-            $tickets = Ticket::all();
+            if ($user->hasPerm('read-ticket')) {
+                $tickets = Ticket::all();
+            } else {
+                $tickets = Ticket::all()->where('user_id', $user->id);
+            }
             //get assigned tickets
             $assigned_tickets = Assigned::all();
             //foreach assigned tickets get ticket id
@@ -56,6 +60,7 @@ class TicketController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         //verify api_token get in header
@@ -86,33 +91,39 @@ class TicketController extends Controller
         } else {
             return response()->json(['error' => 'Verfiy api token'], 403);
         }
-        /**
-         * Display the specified resource.
-         *
-         * @param  \App\Models\Ticket  $ticket
-         * @return \Illuminate\Http\JsonResponse
-         */
     }
+
+    /**
+     * Display a tickets header by ticket id.
+     *
+     * @param  \App\Models\Ticket  $ticket
+     * @return \Illuminate\Http\JsonResponse
+     */
+
     public function show(Request $request)
     {
         //verify api_token get in header
-
         $api_token = $request->header('Authorization');
         $user = User::where('api_token', $api_token)->first();
         if ($user) {
             //get ticket by id
             $ticket = Ticket::find($request->id);
             if ($ticket) {
-                //get assigned ticket by ticket id
-                $assigned_ticket = Ticket::where('id', $ticket->id)->first()->assignedUser()->get()->first();
-                if ($assigned_ticket) {
-                    //if ticket is assigned then set assigned to true and get user id
-                    $ticket->assigned = true;
-                    $ticket->assigned_user = $assigned_ticket->id;
+                //verify user has permission to read ticket or is owner of ticket
+                if ($user->hasPerm('read-ticket') || $user->id == $ticket->user_id) {
+                    //get assigned ticket by ticket id
+                    $assigned_ticket = Ticket::where('id', $ticket->id)->first()->assignedUser()->get()->first();
+                    if ($assigned_ticket) {
+                        //if ticket is assigned then set assigned to true and get user id
+                        $ticket->assigned = true;
+                        $ticket->assigned_user = $assigned_ticket->id;
+                    } else {
+                        $ticket->assigned = false;
+                    }
+                    return response()->json($ticket, 200);
                 } else {
-                    $ticket->assigned = false;
+                    return response()->json(['error' => 'You have not the right permission to read the ticket'], 404);
                 }
-                return response()->json($ticket, 200);
             } else {
                 return response()->json(['error' => 'Ticket not found'], 404);
             }
@@ -127,8 +138,8 @@ class TicketController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\JsonResponse
-
      */
+
     public function update(Request $request, Ticket $ticket)
     {
         //update a ticket header
@@ -140,7 +151,7 @@ class TicketController extends Controller
             $ticket = Ticket::find($request->id);
             if ($ticket) {
                 //verify if user is assigned to ticket or is admin
-                if ($user->id === $ticket->assignedUser || $user->hasPerm('updateticket')) {
+                if ($user->id === $ticket->assignedUser || $user->hasPerm('update-ticket')) {
                     if (Ticket::update_header($request->id, $request->title, $request->category_id, $request->rating, $request->category, $request->status)) {
                         return response()->json(['message' => 'Ticket updated'], 200);
                     } else {
@@ -154,6 +165,7 @@ class TicketController extends Controller
             return response()->json(['error' => 'Verfiy api token'], 403);
         }
     }
+
     /**
      * add content to a ticket
      *
@@ -186,11 +198,12 @@ class TicketController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove a ticket by ticket id.
      *
      * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
+
     public function destroy(Ticket $ticket, Request $request)
     {
         //delete a ticket
@@ -201,8 +214,8 @@ class TicketController extends Controller
             //get ticket by id
             $ticket = Ticket::find($request->id);
             if ($ticket) {
-                //verify if the user is assigned to ticket or is owner of the ticket
-                if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id) {
+                //verify if the user is assigned to ticket or has permission to delete ticket
+                if ($user->id === $ticket->assignedUser || $user->hasPerm('delete-ticket')) {
                     //delete ticket
                     if (Ticket::find($request->id)->delete()) {
                         return response()->json(['message' => 'Ticket deleted'], 200);
@@ -215,12 +228,15 @@ class TicketController extends Controller
             }
         }
     }
+
+
     /**
-     * Remove the specified resource from storage.
+     * Remove ticket content by ticket content id and ticket id.
      *
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function delete_content(Request $request, Ticket $ticket)
     {
         //delete a ticket content
@@ -253,21 +269,38 @@ class TicketController extends Controller
             return response()->json(['error' => 'Verfiy api token'], 403);
         }
     }
+
+    /**
+     * get all tickets content by ticket id
+     *
+     * @param  \App\Models\Ticket  $ticket
+     * @return \Illuminate\Http\JsonResponse
+     */
+
     public function show_content(Request $request, Ticket $ticket)
     {
-        //get ticket content
         //verify api_token get in header
         $api_token = $request->header('Authorization');
         $user = User::where('api_token', $api_token)->first();
+
         if ($user) {
             //get ticket by id
             $ticket = Ticket::find($request->id);
             if ($ticket) {
+                //verify if the user is assigned to ticket or is owner of the ticket
+                if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id || $user->hasPerm('read-ticket')) {
+                    //get ticket content
 
-                //get ticket content
-                $content = Ticket::where('id', $ticket->id)->first()->ticket_content()->get();
-                return response()->json($content, 200);
+                    $content = Ticket::where('id', $ticket->id)->first()->ticket_content()->get();
+                    return response()->json($content, 200);
+                } else {
+                    return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
+                }
+            } else {
+                return response()->json(['error' => 'Ticket not found'], 404);
             }
+        } else {
+            return response()->json(['error' => 'Verfiy api token'], 403);
         }
     }
 }
