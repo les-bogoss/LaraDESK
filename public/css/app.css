@@ -6,7 +6,6 @@
 }
 
 .auth-background {
-  width: 100vw;
   height: 100vh;
   background-color: #FCFEFF;
   background: linear-gradient(to bottom, #FCFEFF, rgba(90, 219, 255, 0.3137254902));
@@ -30,6 +29,8 @@
 }
 .auth-background .register-card .register-content .register-art {
   width: 250px;
+  -webkit-animation: svgAnimation 0.2s;
+          animation: svgAnimation 0.2s;
 }
 .auth-background .register-card .register-content .register-art .art {
   width: 100%;
@@ -167,6 +168,311 @@
   color: #FE9000;
   font-weight: 600;
   text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .auth-background {
+    min-height: -webkit-fill-available;
+  }
+  .auth-background .register-card {
+    width: 90%;
+  }
+  .auth-background .register-card .register-content .register-art {
+    display: none;
+  }
+  .auth-background .register-card .register-content .form {
+    width: 90%;
+  }
+  .auth-background .register-card .register-content .form .semi-fields .field {
+    width: 47%;
+  }
+}
+/* CSS specific to iOS devices */
+@supports (-webkit-touch-callout: none) {
+  .auth-background {
+    min-height: 100vh;
+    height: unset;
+    min-height: -webkit-fill-available;
+  }
+}
+.welcome-layout {
+  background-color: #FCFEFF;
+  background: linear-gradient(to bottom, #FCFEFF, rgba(90, 219, 255, 0.3137254902));
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.welcome-layout .welcome-title {
+  font-size: 6em;
+  font-weight: 600;
+  font-family: "Montserrat";
+  color: #094074;
+}
+.welcome-layout .welcome-title .welcome-title-light {
+  font-weight: 300;
+}
+.welcome-layout .welcome-text {
+  font-size: 1em;
+  font-weight: 500;
+  font-family: "Montserrat";
+  color: #094074;
+  width: 25%;
+  text-align: center;
+}
+.welcome-layout .welcome-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  padding: 10px;
+}
+.welcome-layout .welcome-buttons #welcome-button-register {
+  width: 10em;
+  height: 2em;
+  border-radius: 50px;
+  background-color: #094074;
+  color: #FCFEFF;
+  font-family: "Montserrat";
+  font-size: 1.2em;
+  font-weight: 600;
+  letter-spacing: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  margin: 0 10px 0 0;
+}
+.welcome-layout .welcome-buttons #welcome-button-login {
+  width: 10em;
+  height: 2em;
+  border-radius: 50px;
+  background-color: transparent;
+  box-sizing: border-box;
+  border: 5px solid #094074;
+  color: #094074;
+  font-family: "Montserrat";
+  font-size: 1.2em;
+  font-weight: 600;
+  letter-spacing: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  margin-left: 0 0 0 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .welcome-layout .welcome-title {
+    font-size: 4em;
+  }
+  .welcome-layout .welcome-text {
+    width: 50%;
+  }
+  .welcome-layout .welcome-buttons {
+    flex-direction: column;
+  }
+  .welcome-layout .welcome-buttons #welcome-button-register {
+    width: 10em;
+    margin: 0 0 5px 0;
+  }
+  .welcome-layout .welcome-buttons #welcome-button-login {
+    width: 10em;
+    border: 7px solid #094074;
+    margin: 5px 0 0 0;
+  }
+}
+.auth-background {
+  background-color: #FCFEFF;
+  background: linear-gradient(to bottom, #FCFEFF, rgba(90, 219, 255, 0.3137254902));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.auth-background .login-card {
+  width: 865px;
+  height: 600px;
+  background-color: #FCFEFF;
+  border-radius: 20px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+.auth-background .login-card .login-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.auth-background .login-card .login-content .login-art {
+  width: 250px;
+  -webkit-animation: svgAnimation 0.2s;
+          animation: svgAnimation 0.2s;
+}
+.auth-background .login-card .login-content .login-art .art {
+  width: 100%;
+  height: auto;
+}
+.auth-background .login-card .login-content .form {
+  width: 50%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.auth-background .login-card .login-content .form .title {
+  font-size: 2em;
+  font-weight: 600;
+  font-family: "Montserrat";
+  color: #094074;
+}
+.auth-background .login-card .login-content .form .field {
+  width: 100%;
+}
+.auth-background .login-card .login-content .form .field label {
+  color: #094074;
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+.auth-background .login-card .login-content .form .field .input {
+  width: 100%;
+  border: 3px solid #3C6997;
+  border-radius: 12px;
+  color: #094074;
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+.auth-background .login-card .login-content .form .field .input::-moz-placeholder {
+  color: #3C6997;
+  font-family: "Montserrat";
+  font-weight: 600;
+  filter: opacity(0.4);
+}
+.auth-background .login-card .login-content .form .field .input:-ms-input-placeholder {
+  color: #3C6997;
+  font-family: "Montserrat";
+  font-weight: 600;
+  filter: opacity(0.4);
+}
+.auth-background .login-card .login-content .form .field .input::placeholder {
+  color: #3C6997;
+  font-family: "Montserrat";
+  font-weight: 600;
+  filter: opacity(0.4);
+}
+.auth-background .login-card .login-content .form .field-error {
+  width: 100%;
+}
+.auth-background .login-card .login-content .form .field-error label {
+  color: red;
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+.auth-background .login-card .login-content .form .field-error .input {
+  width: 100%;
+  border: 3px solid red;
+  border-radius: 12px;
+  color: red;
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+.auth-background .login-card .login-content .form .field-error .input::-moz-placeholder {
+  color: red;
+  font-family: "Montserrat";
+  font-weight: 600;
+  filter: opacity(0.4);
+}
+.auth-background .login-card .login-content .form .field-error .input:-ms-input-placeholder {
+  color: red;
+  font-family: "Montserrat";
+  font-weight: 600;
+  filter: opacity(0.4);
+}
+.auth-background .login-card .login-content .form .field-error .input::placeholder {
+  color: red;
+  font-family: "Montserrat";
+  font-weight: 600;
+  filter: opacity(0.4);
+}
+.auth-background .login-card .login-content .form .field-error .error-text {
+  color: red;
+  font-family: "Montserrat";
+  font-weight: 100;
+}
+.auth-background .login-card .login-content .form .button {
+  width: 200px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: #094074;
+  color: #FCFEFF;
+  font-family: "Montserrat";
+  font-size: 1.2em;
+  font-weight: 600;
+  letter-spacing: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+}
+.auth-background .login-card .login-content .form .button:hover {
+  background-color: #FCFEFF;
+  color: #094074;
+  border: 3px solid #094074;
+  transform: scale(1.1);
+}
+.auth-background .login-card .login-content .form .redirect-text {
+  font-family: "Montserrat";
+  color: #094074;
+  transition: all 0.2s ease-in-out;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: default;
+}
+.auth-background .login-card .login-content .form .redirect-text .redirect-link {
+  color: #FE9000;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .auth-background {
+    min-height: -webkit-fill-available;
+  }
+  .auth-background .login-card {
+    width: 90%;
+  }
+  .auth-background .login-card .login-content .login-art {
+    display: none;
+  }
+  .auth-background .login-card .login-content .form {
+    width: 90%;
+  }
+}
+@-webkit-keyframes svgAnimation {
+  0% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes svgAnimation {
+  0% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 /*
 ! tailwindcss v3.1.0 | MIT License | https://tailwindcss.com
@@ -807,23 +1113,17 @@ select {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
-.fixed {
-  position: fixed;
-}
 .absolute {
   position: absolute;
 }
 .relative {
   position: relative;
 }
-.top-0 {
-  top: 0px;
+.left-0 {
+  left: 0px;
 }
 .right-0 {
   right: 0px;
-}
-.left-0 {
-  left: 0px;
 }
 .z-0 {
   z-index: 0;
@@ -859,23 +1159,14 @@ select {
 .mt-3 {
   margin-top: 0.75rem;
 }
+.ml-2 {
+  margin-left: 0.5rem;
+}
 .ml-4 {
   margin-left: 1rem;
 }
-.mt-8 {
-  margin-top: 2rem;
-}
-.ml-12 {
-  margin-left: 3rem;
-}
 .mt-2 {
   margin-top: 0.5rem;
-}
-.-mt-px {
-  margin-top: -1px;
-}
-.ml-2 {
-  margin-left: 0.5rem;
 }
 .block {
   display: block;
@@ -888,9 +1179,6 @@ select {
 }
 .table {
   display: table;
-}
-.grid {
-  display: grid;
 }
 .hidden {
   display: none;
@@ -910,8 +1198,8 @@ select {
 .h-6 {
   height: 1.5rem;
 }
-.h-8 {
-  height: 2rem;
+.h-full {
+  height: 100%;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -931,20 +1219,11 @@ select {
 .w-6 {
   width: 1.5rem;
 }
-.w-auto {
-  width: auto;
-}
-.w-8 {
-  width: 2rem;
-}
 .w-48 {
   width: 12rem;
 }
 .max-w-7xl {
   max-width: 80rem;
-}
-.max-w-6xl {
-  max-width: 72rem;
 }
 .max-w-xl {
   max-width: 36rem;
@@ -980,9 +1259,6 @@ select {
 .cursor-default {
   cursor: default;
 }
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
 .items-center {
   align-items: center;
 }
@@ -1017,11 +1293,11 @@ select {
 .rounded-md {
   border-radius: 0.375rem;
 }
-.rounded-lg {
-  border-radius: 0.5rem;
-}
 .rounded {
   border-radius: 0.25rem;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
 }
 .rounded-l-md {
   border-top-left-radius: 0.375rem;
@@ -1076,10 +1352,6 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
-.bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
 .bg-gray-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
@@ -1087,6 +1359,10 @@ select {
 .bg-indigo-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(238 242 255 / var(--tw-bg-opacity));
+}
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 .fill-current {
   fill: currentColor;
@@ -1113,14 +1389,6 @@ select {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-.px-6 {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
@@ -1145,9 +1413,6 @@ select {
 .pb-1 {
   padding-bottom: 0.25rem;
 }
-.pt-8 {
-  padding-top: 2rem;
-}
 .pl-3 {
   padding-left: 0.75rem;
 }
@@ -1157,8 +1422,8 @@ select {
 .pt-1 {
   padding-top: 0.25rem;
 }
-.text-center {
-  text-align: center;
+.pt-8 {
+  padding-top: 2rem;
 }
 .font-sans {
   font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -1175,13 +1440,13 @@ select {
   font-size: 1rem;
   line-height: 1.5rem;
 }
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 .font-medium {
   font-weight: 500;
@@ -1197,9 +1462,6 @@ select {
 }
 .leading-tight {
   line-height: 1.25;
-}
-.leading-7 {
-  line-height: 1.75rem;
 }
 .tracking-widest {
   letter-spacing: 0.1em;
@@ -1227,10 +1489,6 @@ select {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
-.text-gray-900 {
-  --tw-text-opacity: 1;
-  color: rgb(17 24 39 / var(--tw-text-opacity));
-}
 .text-green-600 {
   --tw-text-opacity: 1;
   color: rgb(22 163 74 / var(--tw-text-opacity));
@@ -1246,6 +1504,10 @@ select {
 .text-indigo-700 {
   --tw-text-opacity: 1;
   color: rgb(67 56 202 / var(--tw-text-opacity));
+}
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 .underline {
   -webkit-text-decoration-line: underline;
@@ -1441,34 +1703,9 @@ select {
 }
 @media (prefers-color-scheme: dark) {
 
-  .dark\:border-gray-700 {
-    --tw-border-opacity: 1;
-    border-color: rgb(55 65 81 / var(--tw-border-opacity));
-  }
-
   .dark\:bg-gray-900 {
     --tw-bg-opacity: 1;
     background-color: rgb(17 24 39 / var(--tw-bg-opacity));
-  }
-
-  .dark\:bg-gray-800 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-  }
-
-  .dark\:text-gray-500 {
-    --tw-text-opacity: 1;
-    color: rgb(107 114 128 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-white {
-    --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-gray-400 {
-    --tw-text-opacity: 1;
-    color: rgb(156 163 175 / var(--tw-text-opacity));
   }
 }
 @media (min-width: 640px) {
@@ -1486,24 +1723,12 @@ select {
     margin-left: 1.5rem;
   }
 
-  .sm\:ml-0 {
-    margin-left: 0px;
-  }
-
-  .sm\:block {
-    display: block;
-  }
-
   .sm\:flex {
     display: flex;
   }
 
   .sm\:hidden {
     display: none;
-  }
-
-  .sm\:h-20 {
-    height: 5rem;
   }
 
   .sm\:flex-1 {
@@ -1533,28 +1758,6 @@ select {
 
   .sm\:pt-0 {
     padding-top: 0px;
-  }
-
-  .sm\:text-left {
-    text-align: left;
-  }
-
-  .sm\:text-right {
-    text-align: right;
-  }
-}
-@media (min-width: 768px) {
-
-  .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .md\:border-t-0 {
-    border-top-width: 0px;
-  }
-
-  .md\:border-l {
-    border-left-width: 1px;
   }
 }
 @media (min-width: 1024px) {

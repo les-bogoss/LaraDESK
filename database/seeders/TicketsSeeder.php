@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TicketSeeder extends Seeder
+class TicketsSeeder extends Seeder
 {
     /**
      * Run the database seeds.

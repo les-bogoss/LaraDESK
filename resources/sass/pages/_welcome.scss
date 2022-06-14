@@ -1,0 +1,111 @@
+.welcome-layout {
+    background-color: $light;
+    background: linear-gradient(to bottom, $light, #5ADBFF50);
+
+    //size
+    height: 100vh;
+
+    // layout
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .welcome-title {
+        font-size: 6em;
+        font-weight: 600;
+        font-family: $font;
+        color: $dark-blue;
+
+        .welcome-title-light {
+            font-weight: 300;
+        }
+
+    }
+
+    .welcome-text {
+        font-size: 1em;
+        font-weight: 500;
+        font-family: $font;
+        color: $dark-blue;
+        width: 25%;
+        text-align: center;
+    }
+
+    .welcome-buttons {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+
+        padding: 10px;
+
+        #welcome-button-register {
+            width: 10em;
+            height: 2em;
+            border-radius: 50px;
+            background-color: $dark-blue;
+            color: $light;
+            font-family: $font;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all .2s ease-in-out;
+            margin: 0 10px 0 0;
+        }
+
+        #welcome-button-login {
+            width: 10em;
+            height: 2em;
+            border-radius: 50px;
+            background-color: transparent;
+            box-sizing: border-box;
+            border: 5px solid $dark-blue;
+            color: $dark-blue;
+            font-family: $font;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all .2s ease-in-out;
+            margin-left: 0 0 0 10px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .welcome-layout {
+
+        .welcome-title {
+            font-size: 4em;
+        }
+
+        .welcome-text {
+            width: 50%;
+        }
+
+        .welcome-buttons {
+            flex-direction: column;
+
+            #welcome-button-register {
+                width: 10em;
+                margin: 0 0 5px 0;
+
+            }
+
+            #welcome-button-login {
+                width: 10em;
+                border: 7px solid $dark-blue;
+                margin: 5px 0 0 0;
+            }
+        }
+    }
+}

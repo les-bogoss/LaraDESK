@@ -32,6 +32,7 @@ class Ticket extends Model
     {
         return $this->belongsToMany(User::class, 'assigned', 'ticket_id', 'user_id');
     }
+
     public static function add_content($ticket_id, $user_id, $content_type, $text): bool
     {
         $ticket_content = new Ticket_content();
@@ -46,7 +47,6 @@ class Ticket extends Model
             return false;
         }
     }
-
 
     public static function update_header($ticket_id, $title, $priority, $rating, $category_id, $status_id): bool
     {
