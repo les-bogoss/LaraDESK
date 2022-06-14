@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API\TICKETS;
 
-use App\Models\User;
-
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use App\Models\Ticket_content;
+use App\Http\Controllers\API\USER\UserController;
+use App\Http\Controllers\API\TICKETS\TicketContentController;
 
 use Illuminate\Http\Request;
 use App\Models\Assigned;
@@ -24,7 +24,7 @@ class TicketController extends Controller
     {
         //verify api_token get in header
         $api_token = $request->header('Authorization');
-        $user = User::where('api_token', $api_token)->first();
+        $user = UserController::verify_token($api_token);
         if ($user) {
             //get all ticket
             if ($user->hasPerm('read-ticket')) {
@@ -65,7 +65,7 @@ class TicketController extends Controller
     {
         //verify api_token get in header
         $api_token = $request->header('Authorization');
-        $user = User::where('api_token', $api_token)->first();
+        $user = UserController::verify_token($api_token);
         //create ticket if user
         if ($user) {
             $ticket = new Ticket();
@@ -75,12 +75,7 @@ class TicketController extends Controller
             $ticket->save();
 
             //create ticket content
-            $ticket_content = new Ticket_content();
-            $ticket_content->ticket_id = $ticket->id;
-            $ticket_content->type = $request->content_type;
-            $ticket_content->text = $request->text;
-            $ticket_content->user_id = $user->id;
-            $ticket_content->save();
+            $ticket_content = TicketContentController::add_content($ticket->id, $user->id, $request->content_type, $request->text);
 
             // if ticket is created
             if ($ticket && $ticket_content) {
@@ -104,7 +99,7 @@ class TicketController extends Controller
     {
         //verify api_token get in header
         $api_token = $request->header('Authorization');
-        $user = User::where('api_token', $api_token)->first();
+        $user = UserController::verify_token($api_token);
         if ($user) {
             //get ticket by id
             $ticket = Ticket::find($request->id);
@@ -145,7 +140,7 @@ class TicketController extends Controller
         //update a ticket header
         //verify api_token get in header
         $api_token = $request->header('Authorization');
-        $user = User::where('api_token', $api_token)->first();
+        $user = UserController::verify_token($api_token);
         if ($user) {
             //get ticket by id
             $ticket = Ticket::find($request->id);
@@ -167,37 +162,6 @@ class TicketController extends Controller
     }
 
     /**
-     * add content to a ticket
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\JsonReponse
-     */
-
-    public function add_content(Request $request, Ticket $ticket)
-    {
-        //verify api_token get in header
-        $api_token = $request->header('Authorization');
-        $user = User::where('api_token', $api_token)->first();
-        if ($user) {
-            //get ticket by id
-            $ticket = Ticket::find($request->id);
-            if ($ticket) {
-                //verify if the user is assigned to ticket or is owner of the ticket
-                if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id) {
-                    //create ticket content
-                    if (Ticket::add_content($request->id, $user->id, $request->content_type, $request->text)) {
-                        return response()->json(['message' => 'Ticket content added'], 200);
-                    } else {
-                        return response()->json(['error' => 'Ticket content not added'], 500);
-                    };
-                } else {
-                    return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
-                }
-            }
-        }
-    }
-
-    /**
      * Remove a ticket by ticket id.
      *
      * @param  \App\Models\Ticket  $ticket
@@ -209,7 +173,7 @@ class TicketController extends Controller
         //delete a ticket
         //verify api_token get in header
         $api_token = $request->header('Authorization');
-        $user = User::where('api_token', $api_token)->first();
+        $user = UserController::verify_token($api_token);
         if ($user) {
             //get ticket by id
             $ticket = Ticket::find($request->id);
@@ -226,81 +190,6 @@ class TicketController extends Controller
                     return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
                 }
             }
-        }
-    }
-
-
-    /**
-     * Remove ticket content by ticket content id and ticket id.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-    public function delete_content(Request $request, Ticket $ticket)
-    {
-        //delete a ticket content
-        //verify api_token get in header
-        $api_token = $request->header('Authorization');
-        $user = User::where('api_token', $api_token)->first();
-        if ($user) {
-            //get ticket by id
-            $ticket = Ticket::find($request->id);
-            if ($ticket) {
-                //verify if is owner of the ticket
-                //verify if the ticket content exists
-                $ticket_content = Ticket_Content::where('id', $request->contentId)->where('ticket_id', $ticket->id)->first();
-                if ($ticket_content) {
-                    if ($user->id ===  Ticket_Content::find($request->contentId)->user_id || $user->hasPerm('delete-ticket')) {
-                        //delete ticket content
-                        if (Ticket::delete_content($request->id, $request->contentId)) {
-                            return response()->json(['message' => 'Ticket content deleted'], 200);
-                        } else {
-                            return response()->json(['error' => 'Ticket content not deleted'], 500);
-                        };
-                    } else {
-                        return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
-                    }
-                } else {
-                    return response()->json(['error' => 'Ticket content not found'], 404);
-                }
-            }
-        } else {
-            return response()->json(['error' => 'Verfiy api token'], 403);
-        }
-    }
-
-    /**
-     * get all tickets content by ticket id
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-    public function show_content(Request $request, Ticket $ticket)
-    {
-        //verify api_token get in header
-        $api_token = $request->header('Authorization');
-        $user = User::where('api_token', $api_token)->first();
-
-        if ($user) {
-            //get ticket by id
-            $ticket = Ticket::find($request->id);
-            if ($ticket) {
-                //verify if the user is assigned to ticket or is owner of the ticket
-                if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id || $user->hasPerm('read-ticket')) {
-                    //get ticket content
-
-                    $content = Ticket::where('id', $ticket->id)->first()->ticket_content()->get();
-                    return response()->json($content, 200);
-                } else {
-                    return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
-                }
-            } else {
-                return response()->json(['error' => 'Ticket not found'], 404);
-            }
-        } else {
-            return response()->json(['error' => 'Verfiy api token'], 403);
         }
     }
 }

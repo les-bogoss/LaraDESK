@@ -33,20 +33,7 @@ class Ticket extends Model
         return $this->belongsToMany(User::class, 'assigned', 'ticket_id', 'user_id');
     }
 
-    public static function add_content($ticket_id, $user_id, $content_type, $text): bool
-    {
-        $ticket_content = new Ticket_content();
-        $ticket_content->ticket_id = $ticket_id;
-        if ($content_type && $text) {
-            $ticket_content->type = $content_type;
-            $ticket_content->text = $text;
-            $ticket_content->user_id = $user_id;
-            $ticket_content->save();
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     public static function update_header($ticket_id, $title, $priority, $rating, $category_id, $status_id): bool
     {
@@ -79,21 +66,5 @@ class Ticket extends Model
     public function ticket_content(): HasMany
     {
         return $this->hasMany(Ticket_content::class, 'ticket_id');
-    }
-
-    /* public static function get_content($ticket_id): array
-    {
-        $ticket_content = Ticket_content::where('ticket_id', $ticket_id)->get();
-        return $ticket_content->toArray();
-    }*/
-    public static function delete_content($ticket_id, $content_id): bool
-    {
-        $ticket_content = Ticket_content::where('id', $content_id)->where('ticket_id', $ticket_id)->first();
-        if ($ticket_content) {
-            $ticket_content->delete();
-            return true;
-        } else {
-            return false;
-        }
     }
 }
