@@ -232,15 +232,21 @@ class TicketController extends Controller
             $ticket = Ticket::find($request->id);
             if ($ticket) {
                 //verify if is owner of the ticket
-                if ($user->id ===  Ticket_Content::find($request->contentId)->user_id || $user->hasPerm('delete-ticket')) {
-                    //delete ticket content
-                    if (Ticket::delete_content($request->id, $request->contentId)) {
-                        return response()->json(['message' => 'Ticket content deleted'], 200);
+                //verify if the ticket content exists
+                $ticket_content = Ticket_Content::where('id', $request->contentId)->where('ticket_id', $ticket->id)->first();
+                if ($ticket_content) {
+                    if ($user->id ===  Ticket_Content::find($request->contentId)->user_id || $user->hasPerm('delete-ticket')) {
+                        //delete ticket content
+                        if (Ticket::delete_content($request->id, $request->contentId)) {
+                            return response()->json(['message' => 'Ticket content deleted'], 200);
+                        } else {
+                            return response()->json(['error' => 'Ticket content not deleted'], 500);
+                        };
                     } else {
-                        return response()->json(['error' => 'Ticket content not deleted'], 500);
-                    };
+                        return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
+                    }
                 } else {
-                    return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
+                    return response()->json(['error' => 'Ticket content not found'], 404);
                 }
             }
         } else {
