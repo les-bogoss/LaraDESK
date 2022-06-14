@@ -33,8 +33,8 @@ class TicketsSeeder extends Seeder
             ["name" => "OUVERT", "label" => "ticket ouvert mais pas encore assigné"],
             ["name" => "ATTRIBUÉ", "label" => "ticket attribué a un technicien"],
             ["name" => "ATTENTE REPONSE", "label" => "ticket en attente de réponse"],
-            ["name" => "RÉSOLU", "label" => "ticket résolu"],
             ["name" => "CLOS", "label" => "ticket clos"],
+            ["name" => "RÉSOLU", "label" => "ticket résolu"],
         ]);
     }
 }
