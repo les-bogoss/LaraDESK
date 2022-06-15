@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,10 +18,16 @@ URL::forceScheme('https');
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/tickets', function () {
+    return view('tickets');
+})->middleware(['auth'])->name('tickets');
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/dashboard.php';
+
+// Si aucune route n'est trouvée, on redirige vers la page 404
+Route::fallback(function () {
+    return view('404');
+});

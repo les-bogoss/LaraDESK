@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\TICKETS\TicketController;
+use App\Http\Controllers\API\TICKETS\TicketContentController;
 
 
 // -------- Auth -------- //
@@ -17,7 +18,7 @@ Route::post('/logout', [AuthController::class, 'destroy']);
 // -------- TICKETS -------- //
 //get all tickets
 Route::get('/tickets', [TicketController::class, 'index']);
-//get ticket
+//get single ticket
 Route::get('/ticket/{id}', [TicketController::class, 'show']);
 //create ticket
 Route::post('/ticket',     [TicketController::class, 'store']);
@@ -27,9 +28,9 @@ Route::put('/ticket/{id}', [TicketController::class, 'update']);
 Route::delete('/ticket/{id}', [TicketController::class, 'destroy']);
 
 // -------- TICKET CONTENT -------- //
-//get ticket content
-Route::get('/ticket/{id}/content', [TicketController::class, 'show_content']);
+//get all ticket content from ticket id
+Route::get('/ticket/{ticketId}/content', [TicketContentController::class, 'index']);
 //create ticket content
-Route::post('/ticket/{id}/content',     [TicketController::class, 'add_content']);
+Route::post('/ticket/{ticketId}/content',     [TicketContentController::class, 'store']);
 //delete ticket content
-Route::delete('/ticket/{id}/content/{contentId}', [TicketController::class, 'delete_content']);
+Route::delete('/ticket/{ticketId}/content/{contentId}', [TicketContentController::class, 'destroy']);

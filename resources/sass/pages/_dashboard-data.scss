@@ -1,0 +1,43 @@
+.dashboard-data-container {
+    // width: 90%;
+
+    padding: 140px 0 0 0;
+    margin: 0 0 0 75px;
+
+    .dashboard-title {
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+
+        .dashboard-total {
+            width: 25%;
+            background-color: $dark-blue;
+            border-radius: 50px;
+            text-align: center;
+            padding: 5px;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+
+        }
+    }
+
+    .dashboard-column {
+        width: 100%;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+
+        .dashboard-card {
+            border-radius: 50px;
+            background-color: $light;
+
+            margin: 40px;
+            box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.1)
+        }
+
+    }
+
+}
