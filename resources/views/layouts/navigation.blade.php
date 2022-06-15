@@ -28,14 +28,14 @@
             <!-- Navigation Links -->
             <div class="link">
                 <a href="{{ route('tickets') }}">
-                    {{ __('📜') }}
+                    <i class="fa-solid fa-ticket-simple {{ request()->routeIs('tickets') ? 'active' : '' }}"></i>
                 </a>
                 <div class="{{ request()->routeIs('tickets') ? 'active-mark' : 'inactive-mark' }}"></div>
             </div>
 
             <div class="link">
                 <a href="{{ route('dashboardData.index') }}">
-                    {{ __('🐔') }}
+                    <i class="fa-solid fa-chart-line {{ request()->routeIs('dashboard*') ? 'active' : '' }}"></i>
                 </a>
                 <div class="{{ request()->routeIs('dashboard*') ? 'active-mark' : 'inactive-mark' }}"></div>
             </div>
@@ -52,7 +52,7 @@
 
         <div class="settings">
             <a href="{{ route('dashboardData.index') }}">
-                {{ __('⚙️') }}
+                <i class="fa-solid fa-gear"></i>
             </a>
             <div class="{{ request()->routeIs('/') ? 'active-mark' : 'inactive-mark' }}"></div>
         </div>

@@ -532,12 +532,12 @@
 .dashboard-container .dashboard-users {
   width: 35%;
   height: 100%;
-  border-right: 2px solid #FE9000;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .dashboard-container .dashboard-users .dashboard-users-table {
   width: 100%;
   overflow-y: auto;
+  border-right: 2px solid #FE9000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .dashboard-container .dashboard-users .dashboard-users-table thead {
   border-bottom: 1px solid #094074;
@@ -584,7 +584,7 @@
   font-variant-position: sub;
 }
 .dashboard-container .dashboard-user .dashboard-user-info img {
-  border-radius: 50%;
+  border-radius: 50px;
 }
 .dashboard-container .dashboard-user .dashboard-user-roles {
   width: 80%;
@@ -922,6 +922,13 @@
   text-align: center;
   position: relative;
 }
+.navigation-container .primary-navbar .links .link i {
+  color: #4e8cc9;
+  font-size: 1.3em;
+}
+.navigation-container .primary-navbar .links .link i.active {
+  color: #FE9000;
+}
 .navigation-container .primary-navbar .settings {
   display: flex;
   align-items: center;
@@ -929,6 +936,13 @@
   position: absolute;
   width: 100%;
   bottom: 2em;
+}
+.navigation-container .primary-navbar .settings i {
+  color: #4e8cc9;
+  font-size: 1.3em;
+}
+.navigation-container .primary-navbar .settings i.active {
+  color: #FE9000;
 }
 .navigation-container .primary-navbar .active-mark {
   background-color: #FE9000;

@@ -23,7 +23,7 @@
         right: 0;
         top: 75px;
         z-index: 0;
-        
+
         ul {
             display: flex;
             align-items: flex-end;
@@ -148,6 +148,15 @@
                 transition: color 0.2s ease-in-out;
                 text-align: center;
                 position: relative;
+
+                i {
+                    color: #4e8cc9;
+                    font-size: 1.3em;
+                }
+
+                i.active {
+                    color: $orange;
+                }
             }
         }
 
@@ -158,6 +167,15 @@
             position: absolute;
             width: 100%;
             bottom: 2em;
+
+            i {
+                color: #4e8cc9;
+                font-size: 1.3em;
+            }
+
+            i.active {
+                color: $orange;
+            }
         }
 
         .active-mark {
