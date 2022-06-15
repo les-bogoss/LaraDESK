@@ -192,9 +192,7 @@
 @supports (-webkit-touch-callout: none) {
     .auth-background {
         min-height: 100vh;
-
         height: unset;
-
         min-height: -webkit-fill-available;
     }
 }

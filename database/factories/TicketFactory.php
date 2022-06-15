@@ -30,6 +30,7 @@ class TicketFactory extends Factory
             'status_id' => Ticket_status::all()->random()->id,
 
             'created_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-1 week', 'now'),
         ];
     }
 }

@@ -20,12 +20,12 @@ class Ticket extends Model
 
     public function ticket_category(): HasOne
     {
-        return $this->hasOne(Ticket_category::class);
+        return $this->hasOne(Ticket_category::class, 'id', 'category_id');
     }
 
     public function ticket_status(): HasOne
     {
-        return $this->hasOne(Ticket_status::class);
+        return $this->hasOne(Ticket_status::class, 'id', 'status_id');
     }
 
     public function assignedUser(): BelongsToMany
