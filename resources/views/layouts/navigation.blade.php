@@ -43,7 +43,7 @@
 
             <div class="link">
                 <a href="{{ route('dashboardData.index') }}">
-                    {{ __('⌚') }}
+                    <i class="fa-solid fa-file"></i>
                 </a>
                 <div class="{{ request()->routeIs('/') ? 'active-mark' : 'inactive-mark' }}"></div>
             </div>

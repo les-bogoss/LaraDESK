@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Users ' . (isset($user) ? '(' . strtoupper($user->last_name) .' '. $user->first_name .')' : '') . ' Dashboard - ' . config('app.name', 'Laravel'))
 
 @section('content')
     <div class="dashboard-container">

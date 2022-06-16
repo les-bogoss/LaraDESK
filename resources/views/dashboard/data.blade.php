@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Data Dashboard - ' . config('app.name', 'Laravel'))
 
 @section('content')
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Roles ' . (isset($role) ? '(' . $role->name .')' : '') . ' Dashboard - ' . config('app.name', 'Laravel'))
 
 @section('content')
     <div class="dashboard-container">
