@@ -10,7 +10,7 @@
             <img src="{{ Auth::user()->avatar }}" alt="">
         </div>
     </div>
-    @if (request()->routeIs('dashboard*'))
+    @if (request()->routeIs('dashboard*') || request()->routeIs('users*') || request()->routeIs('roles*'))
         @include('layouts.dashboard-navigation')
     @endif
     <!-- Logo -->
@@ -35,9 +35,9 @@
 
             <div class="link">
                 <a href="{{ route('dashboardData.index') }}">
-                    <i class="fa-solid fa-chart-line {{ request()->routeIs('dashboard*') ? 'active' : '' }}"></i>
+                    <i class="fa-solid fa-chart-line {{ request()->routeIs('dashboard*') || request()->routeIs('users*') || request()->routeIs('roles*') ? 'active' : '' }}"></i>
                 </a>
-                <div class="{{ request()->routeIs('dashboard*') ? 'active-mark' : 'inactive-mark' }}"></div>
+                <div class="{{ request()->routeIs('dashboard*') || request()->routeIs('users*') || request()->routeIs('roles*') ? 'active-mark' : 'inactive-mark' }}"></div>
             </div>
 
 

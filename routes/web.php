@@ -25,7 +25,10 @@ Route::get('/tickets', function () {
 })->middleware(['auth'])->name('tickets');
 
 require __DIR__ . '/auth.php';
-require __DIR__ . '/dashboard.php';
+require __DIR__ . '/dashboard/data.php';
+require __DIR__ . '/dashboard/roles.php';
+require __DIR__ . '/dashboard/users.php';
+require __DIR__ . '/tickets.php';
 
 // Si aucune route n'est trouvée, on redirige vers la page 404
 Route::fallback(function () {

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Role;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-
-        return view('dashboard.users', compact('users'));
+        //
     }
 
     /**
@@ -44,24 +41,21 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Ticket $ticket)
     {
-        $users = User::all();
-        $roles = Role::all();
-
-        return view('dashboard.users', compact('users', 'roles', 'user'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Ticket $ticket)
     {
         //
     }
@@ -70,10 +64,10 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Ticket $ticket)
     {
         //
     }
@@ -81,27 +75,17 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $user)
+    public function destroy(Ticket $ticket)
     {
-        $user->delete();
-        
-        if(str_contains(url()->previous(), '/dashboard/roles')) {
+        $ticket->delete();
+
+        if(str_contains(url()->previous(), '/dashboard/users')) {
             return redirect()->back();
         } else {
-            return redirect()->route('users.index');
+            return redirect()->route('ticket.index');
         }
-    }
-
-    public function addRole(Request $request, User $user) {
-        $user->roles()->attach($request->role_id);
-        return redirect()->back();
-    }
-
-    public function RemoveRole(Request $request, User $user) {
-        $user->roles()->detach($request->role_id);
-        return redirect()->back();
     }
 }

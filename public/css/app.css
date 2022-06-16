@@ -573,6 +573,25 @@
 .dashboard-container .dashboard-user .dashboard-user-info .dashboard-user-info-name {
   line-height: 20px;
 }
+.dashboard-container .dashboard-user .dashboard-user-info .dashboard-user-info-name .dashboard-user-info-settings {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-around;
+}
+.dashboard-container .dashboard-user .dashboard-user-info .dashboard-user-info-name .dashboard-user-info-settings a, .dashboard-container .dashboard-user .dashboard-user-info .dashboard-user-info-name .dashboard-user-info-settings button {
+  border-radius: 10px;
+  padding: 6px 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.dashboard-container .dashboard-user .dashboard-user-info .dashboard-user-info-name .dashboard-user-info-settings a {
+  background-color: #FFDD4A;
+}
+.dashboard-container .dashboard-user .dashboard-user-info .dashboard-user-info-name .dashboard-user-info-settings button {
+  background-color: #FE9000;
+}
 .dashboard-container .dashboard-user .dashboard-user-info h3 {
   font-size: 1.5rem;
   font-weight: bold;
@@ -680,11 +699,201 @@
   font-weight: bold;
   cursor: pointer;
 }
-.dashboard-container .dashboard-user .dashboard-user-tickets tbody tr td:last-of-type button:first-of-type {
+.dashboard-container .dashboard-user .dashboard-user-tickets tbody tr td:last-of-type button {
   background-color: #FFDD4A;
   margin: 0 20px 0 0;
 }
-.dashboard-container .dashboard-user .dashboard-user-tickets tbody tr td:last-of-type button:last-of-type {
+.dashboard-container .dashboard-user .dashboard-user-tickets tbody tr td:last-of-type form {
+  display: inline-block;
+}
+.dashboard-container .dashboard-user .dashboard-user-tickets tbody tr td:last-of-type form button {
+  background-color: #FE9000;
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  padding: 115px 0 0 0;
+  margin: 0 0 0 75px;
+}
+.dashboard-container .dashboard-roles {
+  width: 35%;
+  height: 100%;
+}
+.dashboard-container .dashboard-roles .dashboard-roles-table {
+  width: 100%;
+  overflow-y: auto;
+  border-right: 2px solid #FE9000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.dashboard-container .dashboard-roles .dashboard-roles-table thead {
+  border-bottom: 1px solid #094074;
+}
+.dashboard-container .dashboard-roles .dashboard-roles-table tbody tr {
+  border-bottom: 2px solid #094074;
+}
+.dashboard-container .dashboard-roles .dashboard-roles-table tbody tr td {
+  padding: 20px 10px;
+  text-align: center;
+}
+.dashboard-container .dashboard-roles .dashboard-roles-table tbody tr td img {
+  border-radius: 50%;
+}
+.dashboard-container .dashboard-roles .dashboard-roles-table tbody .inactive {
+  cursor: pointer;
+}
+.dashboard-container .dashboard-roles .dashboard-roles-table tbody .active {
+  background-color: rgb(205, 205, 205);
+}
+.dashboard-container .dashboard-role {
+  width: 65%;
+  height: 100%;
+}
+.dashboard-container .dashboard-role .dashboard-role-info {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding: 0 10%;
+}
+.dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name {
+  line-height: 20px;
+}
+.dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-around;
+}
+.dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings a, .dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings button {
+  border-radius: 10px;
+  padding: 6px 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings a {
+  background-color: #FFDD4A;
+}
+.dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings button {
+  background-color: #FE9000;
+}
+.dashboard-container .dashboard-role .dashboard-role-info h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #094074;
+}
+.dashboard-container .dashboard-role .dashboard-role-info p {
+  font-size: 1rem;
+  color: #094074;
+  font-variant-position: sub;
+}
+.dashboard-container .dashboard-role .dashboard-role-info img {
+  border-radius: 50px;
+}
+.dashboard-container .dashboard-role .dashboard-role-roles {
+  width: 80%;
+  min-height: 25%;
+  margin: 2% auto;
+  border-radius: 40px;
+  box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px 30px;
+}
+.dashboard-container .dashboard-role .dashboard-role-roles h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #094074;
+  text-decoration: underline;
+  margin: 0 0 20px 0;
+}
+.dashboard-container .dashboard-role .dashboard-role-roles select {
+  border-radius: 10px;
+  padding: 5px 30px 5px 12px;
+}
+.dashboard-container .dashboard-role .dashboard-role-roles .add-role-button {
+  border-radius: 10px;
+  padding: 6px 15px;
+  background-color: #FE9000;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.dashboard-container .dashboard-role .dashboard-role-roles .dashboard-role-roles-have {
+  margin: 10px 0 0 0;
+}
+.dashboard-container .dashboard-role .dashboard-role-roles .dashboard-role-roles-have form {
+  display: inline-block;
+}
+.dashboard-container .dashboard-role .dashboard-role-roles .dashboard-role-roles-have .delete-role-button {
+  border: rgba(0, 0, 0, 0.3) 1px solid;
+  border-radius: 10px;
+  padding: 1px 15px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+  cursor: pointer;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets {
+  width: 80%;
+  height: 45%;
+  margin: 2% auto;
+  border-radius: 40px;
+  box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #094074;
+  text-decoration: underline;
+  margin: 15px 0 15px 30px;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets table {
+  display: flex;
+  width: -webkit-fill-available;
+  height: 88%;
+  overflow: auto;
+  align-items: flex-start;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody {
+  width: 100%;
+  display: table;
+  margin: 0 0 15px 0;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody tr {
+  height: 70px;
+  border-bottom: 2px solid #094074;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody tr td:first-of-type {
+  padding: 0 0 0 30px;
+  font-weight: bold;
+  color: #094074;
+  font-size: 1.1em;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody tr td:first-of-type span {
+  font-weight: bold;
+  color: #FFDD4A;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody tr td:last-of-type {
+  padding: 0 30px 0 0;
+  text-align: right;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody tr td:last-of-type button {
+  border-radius: 10px;
+  padding: 6px 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody tr td:last-of-type button {
+  background-color: #FFDD4A;
+  margin: 0 20px 0 0;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody tr td:last-of-type form {
+  display: inline-block;
+}
+.dashboard-container .dashboard-role .dashboard-role-tickets tbody tr td:last-of-type form button {
   background-color: #FE9000;
 }
 

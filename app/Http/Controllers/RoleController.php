@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -14,7 +15,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::all();
+
+        return view('dashboard.roles', compact('roles'));
     }
 
     /**
@@ -46,7 +49,10 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        $roles = Role::all();
+        $permissions = Permission::all();
+
+        return view('dashboard.roles', compact('roles', 'permissions', 'role'));
     }
 
     /**
@@ -80,6 +86,18 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        return redirect()->route('roles.index');
+    }
+
+    public function addPermission(Request $request, Role $role) {
+        $role->permissions()->attach($request->permission_id);
+        return redirect()->back();
+    }
+
+    public function RemovePermission(Request $request, Role $role) {
+        $role->permissions()->detach($request->permission_id);
+        return redirect()->back();
     }
 }
