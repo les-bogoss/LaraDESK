@@ -22,7 +22,7 @@ jobs:
         php-version: '8.0'
     - uses: actions/checkout@v3
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      run: php -r "file_exists('.env') || copy('.env.prod', '.env');"
     - name: Composer update
       run: composer update --prefer-dist  --no-interaction --no-progress --no-dev --optimize-autoloader
     - name: Install Dependencies
