@@ -53,6 +53,19 @@ class PermissionsSeeder extends Seeder
             ["name" => "update-user", "label" => "update a user"],               //id 14
             ["name" => "read-user", "label" => "update a user"],                 //id 15
             ["name" => "delete-user", "label" => "delete a user"],               //id 16
+
+            //  -------- ROLES --------
+            ["name" => "create-role", "label" => "create a role"],               //id 17
+            ["name" => "update-role", "label" => "update a role"],               //id 18
+            ["name" => "read-role", "label" => "read a role"],                   //id 19
+            ["name" => "delete-role", "label" => "delete a role"],               //id 20
+
+            //  -------- PERMISSIONS --------
+            ["name" => "create-permission", "label" => "create a permission"],   //id 21
+            ["name" => "update-permission", "label" => "update a permission"],   //id 22
+            ["name" => "read-permission", "label" => "read a permission"],       //id 23
+            ["name" => "delete-permission", "label" => "delete a permission"],   //id 24
+
         ]);
 
         //link all roles and permissions
@@ -74,6 +87,12 @@ class PermissionsSeeder extends Seeder
             ["role_id" => 1, "permission_id" => 14],
             ["role_id" => 1, "permission_id" => 15],
             ["role_id" => 1, "permission_id" => 16],
+            ["role_id" => 1, "permission_id" => 17],
+            ["role_id" => 1, "permission_id" => 18],
+            ["role_id" => 1, "permission_id" => 19],
+            ["role_id" => 1, "permission_id" => 20],
+            ["role_id" => 1, "permission_id" => 21],
+            ["role_id" => 1, "permission_id" => 22],
 
             // -------- TECHNICIAN --------
             ["role_id" => 2, "permission_id" => 1],

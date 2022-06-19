@@ -20,9 +20,13 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/tickets', function () {
-    return view('tickets');
-})->middleware(['auth'])->name('tickets');
+Route::get('404', function () {
+    return view('404');
+})->name('not-found');
+
+Route::get('403', function () {
+    return view('403');
+})->name('forbidden');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/dashboard/data.php';
@@ -32,5 +36,5 @@ require __DIR__ . '/tickets.php';
 
 // Si aucune route n'est trouvée, on redirige vers la page 404
 Route::fallback(function () {
-    return view('404');
+    return redirect()->route('not-found');
 });

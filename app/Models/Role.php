@@ -19,4 +19,10 @@ class Role extends Model
     {
         return $this->belongsToMany(Permission::Class, 'roles_permissions_join', 'role_id', 'permission_id');
     }
+
+    protected $fillable = [
+        'color',
+        'name',
+        'label',
+    ];
 }

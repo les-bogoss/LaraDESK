@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     protected $table = 'users';
     use HasApiTokens, HasFactory, Notifiable;
-    
+
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'roles_users_join', 'user_id', 'role_id');

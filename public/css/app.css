@@ -490,14 +490,346 @@
     opacity: 1;
   }
 }
-.dashboard-data-container {
-  padding: 140px 0 0 0;
+.tickets-container {
+  display: flex;
+  height: 100vh;
+  padding: 65px 0 0 0;
   margin: 0 0 0 75px;
+}
+.tickets-container a,
+.tickets-container button {
+  transition: all 0.1s ease-in-out;
+}
+.tickets-container a:hover,
+.tickets-container button:hover {
+  transform: translate(1px, -1px);
+}
+.tickets-container a:active,
+.tickets-container button:active {
+  transform: translate(-1px, 1px);
+}
+.tickets-container .tickets-wrapper {
+  width: 35%;
+  height: calc(100vh - 65px);
+  border-right: 2px solid #FE9000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: scroll;
+  overflow-x: hidden;
+}
+.tickets-container .tickets-wrapper .tickets-create {
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+}
+.tickets-container .tickets-wrapper .tickets-create button {
+  border-radius: 10px;
+  padding: 6px 15px;
+  background-color: #FE9000;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.tickets-container .tickets-wrapper .tickets-table {
+  width: 100%;
+  overflow-y: auto;
+}
+.tickets-container .tickets-wrapper .tickets-table thead {
+  border-bottom: 1px solid #094074;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 12px;
+  padding: 15px 0;
+  background-color: white;
+}
+.tickets-container .tickets-wrapper .tickets-table tbody tr {
+  border-bottom: 2px solid #094074;
+}
+.tickets-container .tickets-wrapper .tickets-table tbody tr td {
+  padding: 20px 10px;
+  text-align: center;
+}
+.tickets-container .tickets-wrapper .tickets-table tbody tr td img {
+  border-radius: 50%;
+  width: 25px;
+}
+.tickets-container .tickets-wrapper .tickets-table tbody .inactive {
+  cursor: pointer;
+}
+.tickets-container .tickets-wrapper .tickets-table tbody .active {
+  background-color: rgb(205, 205, 205);
+}
+.tickets-container .ticket {
+  width: 65%;
+  height: calc(100vh - 65px);
+  overflow: scroll;
+  overflow-x: hidden;
+  padding: 65px 0 0 0;
+}
+.tickets-container .ticket .ticket-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.tickets-container .ticket .ticket-info .ticket-info-header {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  padding: 20px;
+  width: 80%;
+}
+.tickets-container .ticket .ticket-info .ticket-info-header #ticket-info-border {
+  border-bottom: 120px solid #0004ff;
+  position: absolute;
+  bottom: 0;
+}
+.tickets-container .ticket .ticket-info .ticket-info-header .ticket-id {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.tickets-container .ticket .ticket-info .ticket-info-header .ticket-id .ticket-logo {
+  transform: rotate(90deg);
+}
+.tickets-container .ticket .ticket-info .ticket-info-header .ticket-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.tickets-container .ticket .ticket-info .ticket-info-header .ticket-info-header-buttons {
+  border-bottom: #060606 3px solid;
+  width: 85%;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  padding: 20px;
+  width: 20%;
+  padding: 0 0 0 0;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body .ticket-info-section {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  width: 100%;
+  padding: 10px 0;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body .ticket-info-section h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body #ticket-status-select {
+  border-radius: 7px;
+  padding: 5px 10px;
+  border: none;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body .ticket-status-open {
+  background-color: #00ff00;
+  color: white;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body .ticket-status-assigned {
+  background-color: #ff0000;
+  color: white;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body .ticket-status-waiting {
+  background-color: #0000ff;
+  color: white;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body .ticket-status-closed {
+  background-color: #ff0000;
+  color: white;
+}
+.tickets-container .ticket .ticket-info .ticket-info-body .ticket-status-solved {
+  background-color: #ff0000;
+  color: white;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Modal Body */
+  /* Modal Footer */
+  /* Modal Content */
+}
+.modal .modal-header {
+  padding: 10px 16px;
+}
+.modal .modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.modal .modal-body {
+  padding: 2px 16px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+.modal .modal-body div {
+  display: flex;
+  flex-flow: column;
+  margin: 0 0 10px;
+}
+.modal .modal-body div label {
+  color: #094074;
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+.modal .modal-body div input {
+  border: 3px solid #3C6997;
+  border-radius: 12px;
+  color: #094074;
+  font-family: "Montserrat";
+  font-weight: 600;
+  margin: 0 10px;
+}
+.modal .modal-body div .error {
+  color: red;
+  border: 3px solid red;
+}
+.modal .modal-body div .invalid-feedback {
+  color: red;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0 10px;
+}
+.modal .modal-body div:last-of-type input {
+  width: 10%;
+  border: none;
+}
+.modal .modal-footer {
+  padding: 2px 16px;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 10px 0;
+}
+.modal .modal-footer button {
+  border-radius: 10px;
+  padding: 6px 15px;
+  background-color: #FE9000;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal .modal-content {
+  position: relative;
+  background-color: #fefefe;
+  color: #094074;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 30%;
+  min-width: 400px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+          animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+          animation-duration: 0.4s;
+  border-radius: 20px;
+}
+.modal .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.modal .close:hover,
+.modal .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+.ticket-content {
+  width: 100%;
+  height: 100%;
+}
+.ticket-content .ticket-content-card {
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 10px;
+  border: #888 3px solid;
+  border-radius: 10px;
+}
+.ticket-content .ticket-content-card .ticket-content-card-user {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+.ticket-content .ticket-content-card .ticket-content-card-user .role {
+  background-color: #FFDD4A;
+  border-radius: 10px;
+  padding: 1px 2px;
+  margin-left: 7px;
+  color: white;
+}
+.ticket-content .ticket-content-card .ticket-content-card-user img {
+  width: 25px;
+  height: 25px;
+  border-radius: 50px;
+  margin-right: 5px;
+}
+
+.ticket-content-card-input {
+  display: block !important;
+}
+.ticket-content-card-input input {
+  width: 100%;
+  height: 100% !important;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.dashboard-data-container {
+  height: calc(100vh - 115px);
+  position: absolute;
+  top: 115px;
+  left: 75px;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 .dashboard-data-container .dashboard-title {
   width: 100%;
+  height: 50px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }
 .dashboard-data-container .dashboard-title .dashboard-total {
   width: 25%;
@@ -510,10 +842,9 @@
   font-weight: bold;
 }
 .dashboard-data-container .dashboard-column {
-  width: 100%;
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 }
 .dashboard-data-container .dashboard-column .dashboard-card {
@@ -531,7 +862,9 @@
 }
 .dashboard-container .dashboard-users {
   width: 35%;
-  height: 100%;
+  height: calc(100vh - 115px);
+  overflow: scroll;
+  overflow-x: hidden;
 }
 .dashboard-container .dashboard-users .dashboard-users-table {
   width: 100%;
@@ -716,15 +1049,42 @@
   padding: 115px 0 0 0;
   margin: 0 0 0 75px;
 }
+.dashboard-container a,
+.dashboard-container button {
+  transition: all 0.1s ease-in-out;
+}
+.dashboard-container a:hover,
+.dashboard-container button:hover {
+  transform: translate(1px, -1px);
+}
+.dashboard-container a:active,
+.dashboard-container button:active {
+  transform: translate(-1px, 1px);
+}
 .dashboard-container .dashboard-roles {
   width: 35%;
-  height: 100%;
+  height: calc(100vh - 115px);
+  border-right: 2px solid #FE9000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: scroll;
+  overflow-x: hidden;
+}
+.dashboard-container .dashboard-roles .dashboard-roles-create {
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+}
+.dashboard-container .dashboard-roles .dashboard-roles-create button {
+  border-radius: 10px;
+  padding: 6px 15px;
+  background-color: #FE9000;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 .dashboard-container .dashboard-roles .dashboard-roles-table {
   width: 100%;
   overflow-y: auto;
-  border-right: 2px solid #FE9000;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .dashboard-container .dashboard-roles .dashboard-roles-table thead {
   border-bottom: 1px solid #094074;
@@ -766,7 +1126,8 @@
   align-items: center;
   justify-content: space-around;
 }
-.dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings a, .dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings button {
+.dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings a,
+.dashboard-container .dashboard-role .dashboard-role-info .dashboard-role-info-name .dashboard-role-info-settings button {
   border-radius: 10px;
   padding: 6px 15px;
   color: white;
@@ -897,6 +1258,121 @@
   background-color: #FE9000;
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Modal Body */
+  /* Modal Footer */
+  /* Modal Content */
+}
+.modal .modal-header {
+  padding: 10px 16px;
+}
+.modal .modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.modal .modal-body {
+  padding: 2px 16px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+.modal .modal-body div {
+  display: flex;
+  flex-flow: column;
+  margin: 0 0 10px;
+}
+.modal .modal-body div label {
+  color: #094074;
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+.modal .modal-body div input {
+  border: 3px solid #3C6997;
+  border-radius: 12px;
+  color: #094074;
+  font-family: "Montserrat";
+  font-weight: 600;
+  margin: 0 10px;
+}
+.modal .modal-body div .error {
+  color: red;
+  border: 3px solid red;
+}
+.modal .modal-body div .invalid-feedback {
+  color: red;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0 10px;
+}
+.modal .modal-body div:last-of-type input {
+  width: 10%;
+  border: none;
+}
+.modal .modal-footer {
+  padding: 2px 16px;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 10px 0;
+}
+.modal .modal-footer button {
+  border-radius: 10px;
+  padding: 6px 15px;
+  background-color: #FE9000;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal .modal-content {
+  position: relative;
+  background-color: #fefefe;
+  color: #094074;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 30%;
+  min-width: 400px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+          animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+          animation-duration: 0.4s;
+  border-radius: 20px;
+}
+.modal .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.modal .close:hover,
+.modal .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
 .ntf-container {
   height: 100vh;
   display: flex;
@@ -1103,6 +1579,22 @@
   overflow: hidden;
   position: absolute;
   right: 2em;
+}
+.navigation-container .layout-header .avatar-dropdown {
+  color: white;
+  width: 5%;
+  height: 100%;
+  background-color: #094074;
+  position: absolute;
+  right: 0;
+  top: 75px;
+  z-index: 123;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 .navigation-container .primary-navbar {
   background-color: #094074;
@@ -1833,6 +2325,9 @@ select {
   --tw-backdrop-opacity:  ;
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
+}
+.visible {
+  visibility: visible;
 }
 .absolute {
   position: absolute;
