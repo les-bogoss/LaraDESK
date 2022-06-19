@@ -1,0 +1,376 @@
+.tickets-container {
+    display: flex;
+    height: 100vh;
+    padding: 65px 0 0 0;
+    margin: 0 0 0 75px;
+
+    a,
+    button {
+        transition: all 0.1s ease-in-out;
+
+        &:hover {
+            transform: translate(1px, -1px);
+        }
+
+        &:active {
+            transform: translate(-1px, 1px);
+        }
+    }
+
+    .tickets-wrapper {
+        width: 35%;
+        height: calc(100vh - 65px);
+        border-right: 2px solid $orange;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: scroll;
+        overflow-x: hidden;
+
+        .tickets-create {
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+
+            button {
+                border-radius: 10px;
+                padding: 6px 15px;
+                background-color: $orange;
+                color: white;
+                font-weight: bold;
+                cursor: pointer;
+            }
+        }
+
+        .tickets-table {
+            width: 100%;
+            overflow-y: auto;
+
+            thead {
+                border-bottom: 1px solid $dark-blue;
+                position: sticky;
+                top: 12px;
+                padding: 15px 0;
+                background-color: white;
+            }
+
+            tbody {
+                tr {
+                    border-bottom: 2px solid $dark-blue;
+
+                    td {
+                        padding: 20px 10px;
+                        text-align: center;
+
+                        img {
+                            border-radius: 50%;
+                            width: 25px;
+                        }
+                    }
+                }
+
+                .inactive {
+                    cursor: pointer;
+                }
+
+                .active {
+                    background-color: rgb(205, 205, 205);
+                }
+            }
+        }
+    }
+
+    .ticket {
+        width: 65%;
+        height: calc(100vh - 65px);
+        overflow: scroll;
+        overflow-x: hidden;
+        padding: 65px 0 0 0;
+
+        .ticket-info {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+
+
+            .ticket-info-header {
+                display: flex;
+                flex-flow: column nowrap;
+                align-items: flex-start;
+                padding: 20px;
+                width: 80%;
+
+                #ticket-info-border {
+                    border-bottom: 120px solid #0004ff;
+                    position: absolute;
+                    bottom: 0;
+                }
+
+                .ticket-id {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+
+                    .ticket-logo {
+                        transform: rotate(90deg);
+                    }
+                }
+
+                .ticket-title {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                }
+
+                .ticket-info-header-buttons {
+                    border-bottom: #060606 3px solid;
+                    width: 85%;
+                }
+            }
+
+            .ticket-info-body {
+                display: flex;
+                flex-flow: column nowrap;
+                align-items: flex-start;
+                padding: 20px;
+                width: 20%;
+
+
+                padding: 0 0 0 0;
+
+                .ticket-info-section {
+                    display: flex;
+                    flex-flow: column nowrap;
+                    align-items: flex-start;
+                    width: 100%;
+                    padding: 10px 0;
+
+                    h2 {
+                        font-size: 1.5rem;
+                        font-weight: bold;
+                    }
+                }
+
+                #ticket-status-select {
+                    border-radius: 7px;
+                    padding: 5px 10px;
+                    border: none;
+
+                }
+
+                .ticket-status-open {
+                    background-color: #00ff00;
+                    color: white;
+                }
+
+                .ticket-status-assigned {
+                    background-color: #ff0000;
+                    color: white;
+                }
+
+                .ticket-status-waiting {
+                    background-color: #0000ff;
+                    color: white;
+                }
+
+                .ticket-status-closed {
+                    background-color: #ff0000;
+                    color: white;
+                }
+
+                .ticket-status-solved {
+                    background-color: #ff0000;
+                    color: white;
+                }
+
+            }
+        }
+
+
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+
+    .modal-header {
+        padding: 10px 16px;
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    }
+
+    /* Modal Body */
+    .modal-body {
+        padding: 2px 16px;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+
+        div {
+            display: flex;
+            flex-flow: column;
+            margin: 0 0 10px;
+
+            label {
+                color: $dark-blue;
+                font-family: $font;
+                font-weight: 600;
+            }
+
+            input {
+                border: 3px solid $blue;
+                border-radius: 12px;
+                color: $dark-blue;
+                font-family: $font;
+                font-weight: 600;
+                margin: 0 10px;
+            }
+
+            .error {
+                color: red;
+                border: 3px solid red;
+            }
+
+            .invalid-feedback {
+                color: red;
+                font-size: 0.8rem;
+                font-weight: 600;
+                margin: 0 10px;
+            }
+
+            &:last-of-type {
+                input {
+                    width: 10%;
+                    border: none;
+                }
+            }
+        }
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 2px 16px;
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0 10px 0;
+
+        button {
+            border-radius: 10px;
+            padding: 6px 15px;
+            background-color: $orange;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        color: $dark-blue;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 30%;
+        min-width: 400px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        animation-name: animatetop;
+        animation-duration: 0.4s;
+        border-radius: 20px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+.ticket-content {
+    width: 100%;
+    height: 100%;
+
+    .ticket-content-card {
+        width: 100%;
+        min-height: 100px;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 10px;
+
+
+
+        border: #888 3px solid;
+        border-radius: 10px;
+
+        .ticket-content-card-user {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: flex-start;
+            width: 100%;
+
+            .role {
+                background-color: $yellow;
+                border-radius: 10px;
+                padding: 1px 2px;
+                margin-left: 7px;
+                color: white;
+
+            }
+
+            img {
+                width: 25px;
+                height: 25px;
+                border-radius: 50px;
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+.ticket-content-card-input {
+    display: block !important;
+
+    input {
+        width: 100%;
+        height: 100% !important;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+}

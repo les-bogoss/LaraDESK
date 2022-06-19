@@ -1,0 +1,75 @@
+.account-container{
+    height: calc(100vh - 115px);
+    position: absolute;
+    top: 115px;
+    left: 75px;
+    overflow: scroll;
+    overflow-x: hidden;
+
+    h1{
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    h2{
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    .account-profile{
+        .account-edit{
+            background-color: $orange;
+            color: white;
+            padding: 5px;
+            border-radius: 12px;
+        }
+        .account-profile-avatar{
+            width: 100px;
+            height: 100px;
+            img{
+            border-radius: 100px;
+            margin-bottom: 1rem;}
+        }
+    }
+}
+
+#account-modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s;
+    .account-modal-body{
+        width: 50%;
+        height: min-content;
+        padding: 20px;
+
+        background-color: white;
+        border-radius: 25px;
+        .account-modal-header{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .account-modal-body-content{
+            .account-modal-body-content-avatar{
+                width: 100px;
+                height: 100px;
+                img{
+                    border-radius: 100px;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+}

@@ -53,19 +53,19 @@
 
 
             <div class="link">
-                <a href="{{ route('dashboardData.index') }}">
-                    <i class="fa-solid fa-file"></i>
+                <a href="{{ route('doc') }}">
+                    <i class="fa-solid fa-file {{ request()->routeIs('doc') ? 'active' : '' }}"></i>
                 </a>
-                <div class="{{ request()->routeIs('/') ? 'active-mark' : 'inactive-mark' }}"></div>
+                <div class="{{ request()->routeIs('doc') ? 'active-mark' : 'inactive-mark' }}"></div>
             </div>
         </div>
 
 
         <div class="settings">
-            <a href="{{ route('dashboardData.index') }}">
-                <i class="fa-solid fa-gear"></i>
+            <a href="{{ route('account.index') }}">
+                <i class="fa-solid fa-gear {{ request()->routeIs('account*') ? 'active' : '' }} " ></i>
             </a>
-            <div class="{{ request()->routeIs('/') ? 'active-mark' : 'inactive-mark' }}"></div>
+            <div class="{{ request()->routeIs('account*') ? 'active-mark' : 'inactive-mark' }}"></div>
         </div>
     </div>
     <script>
@@ -81,4 +81,5 @@
             }
         }
     </script>
+
 </div>
