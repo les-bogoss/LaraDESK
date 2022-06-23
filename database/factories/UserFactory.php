@@ -17,6 +17,12 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $avatars = [
+            '/storage/images/IMG_3001.jpg',
+            '/storage/images/IMG_6854.jpeg',
+            '/storage/images/IMG_7991.jpeg',
+            '/storage/images/IMG_20211012_183846_655.jpg',
+        ];
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName,
@@ -24,6 +30,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => $this->faker->password,
             'api_token' => Str::random(60),
+            'avatar' => $this->faker->randomElement($avatars),
             'remember_token' => Str::random(10),
         ];
     }

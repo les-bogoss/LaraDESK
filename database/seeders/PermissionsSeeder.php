@@ -18,6 +18,7 @@ class PermissionsSeeder extends Seeder
         //clear roles and permissions tables
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table("permissions")->truncate();
+        DB::table("roles_permissions_join")->truncate();
         DB::table("roles")->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
@@ -66,6 +67,8 @@ class PermissionsSeeder extends Seeder
             ["name" => "read-permission", "label" => "read a permission"],       //id 23
             ["name" => "delete-permission", "label" => "delete a permission"],   //id 24
 
+            //  -------- DATA --------
+            ["name" => "read-data", "label" => "read a data"],                   //id 25
         ]);
 
         //link all roles and permissions
@@ -93,12 +96,15 @@ class PermissionsSeeder extends Seeder
             ["role_id" => 1, "permission_id" => 20],
             ["role_id" => 1, "permission_id" => 21],
             ["role_id" => 1, "permission_id" => 22],
+            ["role_id" => 1, "permission_id" => 23],
+            ["role_id" => 1, "permission_id" => 24],
+            ["role_id" => 1, "permission_id" => 25],
 
             // -------- TECHNICIAN --------
             ["role_id" => 2, "permission_id" => 1],
             ["role_id" => 2, "permission_id" => 2],
             ["role_id" => 2, "permission_id" => 3],
-            ["role_id" => 2, "permission_id" => 4],
+            ["role_id" => 2, "permission_id" => 25],
 
             // -------- USER --------
             ["role_id" => 3, "permission_id" => 1],
