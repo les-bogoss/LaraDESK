@@ -100,8 +100,8 @@
                     role: "style"
                 }],
                 @php
-                    $total = $tickets->count();
-                @endphp["Mauvais", {{ ($tickets->where('rating', 0)->count() / $total) * 100 }}, "#F08080"],
+                    $total = $tickets->where('rating', '>', '0')->count();
+                @endphp
                 ["Moyen", {{ ($tickets->where('rating', 1)->count() / $total) * 100 }}, "#f88e55"],
                 ["Bon", {{ ($tickets->where('rating', 2)->count() / $total) * 100 }}, "#fef86c"],
                 ["Excellent", {{ ($tickets->where('rating', 3)->count() / $total) * 100 }}, "#90EE90"],

@@ -7,7 +7,7 @@
         <div class="dashboard-roles">
             @if (Auth::user()->hasPerm('create-role'))
                 <div class="dashboard-roles-create">
-                    <button id="createRoleButton">Create Role</button>
+                    <button name="createRoleButton">Create Role</button>
                 </div>
             @endif
             <table class="dashboard-roles-table">
@@ -28,23 +28,50 @@
         </div>
         <div class="dashboard-role">
             @isset($role)
-                <div class="dashboard-role-info">
+                <div class="dashboard-role-info" id="info">
                     <div class="dashboard-role-info-name">
                         <h3>{{ $role->name }}</h3>
+                        <p>{{ $role->label }}</p>
+                        <div class="color-container">
+                            <p>Color :</p>
+                            <div style="background-color: {{ $role->color }};" class="role-color"></div>
+                        </div>
                         <div class="dashboard-role-info-settings">
                             @if (Auth::user()->hasPerm('update-role'))
-                                <a href="{{ route('roles.edit', ['role' => $role]) }}">EDIT</a>
+                                <button onclick="edit()">EDIT</button>
                             @endif
                             @if (Auth::user()->hasPerm('delete-role'))
-                                <form action="{{ route('roles.destroy', ['role' => $role]) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit">DELETE</button>
-                                </form>
+                                <button name="warningButton" data-msg="to delete the role <strong>{{ $role->name }}</strong>" data-method="DELETE"
+                                    data-route="{{ route('roles.destroy', ['role' => $role]) }}">DELETE</button>
                             @endif
                         </div>
                     </div>
                 </div>
+                <form action="{{ route('roles.update', ['role' => $role]) }}" method="post" style="display: none;"
+                    id="edit" class="edit-form">
+                    @csrf
+                    @method('PUT')
+                    <div class="dashboard-role-info editable">
+                        <div class="dashboard-role-info-name">
+                            <div class="edit-form-container">
+                                <label for="name">Name :</label>
+                                <input type="text" name="name" id="name" value="{{ $role->name }}">
+                            </div>
+                            <div class="edit-form-container">
+                                <label for="label">Label :</label>
+                                <input type="text" name="label" id="label" value="{{ $role->label }}">
+                            </div>
+                            <div class="edit-form-container">
+                                <label for="color">Color :</label>
+                                <input type="color" name="color" id="color" value="{{ $role->color }}">
+                            </div>
+                            <div class="dashboard-role-info-settings">
+                                <button type="submit">SAVE</button>
+                                <button type="button" onclick="cancel()">CANCEL</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <div class="dashboard-role-roles">
                     <h3>Permissions :</h3>
                     @if (Auth::user()->hasPerm('update-role'))
@@ -66,12 +93,10 @@
                     <div class="dashboard-role-roles-have">
                         @foreach ($role->permissions()->get() as $permission)
                             @if (Auth::user()->hasPerm('update-role'))
-                                <form action="{{ route('roles.removePermission', ['role' => $role]) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" name="permission_id" value="{{ $permission->id }}">
-                                    <button class="delete-role-button" type="submit">{{ $permission->name }} X</button>
-                                </form>
+                                <button name="warningButton" class="delete-role-button"
+                                data-msg="to delete the permission <strong>{{ $permission->name }}</strong>"
+                                data-method="DELETE"
+                                data-route="{{ route('roles.removePermission', ['role' => $role, 'permission_id' => $permission->id]) }}">{{ $permission->name }} X</button>
                             @else
                                 <button class="delete-role-button">{{ $permission->name }}</button>
                             @endif
@@ -87,13 +112,14 @@
                                     <td>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
+                                        @if (Auth::user()->hasPerm('read-user'))
+                                            <a href="{{ route('users.show', ['user' => $user]) }}">SHOW</a>
+                                        @endif
                                         @if (Auth::user()->hasPerm('update-user'))
-                                            <form action="{{ route('users.removeRole', ['user' => $user]) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="hidden" name="role_id" value="{{ $role->id }}">
-                                                <button type="submit">REMOVE</button>
-                                            </form>
+                                            <button name="warningButton"
+                                                data-msg="remove the role <strong>{{ $role->name }}</strong> of <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>"
+                                                data-method="DELETE"
+                                                data-route="{{ route('users.removeRole', ['user' => $user]) }}">REMOVE</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -104,9 +130,27 @@
         </div>
     </div>
     @if (Auth::user()->hasPerm('create-role'))
+    <div id="warning" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Warning :</h2>
+            </div>
+            <form action="" method="post" id="warning_form">
+                @csrf
+                @method('')
+                <div class="modal-body">
+                    <p>Are you sure you want <span id="warning_message"></span> ?</p>
+                </div>
+                <div class="modal-footer warning-footer">
+                    <button type="submit">Yes</button>
+                    <button type="button" class="close">No</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
         <div id="createRole" class="modal">
-
-            <!-- Modal content -->
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="close">&times;</span>
@@ -117,7 +161,8 @@
                     <div class="modal-body">
                         <div class="name">
                             <label for="name">Name :</label>
-                            <input type="text" class="@error('name') error @enderror" name="name" id="name" placeholder="Name" value="{{ old("name") }}">
+                            <input type="text" class="@error('name') error @enderror" name="name" id="name"
+                                placeholder="Name" value="{{ old('name') }}">
                             @error('name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -126,7 +171,8 @@
                         </div>
                         <div class="label">
                             <label for="label">Label :</label>
-                            <input type="text" class="@error('label') error @enderror" name="label" id="label" placeholder="Label" value="{{ old("label") }}">
+                            <input type="text" class="@error('label') error @enderror" name="label" id="label"
+                                placeholder="Label" value="{{ old('label') }}">
                             @error('label')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -135,7 +181,8 @@
                         </div>
                         <div class="color">
                             <label for="color">Color :</label>
-                            <input type="color" class="@error('color') error @enderror" name="color" id="color" placeholder="Color" value="{{ old("color") }}">
+                            <input type="color" class="@error('color') error @enderror" name="color" id="color"
+                                placeholder="Color" value="{{ old('color') }}">
                             @error('color')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -151,31 +198,54 @@
         </div>
 
         <script>
-            var modal = document.getElementById("createRole");
+            var modal = document.querySelectorAll('.modal')
+            modal.forEach(element => {
+                var span = element.querySelectorAll('.close');
+                var open_button = document.getElementsByName(element.id + "Button")
 
-            // Get the button that opens the modal
-            var btn = document.getElementById("createRoleButton");
+                open_button.forEach(button => {
+                    button.addEventListener('click', () => {
+                        element.style.display = "flex";
+                        if (element.id == "warning") {
+                        element.querySelectorAll("#warning_message").forEach(element => {
+                            element.innerHTML = button.dataset.msg;
+                            document.getElementById("warning_form").action = button.dataset.route;
+                            document.getElementById("warning_form").querySelector("[name=_method]")
+                                .value = button.dataset.method;
+                        });
+                    }
+                    });
 
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
+                    span.forEach(bt => {
+                        bt.addEventListener('click', () => {
+                            element.style.display = "none";
+                        });
+                    });
+                    
 
-            // When the user clicks on the button, open the modal
-            btn.onclick = function() {
-                modal.style.display = "flex";
-            }
-            @error('*')
-                modal.style.display = "flex";
-            @enderror
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
+                    if (element.id == "createRole") {
+                        @error('*')
+                            modal.style.display = "flex";
+                        @enderror
+                    }
+                })
+            })
             window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
+                modal.forEach(element => {
+                    if (event.target == element) {
+                        element.style.display = "none";
+                    }
+                });
+            }
+
+            function edit() {
+                document.getElementById('info').style.display = 'none';
+                document.getElementById('edit').style.display = '';
+            }
+
+            function cancel() {
+                document.getElementById('info').style.display = '';
+                document.getElementById('edit').style.display = 'none';
             }
         </script>
     @endif

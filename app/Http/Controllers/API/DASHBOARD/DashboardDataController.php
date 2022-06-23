@@ -19,7 +19,7 @@ class DashboardDataController extends Controller
         //verify api_token get in header
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
-        if ($user) {
+        if ($user && $user->hasPerm('read-data')) {
             $users = User::count();
             $tickets = Ticket::count();
             //all status ticket
@@ -69,7 +69,7 @@ class DashboardDataController extends Controller
 
             return response()->json(['users' => $users, 'tickets' => $tickets, 'ticket_status' => $ticket_status, 'ticket_category' => $ticket_category, 'ticket_open_date' => $ticket_date_open, 'ticket_close_date' => $ticket_date_close, 'ticket_rating' => $ticket_rating], 200);
         } else {
-            return response()->json(['error' => 'Verfiy api token'], 403);
+            return response()->json(['error' => 'Verfiy api token OR you dont have the permissions'], 403);
         }
     }
 }

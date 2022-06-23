@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\USER;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -13,9 +14,18 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        //get all users
+        //verify api_token get in header
+        $api_token = $request->header('Authorization');
+        $user = UserController::verify_token($api_token);
+        if ($user && $user->hasPerm('read-user')) {
+            $users = User::all();
+            return response()->json($users);
+        } else {
+            return response()->json(['error' => 'You do not have permission to access this page.'], 403);
+        }
     }
 
     /**
@@ -45,9 +55,22 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
-        //
+        //display user
+        //verify api_token get in header
+        $api_token = $request->header('Authorization');
+        $user = UserController::verify_token($api_token);
+        if ($user && $user->hasPerm('read-user')) {
+            $userf = User::find($request->id);
+            if ($userf) {
+                return response()->json($userf);
+            } else {
+                return response()->json(['error' => 'User not found.'], 404);
+            }
+        } else {
+            return response()->json(['error' => 'You do not have permission to access this page.'], 403);
+        }
     }
 
     /**
@@ -68,9 +91,25 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
-        //
+        //Update profile image
+        //verify api_token get in header
+        $api_token = $request->header('Authorization');
+        $user = UserController::verify_token($api_token);
+        if ($user) {
+            if ($request->hasFile('image')) {
+                $filename = $request->image->getClientOriginalName();
+                $request->image->storeAs('images', $filename, 'public');
+                $image = Image::make(public_path('storage/images/' . $filename));
+                $image->fit(300);
+                $image->save();
+                $user->avatar = "/storage/images/" . $filename;
+                $user->update();
+            }
+        } else {
+            return response()->json(['error' => 'You do not have permission to access this page.'], 403);
+        }
     }
 
     /**
@@ -79,9 +118,27 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
+
+    //
+
     {
-        //
+        //delete user
+        //verify api_token get in header
+        $api_token = $request->header('Authorization');
+        $user = UserController::verify_token($api_token);
+        if ($user && $user->hasPerm('delete-user')) {
+            $userd = User::find($request->id);
+            if ($userd) {
+                $userd->delete();
+                return response()->json(['success' => 'User deleted successfully.']);
+            } else {
+                return response()->json(['error' => 'User not found.'], 404);
+            }
+            return response()->json(['success' => 'User deleted.']);
+        } else {
+            return response()->json(['error' => 'You do not have permission to access this page.'], 403);
+        }
     }
     public static function verify_token($api_token): User | bool
     {

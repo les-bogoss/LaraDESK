@@ -173,7 +173,11 @@ class TicketController extends Controller
     {
         $ticket->delete();
 
-        return redirect()->route('tickets.index');
+        if(str_contains(url()->previous(), '/dashboard/users')) {
+            return redirect()->back();
+        } else {
+            return redirect()->route('ticket.index');
+        }
     }
 
     /**

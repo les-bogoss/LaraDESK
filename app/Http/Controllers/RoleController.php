@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateRoleRequest;
 
 class RoleController extends Controller
 {
@@ -38,7 +39,19 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'label' => ['required', 'string', 'max:255'],
+            'color' => ['required', 'string', 'max:255'],
+        ]);
+        
+        $role = Role::create([
+            'name' => $request->name,
+            'label' => $request->label,
+            'color' => $request->color,
+        ]);
+
+        return redirect()->route('roles.show', $role);
     }
 
     /**
@@ -73,10 +86,12 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
-    }
+        $role->update($request->validated());
+
+        return redirect()->route('roles.show', $role);
+        }
 
     /**
      * Remove the specified resource from storage.
