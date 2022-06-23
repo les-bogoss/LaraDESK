@@ -1,3 +1,7 @@
+@media (max-width: 768px) {
+    //responsive à mettre en !important trop bizarre non j'ai pas raison ?
+}
+
 .navigation-container {
     position: sticky;
     background-color: $dark-blue;
@@ -5,6 +9,16 @@
     left: 0;
     top: 0;
     z-index: 1;
+
+    .content-bg {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: $dark-blue;
+        display: none;
+    }
 
     .logo {
         position: absolute;
@@ -15,6 +29,7 @@
         align-items: center;
         justify-content: center;
     }
+
     .layout-dashboard-header {
         width: calc(100% - 75px);
         height: 40px;
@@ -22,7 +37,7 @@
         position: absolute;
         right: 0;
         top: 75px;
-        z-index: 0;
+        z-index: -1;
 
         ul {
             display: flex;
@@ -117,23 +132,54 @@
             overflow: hidden;
             position: absolute;
             right: 2em;
+            cursor: pointer;
         }
 
         .avatar-dropdown {
             color: white;
-            width: 5%;
-            height: 100%;
+            width: 200px;
+            height: 100px;
             background-color: $dark-blue;
             position: absolute;
             right: 0;
             top: 75px;
-            z-index: 123;
             display: none;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             border-radius: 0 0 12px 12px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            text-align: center;
+
+            .avatar-dropdown-header-name {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: $orange;
+            }
+
+            .avatar-dropdown-header-email {
+                font-size: 1rem;
+                font-weight: 100;
+                color: $light;
+                opacity: 0.5;
+                margin-bottom: 10px;
+            }
+
+            .avatar-dropdown-header-button {
+                width: 100%;
+                height: 20px;
+                background-color: $orange;
+                border-radius: 12px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
         }
     }
 
@@ -174,6 +220,12 @@
                 i.active {
                     color: $orange;
                 }
+
+                a {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
             }
         }
 
@@ -181,6 +233,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5rem;
             position: absolute;
             width: 100%;
             bottom: 2em;
@@ -192,6 +245,13 @@
 
             i.active {
                 color: $orange;
+            }
+
+            
+            a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
 

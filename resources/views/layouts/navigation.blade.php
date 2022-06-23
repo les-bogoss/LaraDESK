@@ -1,4 +1,5 @@
 <div class="navigation-container">
+    <div class="content-bg"></div>
 
     <div class="layout-header">
         <div class="searchbar">
@@ -11,7 +12,7 @@
         </div>
         <div class="avatar-dropdown">
             <div class="avatar-dropdown-header">
-                <div class="avatar-dropdown-header-name">{{ Auth::user()->first_name }}</div>
+                <div class="avatar-dropdown-header-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} </div>
                 <div class="avatar-dropdown-header-email">{{ Auth::user()->email }}</div>
                 <form action="{{route('logout') }}" method="POST">
                     @csrf
@@ -21,13 +22,13 @@
         </div>
 
     </div>
-    @if (request()->routeIs('dashboard*') || request()->routeIs('users*') || request()->routeIs('roles*'))
+    @if (request()->routeIs('data*') || request()->routeIs('users*') || request()->routeIs('roles*'))
         @include('layouts.dashboard-navigation')
     @endif
     <!-- Logo -->
     <div class="logo">
         <a href="{{ route('tickets.index') }}">
-            <img src="https://cdn.discordapp.com/attachments/742748593500192869/986236599257923604/logo.png" alt="caca">
+            <img src="{{asset('favicon.ico')}}" alt="caca">
         </a>
     </div>
 
@@ -44,13 +45,14 @@
                 <div class="{{ request()->routeIs('tickets*') ? 'active-mark' : 'inactive-mark' }}"></div>
             </div>
 
-            <div class="link">
-                <a href="{{ route('dashboardData.index') }}">
-                    <i class="fa-solid fa-chart-line {{ request()->routeIs('dashboard*') || request()->routeIs('users*') || request()->routeIs('roles*') ? 'active' : '' }}"></i>
-                </a>
-                <div class="{{ request()->routeIs('dashboard*') || request()->routeIs('users*') || request()->routeIs('roles*') ? 'active-mark' : 'inactive-mark' }}"></div>
-            </div>
-
+            @if(Auth::user()->hasPerm('read-data') || Auth::user()->hasPerm('read-user') || Auth::user()->hasPerm('read-role'))
+                <div class="link">
+                    <a href="{{ route('dashboard') }}">
+                        <i class="fa-solid fa-chart-line {{ request()->routeIs('data*') || request()->routeIs('users*') || request()->routeIs('roles*') ? 'active' : '' }}"></i>
+                    </a>
+                    <div class="{{ request()->routeIs('data*') || request()->routeIs('users*') || request()->routeIs('roles*') ? 'active-mark' : 'inactive-mark' }}"></div>
+                </div>
+            @endif
 
             <div class="link">
                 <a href="{{ route('doc') }}">
@@ -81,5 +83,6 @@
             }
         }
     </script>
-
 </div>
+
+
