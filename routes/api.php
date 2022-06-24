@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\TICKETS\TicketController;
 use App\Http\Controllers\API\TICKETS\TicketContentController;
-
+use App\Http\Controllers\API\DASHBOARD\DashboardDataController;
+use App\Http\Controllers\API\ROLE\RoleController;
+use App\Http\Controllers\API\USER\UserController;
 
 // -------- Auth -------- //
 //register route
@@ -34,3 +36,24 @@ Route::get('/ticket/{ticketId}/content', [TicketContentController::class, 'index
 Route::post('/ticket/{ticketId}/content',     [TicketContentController::class, 'store']);
 //delete ticket content
 Route::delete('/ticket/{ticketId}/content/{contentId}', [TicketContentController::class, 'destroy']);
+
+// -------- DASHBOARD -------- //
+//get all dashboard data
+Route::get('/dashboard', [DashboardDataController::class, 'getAllData']);
+//get all users
+Route::get('/dashboard/users', [UserController::class, 'index']);
+//get one user
+Route::get('/dashboard/user/{id}', [UserController::class, 'show']);
+//delete user
+Route::delete('/dashboard/users/{id}', [UserController::class, 'destroy']);
+//update user
+Route::put('/dashboard/user', [UserController::class, 'update']);
+Route::put('/dashboard/user/{UserId}/role/{RoleId}', [UserController::class, 'addRole']);
+
+//roles 
+
+Route::get('/dashboard/roles', [RoleController::class, 'index']);
+Route::get('/dashboard/role/{RoleId}', [RoleController::class, 'show']);
+Route::post('/dashboard/role/{RoleId}', [RoleController::class, 'addPermission']);
+Route::delete('/dashboard/role/{RoleId}/perm/{PermissionId}', [RoleController::class, 'deletePermission']);
+Route::delete('/dashboard/role/{RoleId}', [RoleController::class, 'destroy']);

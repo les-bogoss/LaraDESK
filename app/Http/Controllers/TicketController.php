@@ -8,6 +8,9 @@ use App\Models\User;
 use App\Models\Ticket_content;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateTicketRequest;
+use App\Jobs\SendEmailJob;
+use App\Mail\TicketUpdated;
+use Illuminate\Support\Facades\Mail;
 
 class TicketController extends Controller
 {
@@ -56,6 +59,15 @@ class TicketController extends Controller
         $ticket->priority = $request->priority;
         $ticket->category_id = 1;
         $ticket->save();
+        $mailData = [
+            'subject' => 'Ticket Created - LaraDESK',
+            'title' => 'Ticket created with id #' . $ticket->id,
+            'email' => Auth::user()->email,
+            'view' => 'emails.ticketUpdate',
+            'body' => 'Your <a href="https://34.140.17.43/tickets/'.$ticket->id.'">ticket #'.$ticket->id.'</a> has been created ,we are on it !',
+        ];
+
+        dispatch(new SendEmailJob($mailData));
         return redirect()->route('tickets.show', $ticket);
     }
 
@@ -108,7 +120,6 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        //
     }
 
     /**
@@ -119,7 +130,6 @@ class TicketController extends Controller
      */
     public function editStatus(Request $request, Ticket $ticket)
     {
-
         $statusId = [
             "OUVERT" => '1',
             "ATTRIBUÉ" => '2',
@@ -128,7 +138,17 @@ class TicketController extends Controller
             "RÉSOLU" => '5',
         ];
 
+        $mailData = [
+            'subject' => 'Ticket Status updated - LaraDESK',
+            'title' => 'Status updated on ticket #' . $ticket->id,
+            'email' => Auth::user()->email,
+            'view' => 'emails.ticketUpdate',
+            'body' => '<a href="https://34.140.17.43/tickets/'.$ticket->id.'">Ticket #'.$ticket->id.'</a> has been updated to <strong>'.$request->input('ticket_status') .'</strong>',
+        ];
+
         $ticket->status_id = $statusId[$request->input('ticket_status')];
+
+        dispatch(new SendEmailJob($mailData));
 
         $ticket->save();
         return redirect()->back();
@@ -176,7 +196,7 @@ class TicketController extends Controller
         if(str_contains(url()->previous(), '/dashboard/users')) {
             return redirect()->back();
         } else {
-            return redirect()->route('ticket.index');
+            return redirect()->route('tickets.index');
         }
     }
 
@@ -189,7 +209,6 @@ class TicketController extends Controller
      */
     public function createContent(Request $request, Ticket $ticket)
     {
-
         if ($request->input('content') != "") {
             if (Auth::user()->hasPerm("update-ticket") || Auth::user()->id == $ticket->user_id) {
                 if ($ticket->status_id < 4) {
