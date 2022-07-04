@@ -5,6 +5,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+<img src="https://img.shields.io/github/workflow/status/les-bogoss/LaraDESK/Laravel?label=%20TESTS&logo=laravel&style=for-the-badge">
 
 
 
