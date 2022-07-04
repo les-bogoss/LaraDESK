@@ -37,3 +37,9 @@ jobs:
         mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
     #- name: Run Laravel Tests
       #run: vendor/bin/phpunit
+    - name: OSKAR-phpstan
+    # You may pin to the exact commit or the version.
+    # uses: OskarStark/phpstan-ga@8059ab63bd7f15e5d66a3fa08a85495922139a33
+      uses: OskarStark/phpstan-ga@1.4.6
+      with:
+        args: analyse src/
