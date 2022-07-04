@@ -42,4 +42,4 @@ jobs:
     # uses: OskarStark/phpstan-ga@8059ab63bd7f15e5d66a3fa08a85495922139a33
       uses: OskarStark/phpstan-ga@1.4.6
       with:
-        args: analyse ressource app
+        args: analyse resources app
