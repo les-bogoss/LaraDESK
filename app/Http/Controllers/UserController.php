@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Role;
-use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -90,21 +90,25 @@ class UserController extends Controller
     public function destroy(Request $request, User $user)
     {
         $user->delete();
-        
-        if(str_contains(url()->previous(), '/dashboard/roles')) {
+
+        if (str_contains(url()->previous(), '/dashboard/roles')) {
             return redirect()->back();
         } else {
             return redirect()->route('users.index');
         }
     }
 
-    public function addRole(Request $request, User $user) {
+    public function addRole(Request $request, User $user)
+    {
         $user->roles()->attach($request->role_id);
+
         return redirect()->back();
     }
 
-    public function RemoveRole(Request $request, User $user) {
+    public function RemoveRole(Request $request, User $user)
+    {
         $user->roles()->detach($request->role_id);
+
         return redirect()->back();
     }
 }

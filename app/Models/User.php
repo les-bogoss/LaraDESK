@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements MustVerifyEmail
 {
     protected $table = 'users';
+
     use HasApiTokens, HasFactory, Notifiable;
 
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -36,6 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 return true;
             }
         }
+
         return false;
     }
 

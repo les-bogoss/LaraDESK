@@ -15,7 +15,7 @@
         font-size: 6em;
         font-weight: 600;
         font-family: $font;
-        color: $dark-blue;
+        color: $primary-dark;
 
         .welcome-title-light {
             font-weight: 300;
@@ -27,7 +27,7 @@
         font-size: 1em;
         font-weight: 500;
         font-family: $font;
-        color: $dark-blue;
+        color: $primary-dark;
         width: 25%;
         text-align: center;
     }
@@ -46,7 +46,7 @@
             width: 10em;
             height: 2em;
             border-radius: 50px;
-            background-color: $dark-blue;
+            background-color: $primary-dark;
             color: $light;
             font-family: $font;
             font-size: 1.2em;
@@ -70,8 +70,8 @@
             border-radius: 50px;
             background-color: transparent;
             box-sizing: border-box;
-            border: 5px solid $dark-blue;
-            color: $dark-blue;
+            border: 5px solid $primary-dark;
+            color: $primary-dark;
             font-family: $font;
             font-size: 1.2em;
             font-weight: 600;
@@ -111,7 +111,7 @@
 
             #welcome-button-login {
                 width: 10em;
-                border: 7px solid $dark-blue;
+                border: 7px solid $primary-dark;
                 margin: 5px 0 0 0;
             }
         }

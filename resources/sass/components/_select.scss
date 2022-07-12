@@ -1,0 +1,35 @@
+.select {
+    padding: .5em 2em ;
+    border-radius: 100px;
+    transition: all 0.2s ease-in-out;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.select-primary {
+    background-color: $secondary;
+    color: $light;
+}
+
+.select-secondary {
+    background-color: $primary;
+    color: $light;
+}
+
+.select-danger {
+    background-color: $danger;
+    color: $light;
+}
+
+.select-success {
+    background-color: $success;
+    color: $light;
+}
+
+.select-warning {
+    background-color: $warning;
+    color: $light;
+}

@@ -137,7 +137,7 @@
                             </span>
                         @endif
                     </div>
-                    <x-button class="button">
+                    <x-button color="primary" class="button" type="primary">
                         {{ __('SIGNUP') }}
                     </x-button>
 

@@ -1,0 +1,22 @@
+.input {
+    width: 90%;
+    height: 3em;
+    border: 3px solid $secondary;
+    border-radius: 12px;
+    font-weight: 600;
+    color: $primary-dark;
+    padding: 1em;
+
+    &::placeholder {
+        color: $primary;
+        font-family: $font;
+        font-weight: 600;
+        filter: opacity(.4);
+    }
+}
+
+.input-error {
+    @extend .input;
+    border: 3px solid $danger;
+    color: $danger;
+}

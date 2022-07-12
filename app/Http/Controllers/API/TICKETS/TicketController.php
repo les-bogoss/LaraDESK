@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\API\TICKETS;
 
-use App\Http\Controllers\Controller;
-use App\Models\Ticket;
-use App\Models\Ticket_content;
 use App\Http\Controllers\API\USER\UserController;
-use App\Http\Controllers\API\TICKETS\TicketContentController;
-
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Assigned;
+use App\Models\Ticket;
+use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-
     /**
      * get all ticket header
      *
      *  $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -35,7 +32,7 @@ class TicketController extends Controller
             //get assigned tickets
             $assigned_tickets = Assigned::all();
             //foreach assigned tickets get ticket id
-            $assigned_tickets_array = array();
+            $assigned_tickets_array = [];
             foreach ($assigned_tickets as $assigned_ticket) {
                 $assigned_tickets_array[] = $assigned_ticket->ticket_id;
             }
@@ -48,6 +45,7 @@ class TicketController extends Controller
                     $ticket->assigned = false;
                 }
             }
+
             return response()->json($tickets, 200);
         } else {
             return response()->json(['error' => 'Verfiy api token'], 403);
@@ -60,7 +58,6 @@ class TicketController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
     public function store(Request $request)
     {
         //verify api_token get in header
@@ -79,7 +76,7 @@ class TicketController extends Controller
 
             // if ticket is created
             if ($ticket && $ticket_content) {
-                return response()->json(['message' => 'Ticket created ID : ' . $ticket->id . ''], 201);
+                return response()->json(['message' => 'Ticket created ID : '.$ticket->id.''], 201);
             } else {
                 return response()->json(['error' => 'Ticket not created'], 500);
             }
@@ -94,7 +91,6 @@ class TicketController extends Controller
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function show(Request $request)
     {
         //verify api_token get in header
@@ -115,6 +111,7 @@ class TicketController extends Controller
                     } else {
                         $ticket->assigned = false;
                     }
+
                     return response()->json($ticket, 200);
                 } else {
                     return response()->json(['error' => 'You have not the right permission to read the ticket'], 404);
@@ -134,7 +131,6 @@ class TicketController extends Controller
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function update(Request $request, Ticket $ticket)
     {
         //update a ticket header
@@ -151,7 +147,7 @@ class TicketController extends Controller
                         return response()->json(['message' => 'Ticket updated'], 200);
                     } else {
                         return response()->json(['error' => 'Ticket not updated'], 500);
-                    };
+                    }
                 }
             } else {
                 return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
@@ -167,7 +163,6 @@ class TicketController extends Controller
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function destroy(Ticket $ticket, Request $request)
     {
         //delete a ticket
@@ -185,7 +180,7 @@ class TicketController extends Controller
                         return response()->json(['message' => 'Ticket deleted'], 200);
                     } else {
                         return response()->json(['error' => 'Ticket not deleted'], 500);
-                    };
+                    }
                 } else {
                     return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
                 }

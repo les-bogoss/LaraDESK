@@ -7,10 +7,9 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
 {
@@ -50,8 +49,6 @@ class RegisteredUserController extends Controller
         ]);
         $user->roles()->attach(3);
         event(new Registered($user));
-
-        Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
     }

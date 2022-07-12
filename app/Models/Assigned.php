@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Assigned extends Model
 {
@@ -14,12 +13,11 @@ class Assigned extends Model
 
     public function ticket(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Ticket::Class,"tickets");
+        return $this->hasOne(Ticket::class, 'tickets');
     }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(User::Class,"users");
+        return $this->hasOne(User::class, 'users');
     }
-
 }

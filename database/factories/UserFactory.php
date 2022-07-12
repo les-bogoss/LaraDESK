@@ -23,6 +23,7 @@ class UserFactory extends Factory
             '/storage/images/IMG_7991.jpeg',
             '/storage/images/IMG_20211012_183846_655.jpg',
         ];
+
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName,

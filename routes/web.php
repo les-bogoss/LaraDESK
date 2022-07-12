@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,12 +32,12 @@ Route::get('403', function () {
     return view('403');
 })->name('forbidden');
 
-require __DIR__ . '/auth.php';
-require __DIR__ . '/dashboard/data.php';
-require __DIR__ . '/dashboard/roles.php';
-require __DIR__ . '/dashboard/users.php';
-require __DIR__ . '/tickets.php';
-require __DIR__ . '/account.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/dashboard/data.php';
+require __DIR__.'/dashboard/roles.php';
+require __DIR__.'/dashboard/users.php';
+require __DIR__.'/tickets.php';
+require __DIR__.'/account.php';
 
 // Si aucune route n'est trouvée, on redirige vers la page 404
 Route::fallback(function () {

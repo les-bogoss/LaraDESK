@@ -5,29 +5,23 @@
 @section('content')
     <div class="dashboard-container">
         <div class="dashboard-users">
-            <table class="dashboard-users-table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="dashboard-users-wrapper">
                     <div class="users-wrapper">
                         @foreach ($users as $u)
-                            <tr onclick="window.location.href = '{{ route('users.show', ['user' => $u]) }}'"
+                            <div class="user-item" onclick="window.location.href = '{{ route('users.show', ['user' => $u]) }}'"
                                 class="{{ isset($user) && $u == $user ? 'active' : 'inactive' }}"
                                 id="user-{{ $u->id }}">
-                                <td><img src="{{ $u->avatar }}" alt="{{ $u->first_name }} {{ $u->last_name }} avatar"
-                                        width="50px"></td>
-                                <td>{{ strtoupper($u->last_name) }} {{ $u->first_name }}</td>
-                                <td>{{ $u->email }}</td>
-                            </tr>
+                                <div class="user-details"><img src="{{ $u->avatar }}" alt="{{ $u->first_name }} {{ $u->last_name }} avatar"
+                                    width="50px">
+                            <div>
+                                <h3 class="name">{{ strtoupper($u->last_name) }} {{ $u->first_name }}</h3>
+                                <p class="email">{{ $u->email }}</p>
+                            </div>
+                        </div>
+                            </div>
                         @endforeach
                     </div>
-                </tbody>
-            </table>
+            </div>
         </div>
         <div class="dashboard-user">
             @isset($user)
@@ -44,11 +38,10 @@
                                 <button onclick="edit()" class="dashboard-user-info-settings-edit">EDIT</button>
                             @endif
                             @if (Auth::user()->hasPerm('delete-user'))
-                                <form action="{{ route('users.destroy', ['user' => $user]) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit">DELETE</button>
-                                </form>
+                                <button name="warningButton"
+                                    class="delete-role-button"
+                                    data-msg="to delete the user <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>" data-method="DELETE"
+                                    data-route="{{ route('users.destroy', ['user' => $user]) }}">DELETE</button>
                             @endif
                         </div>
                     </div>
@@ -98,12 +91,10 @@
                     <div class="dashboard-user-roles-have">
                         @foreach ($user->roles()->get() as $role)
                             @if (Auth::user()->hasPerm('update-user'))
-                                <form action="{{ route('users.removeRole', ['user' => $user]) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" name="role_id" value="{{ $role->id }}">
-                                    <button class="delete-role-button" type="submit">{{ $role->name }} X</button>
-                                </form>
+                                <button name="warningButton"
+                                    class="delete-role-button"
+                                    data-msg="to remove the <strong>{{ $role->name }}</strong> role of <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>" data-method="DELETE"
+                                    data-route="{{ route('users.removeRole', ['user' => $user, 'role_id' => $role]) }}">{{ $role->name }} X</button>
                             @else
                                 <button class="delete-role-button">{{ $role->name }}</button>
                             @endif
@@ -124,7 +115,7 @@
                                         @endif
                                         @if (Auth::user()->hasPerm('delete-ticket'))
                                             <button name="warningButton"
-                                                data-msg="Are you sure you want to delete this ticket" data-method="DELETE"
+                                                data-msg="to delete this ticket" data-method="DELETE"
                                                 data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">DELETE</button>
                                         @endif
                                     </td>
@@ -200,7 +191,7 @@
             }
 
             var user = document.getElementById('user-{{ $user->id }}');
-            document.getElementsByClassName('dashboard-users')[0].scrollTo(0, user.offsetTop - 25);
+            document.getElementsByClassName('dashboard-users')[0].scrollTo(0, user.offsetTop - 155);
 
             var textarea = document.getElementById("input-content");
 

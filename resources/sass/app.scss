@@ -1,4 +1,5 @@
 @import './settings';
+
 @import './pages/register';
 @import './pages/welcome';
 @import './pages/login';
@@ -17,3 +18,6 @@
 @import './pages/404';
 
 @import './components/navbar';
+@import './components/button';
+@import './components/input';
+@import './components/select';

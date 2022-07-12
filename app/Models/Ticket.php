@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Ticket extends Model
 {
     protected $table = 'tickets';
+
     use HasFactory;
 
     public function user(): HasOne
@@ -32,8 +33,6 @@ class Ticket extends Model
     {
         return $this->belongsToMany(User::class, 'assigned', 'ticket_id', 'user_id');
     }
-
-
 
     public static function update_header($ticket_id, $title, $priority, $rating, $category_id, $status_id): bool
     {
@@ -57,6 +56,7 @@ class Ticket extends Model
                 $ticket->status_id = $status_id;
             }
             $ticket->save();
+
             return true;
         } else {
             return false;

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API\ROLE;
 
+use App\Http\Controllers\API\USER\UserController;
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\USER\UserController;
-use App\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -22,6 +22,7 @@ class RoleController extends Controller
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('read-role')) {
             $roles = Role::all();
+
             return response()->json($roles);
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);
@@ -69,6 +70,7 @@ class RoleController extends Controller
             //get permissions of role
             $role = Role::find($request->RoleId);
             $permissions = $role->permissions;
+
             return response()->json($permissions);
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);
@@ -92,6 +94,7 @@ class RoleController extends Controller
             $permission = Permission::find($request->PermissionId);
             if ($role && $permission) {
                 $role->permissions()->attach($permission);
+
                 return response()->json(['success' => 'Permission added.']);
             } else {
                 return response()->json(['error' => 'Role or Permission not found.'], 404);
@@ -118,6 +121,7 @@ class RoleController extends Controller
             $permission = Permission::find($request->PermissionId);
             if ($role && $permission) {
                 $role->permissions()->detach($permission);
+
                 return response()->json(['success' => 'Permission deleted.']);
             } else {
                 return response()->json(['error' => 'Role or Permission not found.'], 404);
@@ -143,6 +147,7 @@ class RoleController extends Controller
             $role = Role::find($request->RoleId);
             if ($role) {
                 $role->delete();
+
                 return response()->json(['success' => 'Role deleted.']);
             } else {
                 return response()->json(['error' => 'Role not found.'], 404);

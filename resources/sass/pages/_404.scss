@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: center;
 
-    color: $dark-blue ;
+    color: $primary-dark ;
     text-align: center;
 
     .ntf-layout {
@@ -42,7 +42,7 @@
 @keyframes fadeIn {
     0% {
         opacity: 1;
-        color: $dark-blue
+        color: $primary-dark
     }
 
     25% {
@@ -60,7 +60,7 @@
 
     100% {
         opacity: 1;
-        color: $dark-blue;
+        color: $primary-dark;
     }
 }
 

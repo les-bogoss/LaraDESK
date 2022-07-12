@@ -4,7 +4,7 @@
     position: absolute;
     top: 75px;
     left: 75px;
-    background-color : $dark-blue;
+    background-color : $primary-dark;
 
     .account-container {
         height: 100%;
@@ -23,7 +23,7 @@
             margin-bottom: 0.5rem;
             width: 100%;
             text-align: center;
-            color: $dark-blue;
+            color: $primary-dark;
         }
     
         h2 {
@@ -32,7 +32,7 @@
             margin-bottom: 1em;
             width: 100%;
             text-align: center;
-            color: $dark-blue;
+            color: $primary-dark;
         }
     
         .account-profile {
@@ -43,39 +43,47 @@
             background-color: $light;
     
             .profile {
+                margin-top: 5em;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                flex-direction: column;
                 margin-bottom: 1em;
-                width: 40%;
+                width: 400px;
+                height: 400px;
     
                 .avatar {
-                    height: 200px;
-                    width: 30%;
+                    height: 30%;
+                    width: 100%;
                     display: flex;
                     justify-content: space-evenly;
                     align-items: center;
                     flex-direction: column;
-                    background-color: $dark-blue;
-                    border-radius: 50px 0 0 50px;
-                    padding-left: 1em;
+                    background-color: $primary-dark;
+                    border-radius: 50px 50px 0 0;
+                    position: relative;
     
                     .account-profile-avatar {
-                        width: 100px;
-                        height: 100px;
+                        width: 150px;
+                        height: 150px;
     
                         img {
+                            position: relative;
+                            bottom: 75px;
                             border-radius: 100px;
-                            margin-bottom: 1rem;
                         }
                     }
     
                     .account-edit {
-                        background-color: $orange;
+                        background-color: $secondary;
                         color: white;
                         width: 100px;
                         height: 25px;
                         border-radius: 12px;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
                     }
                 }
     
@@ -84,12 +92,13 @@
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    background-color: $blue;
+                    background-color: $primary;
                     color: $light;
                     padding: 1em;
-                    height: 200px;
-                    border-left: 5px solid $orange;
-                    border-radius:  0 50px 50px 0;
+                    height: 70%;
+                    width: 100%;
+                    border-top: 5px solid $secondary;
+                    border-radius:  0 0 50px 50px;
     
                     p {
                         font-size: 1.2rem;
@@ -122,7 +131,7 @@
                     font-size: 1em;
                     font-weight: bold;
                     color: $light;
-                    background-color: $light-blue;
+                    background-color: $primary-light;
                     border-radius: 12px;
                     padding: 0 10px;
                     height: 25px;

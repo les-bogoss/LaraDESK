@@ -7,7 +7,7 @@
         <div class="dashboard-roles">
             @if (Auth::user()->hasPerm('create-role'))
                 <div class="dashboard-roles-create">
-                    <button name="createRoleButton">Create Role</button>
+                    <x-button name="createRoleButton" color="primary">Create Role</x-button>
                 </div>
             @endif
             <table class="dashboard-roles-table">
@@ -38,11 +38,11 @@
                         </div>
                         <div class="dashboard-role-info-settings">
                             @if (Auth::user()->hasPerm('update-role'))
-                                <button onclick="edit()">EDIT</button>
+                                <x-button color="primary" onclick="edit()">EDIT</x-button>
                             @endif
                             @if (Auth::user()->hasPerm('delete-role'))
-                                <button name="warningButton" data-msg="to delete the role <strong>{{ $role->name }}</strong>" data-method="DELETE"
-                                    data-route="{{ route('roles.destroy', ['role' => $role]) }}">DELETE</button>
+                                <x-button color="danger" name="warningButton" data-msg="to delete the role <strong>{{ $role->name }}</strong>" data-method="DELETE"
+                                    data-route="{{ route('roles.destroy', ['role' => $role]) }}">DELETE</x-button>
                             @endif
                         </div>
                     </div>
@@ -66,8 +66,8 @@
                                 <input type="color" name="color" id="color" value="{{ $role->color }}">
                             </div>
                             <div class="dashboard-role-info-settings">
-                                <button type="submit">SAVE</button>
-                                <button type="button" onclick="cancel()">CANCEL</button>
+                                <x-button color="primary" type="submit">SAVE</x-button>
+                                <x-button color="secondary" type="button" onclick="cancel()">CANCEL</x-button>
                             </div>
                         </div>
                     </div>
@@ -75,9 +75,9 @@
                 <div class="dashboard-role-roles">
                     <h3>Permissions :</h3>
                     @if (Auth::user()->hasPerm('update-role'))
-                        <form action="{{ route('roles.addPermission', ['role' => $role]) }}" method="post">
+                        <form class="add-perm-form" action="{{ route('roles.addPermission', ['role' => $role]) }}" method="post">
                             @csrf
-                            <select name="permission_id" id="permission_id">
+                            <x-select color="secondary" name="permission_id" id="permission_id">
                                 <option value="">Select a permission</option>
                                 @foreach ($permissions as $permission)
                                     @if (!isset(
@@ -86,8 +86,8 @@
                                         <option value="{{ $permission->id }}">{{ $permission->name }}</option>
                                     @endif
                                 @endforeach
-                            </select>
-                            <button class="add-role-button" type="submit">ADD</button>
+                            </x-select>
+                            <x-button color="primary" type="submit">ADD</x-button>
                         </form>
                     @endif
                     <div class="dashboard-role-roles-have">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="dashboard-role-tickets">
-                    <h3>User have the role :</h3>
+                    <h3>User owning the role :</h3>
                     <table>
                         <tbody>
                             @foreach ($role->users()->get() as $user)
@@ -113,13 +113,13 @@
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         @if (Auth::user()->hasPerm('read-user'))
-                                            <a href="{{ route('users.show', ['user' => $user]) }}">SHOW</a>
+                                            <a href="{{ route('users.show', ['user' => $user]) }}"><x-button color="primary">VIEW</x-button></a>
                                         @endif
                                         @if (Auth::user()->hasPerm('update-user'))
-                                            <button name="warningButton"
+                                            <x-button color="danger" name="warningButton"
                                                 data-msg="remove the role <strong>{{ $role->name }}</strong> of <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>"
                                                 data-method="DELETE"
-                                                data-route="{{ route('users.removeRole', ['user' => $user]) }}">REMOVE</button>
+                                                data-route="{{ route('users.removeRole', ['user' => $user]) }}">REMOVE</x-button>
                                         @endif
                                     </td>
                                 </tr>
@@ -143,8 +143,8 @@
                     <p>Are you sure you want <span id="warning_message"></span> ?</p>
                 </div>
                 <div class="modal-footer warning-footer">
-                    <button type="submit">Yes</button>
-                    <button type="button" class="close">No</button>
+                    <x-button color="secondary-outline" type="submit">Yes</x-button>
+                    <x-button color="danger" type="button" class="close">No</x-button>
                 </div>
             </form>
         </div>

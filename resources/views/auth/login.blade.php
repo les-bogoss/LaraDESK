@@ -80,11 +80,11 @@
                     <div @class(['field', 'field-error' => $errors->has('email')])>
                         <x-label for="email" :value="__('Email')" />
 
-                        <x-input id="email" class="input" type="email" name="email" :value="old('email')"
+                        <x-input  id="email" class="input" type="email" name="email" :value="old('email')"
                             placeholder="you@example.com" required autofocus />
-                        @if (strpos($errors->first('email'), 'email') !== false)
+                        @if ($errors->has('email'))
                             <span class="error-text">
-                                <strong>Email already taken</strong>
+                                <strong>{{ $errors->first('email') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -92,21 +92,26 @@
                     <!-- Password -->
                     <div @class([
                         'field',
-                        'field-error' => strpos($errors->first('password'), '8') !== false,
+                        'field-error' =>
+                            $errors->has('email') &&
+                            strpos(
+                                $errors->first('email'),
+                                'These credentials do not match our records.'
+                            ) !== false,
                     ])>
                         <x-label for="password" :value="__('Password')" />
 
                         <x-input id="password" class="input" type="password" name="password" required
                             autocomplete="new-password" placeholder="••••••••••••••••" />
                         <!-- add error text -->
-                        @if (strpos($errors->first('password'), '8') !== false)
+                        @if ($errors->has('email') && strpos($errors->first('email'), 'These credentials do not match our records.') !== false)
                             <span class="error-text">
-                                <strong>Password must be at least 8 characters</strong>
+                                <strong>{{ $errors->first('email') }}</strong>
                             </span>
                         @endif
                     </div>
 
-                    <x-button class="button">
+                    <x-button color='primary' class="button" type="primary">
                         {{ __('login') }}
                     </x-button>
 
@@ -115,7 +120,9 @@
                         Already have an account ?
                         <a class="redirect-link" href="{{ route('register') }}">
                             {{ __('Register') }}
-                        </a>
+                        </a><br> <a class="redirect-link" href="{{ route('password.email') }}">
+                            {{ __('Forgot your password') }}
+                        </a>?
                     </p>
             </div>
         </div>

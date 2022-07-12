@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Ticket_status extends Model
 {
     protected $table = 'ticket_status';
+
     use HasFactory;
 
     public function tickets(): HasMany

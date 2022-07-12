@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-use App\Models\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
@@ -36,7 +35,7 @@ class AuthenticatedSessionController extends Controller
             Auth::user()->last_login = now();
             Auth::user()->save();
         }
-        
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

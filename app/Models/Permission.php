@@ -9,7 +9,8 @@ class Permission extends Model
 {
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Role::Class, 'roles_permissions_join', 'permission_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'roles_permissions_join', 'permission_id', 'role_id');
     }
+
     use HasFactory;
 }

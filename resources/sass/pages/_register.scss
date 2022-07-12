@@ -43,7 +43,7 @@
                     font-size: 2em;
                     font-weight: 600;
                     font-family: $font;
-                    color: $dark-blue;
+                    color: $primary-dark;
                 }
 
                 .semi-fields {
@@ -61,22 +61,22 @@
                     width: 100%;
 
                     label {
-                        color: $dark-blue;
+                        color: $primary-dark;
                         font-family: $font;
                         font-weight: 600;
                     }
 
                     .input {
                         width: 100%;
-                        border: 3px solid $blue;
+                        border: 3px solid $primary;
                         border-radius: 12px;
-                        color: $dark-blue;
+                        color: $primary-dark;
                         font-family: $font;
                         font-weight: 600;
 
 
                         &::placeholder {
-                            color: $blue;
+                            color: $primary;
                             font-family: $font;
                             font-weight: 600;
                             filter: opacity(.4);
@@ -121,7 +121,7 @@
                     width: 200px;
                     height: 50px;
                     border-radius: 50px;
-                    background-color: $dark-blue;
+                    background-color: $primary-dark;
                     color: $light;
                     font-family: $font;
                     font-size: 1.2em;
@@ -135,21 +135,21 @@
 
                     &:hover {
                         background-color: $light;
-                        color: $dark-blue;
-                        border: 3px solid $dark-blue;
+                        color: $primary-dark;
+                        border: 3px solid $primary-dark;
                         transform: scale(1.1);
                     }
                 }
 
                 .redirect-text {
                     font-family: $font;
-                    color: $dark-blue;
+                    color: $primary-dark;
                     transition: all .2s ease-in-out;
                     user-select: none;
                     cursor: default;
 
                     .redirect-link {
-                        color: $orange;
+                        color: $secondary;
                         font-weight: 600;
                         text-decoration: none;
                     }

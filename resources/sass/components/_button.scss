@@ -1,0 +1,60 @@
+.button-component {
+    padding: .5em 2em;
+    border-radius: 100px;
+    transition: all 0.2s ease-in-out;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.btn-primary {
+    background-color: $secondary !important;
+    color: $light !important;
+}
+
+.btn-primary-outline {
+    background-color: $light !important;
+    color: $secondary !important;
+    padding: calc(.5em - 6px) calc(2em - 6px) !important;
+    border: 3px solid $secondary !important;
+}
+
+.btn-secondary {
+    background-color: $primary !important;
+    color: $light !important;
+}
+
+.btn-secondary-outline {
+    background-color: $light !important;
+    color: $primary !important;
+    padding: calc(.5em - 6px) calc(2em - 6px) !important;
+    border: 3px solid $primary !important;
+}
+
+.btn-danger {
+    background-color: $danger !important;
+    color: $light !important;
+}
+
+.btn-danger-outline {
+    background-color: $light !important;
+    color: $danger !important;
+    padding: calc(.5em - 6px) calc(2em - 6px) !important;
+    border: 3px solid $danger !important;
+}
+
+.btn-success {
+    background-color: $success !important;
+    color: $light !important;
+}
+
+.btn-success-outline {
+    background-color: $light !important;
+    color: $success;
+    padding: calc(.5em - 6px) calc(2em - 6px);
+    border: 3px solid $success !important;
+}

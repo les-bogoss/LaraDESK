@@ -102,9 +102,9 @@
                 @php
                     $total = $tickets->where('rating', '>', '0')->count();
                 @endphp
-                ["Moyen", {{ ($tickets->where('rating', 1)->count() / $total) * 100 }}, "#f88e55"],
-                ["Bon", {{ ($tickets->where('rating', 2)->count() / $total) * 100 }}, "#fef86c"],
-                ["Excellent", {{ ($tickets->where('rating', 3)->count() / $total) * 100 }}, "#90EE90"],
+                ["Moyen", {{ round(($tickets->where('rating', 1)->count() / $total) * 100, 1) }}, "#f88e55"],
+                ["Bon", {{ round(($tickets->where('rating', 2)->count() / $total) * 100, 1) }}, "#fef86c"],
+                ["Excellent", {{ round(($tickets->where('rating', 3)->count() / $total) * 100, 1) }}, "#90EE90"],
             ]);
 
             var view = new google.visualization.DataView(data);
@@ -130,7 +130,15 @@
                 },
                 backgroundColor: {
                     fill: 'transparent'
-                }
+                },
+                vAxis: { 
+              title: "Percentage Uptime", 
+              viewWindowMode:'explicit',
+              viewWindow:{
+                max:100,
+                min:0
+              }
+            }
             };
             var chart = new google.visualization.ColumnChart(document.getElementById("ChartSatisfaction"));
             chart.draw(view, options);

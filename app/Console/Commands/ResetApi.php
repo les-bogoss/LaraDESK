@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Console\Commands;
-use App\Models\User;
-use Illuminate\Support\Str;
 
+use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class ResetApi extends Command
 {
@@ -36,6 +36,7 @@ class ResetApi extends Command
             $user->save();
             $this->info('API token reset for'.$user->email.'successful');
         }
+
         return 0;
     }
 }
