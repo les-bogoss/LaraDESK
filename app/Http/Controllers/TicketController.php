@@ -176,7 +176,7 @@ class TicketController extends Controller
         return redirect()->back();
     }
 
-    /**
+    /** 
      * Edit the rating of the current ticket
      *
      * @param  \Illuminate\Http\Request  $request
