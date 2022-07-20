@@ -69,9 +69,11 @@ class TicketContentController extends Controller
                         //get ticket content
                         $content = Ticket::where('id', $ticket->id)->first()->ticket_content()->get();
                         //get first name and last name of user and link to user profile
-                        $user = Ticket::where('id', $ticket->id)->first()->user()->first();
+
                         foreach ($content as $key => $value) {
-                            
+                            $user = Ticket_content::where('ticket_id', $ticket->id)
+                                ->where('id', $content[$key]->id)->first()->User()->first();
+
                             $content[$key]->first_name = $user->first_name;
                             $content[$key]->last_name = $user->last_name;
                             $content[$key]->avatar = $user->avatar;
