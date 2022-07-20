@@ -27,6 +27,13 @@ class TicketController extends Controller
                 //get all ticket
                 if ($user->hasPerm('read-ticket')) {
                     $tickets = Ticket::all();
+                    //get first_name and last_name and avatar of user
+                    foreach ($tickets as $ticket) {
+                        $userd = Ticket::where('id', $ticket->id)->first()->user()->get()->first();
+                        $ticket->first_name = $userd->first_name;
+                        $ticket->last_name = $userd->last_name;
+                        $ticket->avatar = $userd->avatar;
+                    }
                 } else {
                     $tickets = Ticket::all()->where('user_id', $user->id);
                 }
@@ -46,6 +53,7 @@ class TicketController extends Controller
                         $ticket->assigned = false;
                     }
                 }
+
 
                 return response()->json($tickets, 200);
             } else {

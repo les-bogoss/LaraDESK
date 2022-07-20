@@ -68,8 +68,15 @@ class TicketContentController extends Controller
                     if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id || $user->hasPerm('read-ticket')) {
                         //get ticket content
                         $content = Ticket::where('id', $ticket->id)->first()->ticket_content()->get();
-
-                        return response()->json($content, 200);
+                        //get first name and last name of user and link to user profile
+                        $user = Ticket::where('id', $ticket->id)->first()->user()->first();
+                        foreach ($content as $key => $value) {
+                            
+                            $content[$key]->first_name = $user->first_name;
+                            $content[$key]->last_name = $user->last_name;
+                            $content[$key]->avatar = $user->avatar;
+                        }
+                        return response()->json(['ticket' => $content], 200);
                     } else {
                         return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
                     }
