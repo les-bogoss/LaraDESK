@@ -22,9 +22,13 @@ class UserController extends Controller
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('read-user')) {
-            $users = User::all();
+            if ($user->hasVerifiedEmail()) {
+                $users = User::all();
 
-            return response()->json($users);
+                return response()->json($users);
+            } else {
+                return response()->json(['message' => 'Please verify your email address'], 403);
+            }
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);
         }
@@ -64,11 +68,15 @@ class UserController extends Controller
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('read-user')) {
-            $userf = User::find($request->id);
-            if ($userf) {
-                return response()->json($userf);
+            if ($user->hasVerifiedEmail()) {
+                $userf = User::find($request->id);
+                if ($userf) {
+                    return response()->json($userf);
+                } else {
+                    return response()->json(['error' => 'User not found.'], 404);
+                }
             } else {
-                return response()->json(['error' => 'User not found.'], 404);
+                return response()->json(['message' => 'Please verify your email address'], 403);
             }
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);
@@ -99,33 +107,45 @@ class UserController extends Controller
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
         if ($user) {
-            if ($request->hasFile('avatar')) {
-                $filename = $request->avatar->getClientOriginalName();
-                $request->avatar->storeAs('images', $filename, 'public');
-                $image = Image::make(public_path('storage/images/'.$filename));
-                $image->fit(300);
-                $image->save();
-                $user->avatar = '/storage/images/'.$filename;
-            }
-            $user->first_name != null ? $user->first_name = $request->first_name : $user->first_name = $user->first_name;
-            $user->last_name != null ? $user->last_name = $request->last_name : $user->last_name = $user->last_name;
-            if ($request->email) {
-                $user_exist = User::where('email', $request->email)->first();
-                if ($request->email != $user->email && $user_exist == null && $user->hasPerm('update-user')) {
-                    $user->email = $request->email;
-                    $user->email_verified_at = null;
-                    $user->update();
-                    $user->sendEmailVerificationNotification();
+            if ($user->hasVerifiedEmail()) {
+                if ($request->hasFile('avatar')) {
+                    //verify file type
+                    $avatar = $request->file('avatar');
+                    $extension = $avatar->getClientOriginalExtension();
+                    if ($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg') {
+                        return response()->json(['error' => 'File type is not allowed.'], 400);
+                    } else {
+                        $filename = $request->avatar->getClientOriginalName();
+                        $request->avatar->storeAs('images', $filename, 'public');
 
-                    return response()->json(['success' => 'Email has been changed. Please verify your new email.'], 200);
+                        $image = Image::make(public_path('storage/images/' . $filename));
+                        $image->fit(300);
+                        $image->save();
+                        $user->avatar = '/storage/images/' . $filename;
+                    }
+                }
+                $user->first_name != null ? $user->first_name = $request->first_name : $user->first_name = $user->first_name;
+                $user->last_name != null ? $user->last_name = $request->last_name : $user->last_name = $user->last_name;
+                if ($request->email) {
+                    $user_exist = User::where('email', $request->email)->first();
+                    if ($request->email != $user->email && $user_exist == null && $user->hasPerm('update-user')) {
+                        $user->email = $request->email;
+                        $user->email_verified_at = null;
+                        $user->update();
+                        $user->sendEmailVerificationNotification();
+
+                        return response()->json(['success' => 'Email has been changed. Please verify your new email.'], 200);
+                    } else {
+                        return response()->json(['error' => 'Email already exist.'], 403);
+                    }
                 } else {
-                    return response()->json(['error' => 'Email already exist.'], 403);
+                    $user->email = $user->email;
+                    $user->update();
+
+                    return response()->json(['success' => 'Profile has been updated.'], 200);
                 }
             } else {
-                $user->email = $user->email;
-                $user->update();
-
-                return response()->json(['success' => 'Profile has been updated.'], 200);
+                return response()->json(['message' => 'Please verify your email address'], 403);
             }
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);
@@ -145,16 +165,21 @@ class UserController extends Controller
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('delete-user')) {
-            $userd = User::find($request->id);
-            if ($userd) {
-                $userd->delete();
+            if ($user->hasVerifiedEmail()) {
 
-                return response()->json(['success' => 'User deleted successfully.']);
+                $userd = User::find($request->id);
+                if ($userd) {
+                    $userd->delete();
+
+                    return response()->json(['success' => 'User deleted successfully.']);
+                } else {
+                    return response()->json(['error' => 'User not found.'], 404);
+                }
+
+                return response()->json(['success' => 'User deleted.']);
             } else {
-                return response()->json(['error' => 'User not found.'], 404);
+                return response()->json(['error' => 'Please verify your email address.'], 403);
             }
-
-            return response()->json(['success' => 'User deleted.']);
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);
         }
@@ -163,7 +188,7 @@ class UserController extends Controller
     public static function verify_token($api_token): User | bool
     {
         $user = User::where('api_token', $api_token)->first();
-        if (! $user) {
+        if (!$user) {
             return false;
         }
 
@@ -177,14 +202,18 @@ class UserController extends Controller
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('update-user')) {
-            $user = User::find($request->UserId);
-            $role = Role::find($request->RoleId);
-            if ($user) {
-                $user->roles()->attach($role);
+            if ($user->hasVerifiedEmail()) {
+                $user = User::find($request->UserId);
+                $role = Role::find($request->RoleId);
+                if ($user) {
+                    $user->roles()->attach($role);
 
-                return response()->json(['success' => 'Role has been added.']);
+                    return response()->json(['success' => 'Role has been added.']);
+                } else {
+                    return response()->json(['error' => 'User not found.'], 404);
+                }
             } else {
-                return response()->json(['error' => 'User not found.'], 404);
+                return response()->json(['message' => 'Please verify your email address'], 403);
             }
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);

@@ -27,16 +27,20 @@ class TicketContentController extends Controller
             //get ticket by id
             $ticket = Ticket::find($request->ticketId);
             if ($ticket) {
-                //verify if the user is assigned to ticket or is owner of the ticket
-                if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id) {
-                    //create ticket content
-                    if (TicketContentController::add_content($request->ticketId, $user->id, $request->content_type, $request->text)) {
-                        return response()->json(['message' => 'Ticket content added'], 200);
+                if ($user->hasVerifiedEmail()) {
+                    //verify if the user is assigned to ticket or is owner of the ticket
+                    if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id) {
+                        //create ticket content
+                        if (TicketContentController::add_content($request->ticketId, $user->id, $request->content_type, $request->text)) {
+                            return response()->json(['message' => 'Ticket content added'], 200);
+                        } else {
+                            return response()->json(['error' => 'Ticket content not added'], 500);
+                        }
                     } else {
-                        return response()->json(['error' => 'Ticket content not added'], 500);
+                        return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
                     }
                 } else {
-                    return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
+                    return response()->json(['error' => 'Verify email adress'], 403);
                 }
             }
         } else {
@@ -57,19 +61,23 @@ class TicketContentController extends Controller
         $user = UserController::verify_token($api_token);
         if ($user) {
             //get ticket by id
-            $ticket = Ticket::find($request->ticketId);
-            if ($ticket) {
-                //verify if the user is assigned to ticket or is owner of the ticket
-                if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id || $user->hasPerm('read-ticket')) {
-                    //get ticket content
-                    $content = Ticket::where('id', $ticket->id)->first()->ticket_content()->get();
+            if ($user->hasVerifiedEmail()) {
+                $ticket = Ticket::find($request->ticketId);
+                if ($ticket) {
+                    //verify if the user is assigned to ticket or is owner of the ticket
+                    if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id || $user->hasPerm('read-ticket')) {
+                        //get ticket content
+                        $content = Ticket::where('id', $ticket->id)->first()->ticket_content()->get();
 
-                    return response()->json($content, 200);
+                        return response()->json($content, 200);
+                    } else {
+                        return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
+                    }
                 } else {
-                    return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
+                    return response()->json(['error' => 'Ticket not found'], 404);
                 }
             } else {
-                return response()->json(['error' => 'Ticket not found'], 404);
+                return response()->json(['message' => 'Please verify your email address'], 403);
             }
         } else {
             return response()->json(['error' => 'Verfiy api token'], 403);
@@ -90,25 +98,29 @@ class TicketContentController extends Controller
         $user = UserController::verify_token($api_token);
         if ($user) {
             //get ticket by id
-            $ticket = Ticket::find($request->ticketId);
-            if ($ticket) {
-                //verify if is owner of the ticket
-                //verify if the ticket content exists
-                $ticket_content = Ticket_Content::where('id', $request->contentId)->where('ticket_id', $ticket->id)->first();
-                if ($ticket_content) {
-                    if ($user->id === Ticket_Content::find($request->contentId)->user_id || $user->hasPerm('delete-ticket')) {
-                        //delete ticket content
-                        if (Ticket_content::where('id', $request->contentId)->where('ticket_id', $request->ticketId)->delete()) {
-                            return response()->json(['message' => 'Ticket content deleted'], 200);
+            if ($user->hasVerifiedEmail()) {
+                $ticket = Ticket::find($request->ticketId);
+                if ($ticket) {
+                    //verify if is owner of the ticket
+                    //verify if the ticket content exists
+                    $ticket_content = Ticket_Content::where('id', $request->contentId)->where('ticket_id', $ticket->id)->first();
+                    if ($ticket_content) {
+                        if ($user->id === Ticket_Content::find($request->contentId)->user_id || $user->hasPerm('delete-ticket')) {
+                            //delete ticket content
+                            if (Ticket_content::where('id', $request->contentId)->where('ticket_id', $request->ticketId)->delete()) {
+                                return response()->json(['message' => 'Ticket content deleted'], 200);
+                            } else {
+                                return response()->json(['error' => 'Ticket content not deleted'], 500);
+                            }
                         } else {
-                            return response()->json(['error' => 'Ticket content not deleted'], 500);
+                            return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
                         }
                     } else {
-                        return response()->json(['error' => 'You are not assigned or owner of the ticket'], 403);
+                        return response()->json(['error' => 'Ticket content not found'], 404);
                     }
-                } else {
-                    return response()->json(['error' => 'Ticket content not found'], 404);
                 }
+            } else {
+                return response()->json(['message' => 'Please verify your email address'], 403);
             }
         } else {
             return response()->json(['error' => 'Verfiy api token'], 403);

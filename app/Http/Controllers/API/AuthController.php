@@ -82,4 +82,15 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'User created successfully', 'api_token' => $user->api_token], 201);
     }
+
+    public function verify_tokenAPI(Request $request)
+    {
+        $user = User::where('api_token', $request->api_token)->first();
+
+        if ($user) {
+            return response()->json(['message' => 'Token verified successfully'], 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+    }
 }
