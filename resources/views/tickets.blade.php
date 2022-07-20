@@ -12,29 +12,29 @@
             <div class="tickets-create">
                 <div class="create-bg">
                     <button name="createRoleButton">+ Create Ticket</button>
-        <input id="search-bar" onkeyup="searchTicket()" style="background: rgb(131, 131, 131)"><i class="fa fa-search"></i></input>
-        <script>
-            function searchTicket() {
-                // Declare variables
-                var input, filter, ul, li, a, i, txtValue;
-                input = document.getElementById('search-bar');
-                filter = input.value.toUpperCase();
-                ul = document.getElementById("ticket-list");
-                li = ul.getElementsByClassName('ticket-item');
+                    <div id="search"><input id="search-bar" onkeyup="searchTickets()" /><i class="fa fa-search"></i>
+                    </div>
+                    <script>
+                        function searchTickets() {
+                            // Declare variables
+                            var input, filter, ul, li, a, i, txtValue;
+                            input = document.getElementById('search-bar');
+                            filter = input.value.toUpperCase();
+                            ul = document.getElementById("ticket-list");
+                            li = ul.getElementsByClassName('ticket-item');
 
-                // Loop through all list items, and hide those who don't match the search query
-                for (i = 0; i < li.length; i++) {
-                    a = li[i].getElementsByTagName("div")[0].getElementsByTagName("div")[0].getElementsByTagName("h1")[0];
-                    console.log(a);
-                    txtValue = a.textContent || a.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
-            }
-        </script>
+                            // Loop through all list items, and hide those who don't match the search query
+                            for (i = 0; i < li.length; i++) {
+                                a = li[i].getElementsByTagName("div")[0].getElementsByTagName("div")[0].getElementsByTagName("h1")[0];
+                                txtValue = a.textContent || a.innerText;
+                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                    li[i].style.display = "";
+                                } else {
+                                    li[i].style.display = "none";
+                                }
+                            }
+                        }
+                    </script>
                 </div>
             </div>
             <div id="createRole" class="modal">
@@ -79,35 +79,6 @@
                     </form>
                 </div>
             </div>
-
-            <script>
-                var modal = document.getElementById("createRole");
-
-                // Get the button that opens the modal
-                var btn = document.getElementById("createRoleButton");
-
-                // Get the <span> element that closes the modal
-                var span = document.getElementsByClassName("close")[0];
-
-                // When the user clicks on the button, open the modal
-                btn.onclick = function() {
-                    modal.style.display = "flex";
-                }
-                @error('*')
-                    modal.style.display = "flex";
-                @enderror
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                    modal.style.display = "none";
-                }
-
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
-            </script>
         @endif
         <div class="ticket-list-wrapper">
             <div class="tickets" id="ticket-list">
@@ -170,9 +141,12 @@
                                                 <li class="role" style="background-color: {{ $role->color }}">
                                                     {{ $role->name }}</li>
                                             @endforeach
-                                            @if ($ticket->assignedUser()->first()->first_name . ' ' . $ticket->assignedUser()->first()->last_name == $tc->user()->first()->first_name . ' ' . $tc->user()->first()->last_name)
-                                                <li class="role" style="background-color: #ffc107;">
-                                                    Assigned</li>
+                                            @if ($ticket->assignedUser()->first())
+                                                @if ($ticket->assignedUser()->first()->first_name . ' ' . $ticket->assignedUser()->first()->last_name ==
+                                                    $tc->user()->first()->first_name . ' ' . $tc->user()->first()->last_name)
+                                                    <li class="role" style="background-color: #ffc107;">
+                                                        Assigned</li>
+                                                @endif
                                             @endif
                                         </ul>
 
@@ -370,6 +344,41 @@
         @if ($ticket->status_id < 4)
             textarea.focus();
         @endif
+
+        const ticketList = document.querySelector('.tickets-wrapper');
+
+        function resizeMobileTicketList() {
+            if (window.matchMedia("(max-width: 1024px)").matches) {
+                ticketList.style.display = 'none';
+            } else {
+                ticketList.style.display = 'block';
+            }
+        }
+
+        window.onresize = resizeMobileTicketList;
+        resizeMobileTicketList();
+    </script>
+
+    <button class="return">
+        <a href="{{ route('tickets.index') }}">
+            <i class="fas fa-arrow-left"></i>
+            <span>Retour</span>
+        </a>
+    </button>
+@else
+    <script>
+        const ticket = document.querySelector('.ticket');
+
+        function resizeMobileTicket() {
+            if (window.matchMedia("(max-width: 1024px)").matches) {
+                ticket.style.display = 'none';
+            } else {
+                ticket.style.display = 'block';
+            }
+        }
+
+        window.onresize = resizeMobileTicket;
+        resizeMobileTicket();
     </script>
 @endisset
 @endsection

@@ -51,6 +51,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                flex-flow: column;
                 background-color: $light;
                 border-bottom: 2px solid $primary-dark;
                 box-shadow: 0 0 100px 10px rgba(0, 0, 0, 0.1);
@@ -60,10 +61,32 @@
                     height: 2em;
                     width: 150px;
                     background-color: $secondary;
-                    
+
                     color: white;
                     font-weight: bold;
                     cursor: pointer;
+                }
+
+                #search {
+                    background-color: $primary;
+                    border-radius: 50px;
+                    margin-top: 5px;
+                    width: 300px;
+                    color: $light;
+
+                    input {
+                        background-color: $primary;
+                        border-radius: 50px;
+                        width: 85%;
+
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+
+                    i {
+                        padding: 2px 5px 2px 2px;
+                    }
                 }
             }
         }
@@ -241,7 +264,8 @@
                         width: 200px;
                         height: 200px;
                         object-fit: cover;
-                        border-radius: 100%;
+                        border-radius: 500px;
+                        max-width: fit-content;
                     }
 
                     h2 {
@@ -558,4 +582,57 @@
             }
         }
     }
+}
+
+@media screen and (max-width: 1024px) {
+
+    .return {
+        position: fixed;
+        top: calc(75px + 1em);
+        left: 1em;
+        z-index: 0;
+        background-color: $primary;
+        color: $light;
+        padding: .5em 1em;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .tickets-container {
+        padding: 75px 0 !important;
+        height: 100vh !important;
+    }
+
+    .tickets-wrapper {
+        width: 100% !important;
+        border-radius: 25px 25px 0 0 !important;
+
+        .ticket-item {
+            height: 100px;
+            font-size: 1em;
+        }
+    }
+
+    .ticket {
+        width: 100% !important;
+        height: calc(100vh - 75px) !important;
+        border-radius: 25px 25px 0 0 !important;
+
+        .ticket-info {
+            flex-direction: column !important;
+
+            .ticket-info-header {
+                align-items: center !important;
+                justify-content: center !important;
+                width: 100% !important;
+            }
+
+            .ticket-info-body {
+                align-items: center !important;
+                justify-content: center !important;
+                width: 100% !important;
+            }
+        }
+    }
+
 }

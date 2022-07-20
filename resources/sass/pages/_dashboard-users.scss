@@ -10,7 +10,31 @@
 
     .dashboard-users-wrapper {
         width: 100%;
+        #search{
+            width: 100%;
+            text-align: center;
+            height: 50px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            div{
+                border: rgba(25, 25, 25, 0.84) solid 2px;
+                border-radius: 50px;
+                background-color: $light;
+                input{
+                    background-color: unset;
+                    border-radius: 50px;
+                    padding: 0 5px;
+                    &:focus{
+                        outline: none;
+                    }
+                }
+            }
 
+        }
         .users-wrapper {
             width: 100%;
             height: calc(100% - 150px);
@@ -74,11 +98,11 @@
                             opacity: 0.5;
                         }
                     }
-                    
+
                     .inactive {
                         cursor: pointer;
                     }
-    
+
                     .active {
                         background-color: $hover-blue;
                     }

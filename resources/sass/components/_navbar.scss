@@ -1,7 +1,3 @@
-@media (max-width: 768px) {
-    //responsive à mettre en !important trop bizarre non j'ai pas raison ?
-}
-
 .navigation-container {
     position: sticky;
     background-color: $primary-dark;
@@ -257,7 +253,7 @@
                 opacity: 1;
             }
 
-            
+
             a {
                 display: flex;
                 justify-content: center;
@@ -298,5 +294,153 @@
 
     100% {
         opacity: 1;
+    }
+}
+
+.mobile-navigation-container {
+    display: none;
+}
+
+.hamburger-menu {
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .navigation-container {
+        display: none;
+    }
+
+    .hamburger-menu {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        left: 1em;
+        top: 1em;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        background-color: $light;
+        border: 5px solid $primary;
+        border-radius: 100%;
+        color: $primary;
+        transition: transform 0.3s ease-in-out;
+
+        &:active {
+            transform: scale(0.9);
+        }
+    }
+
+    .mobile-navigation-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: $primary-dark;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+        flex-direction: column;
+
+        form > button {
+            position: absolute;
+            bottom: 3em;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: $light;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: absolute;
+            top : 3em;
+            cursor: pointer;
+        }
+
+        .avatar-dropdown {
+            color: white;
+            width: 250px;
+            height: 125px;
+            background-color: $primary-dark;
+            border-top: 2px solid $secondary;
+            position: absolute;
+            right: 0;
+            top: 75px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border-radius: 0 0 12px 12px;
+            z-index: 999;
+            text-align: center;
+
+            .avatar-dropdown-header-name {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: $secondary;
+            }
+
+            .avatar-dropdown-header-email {
+                font-size: 1rem;
+                font-weight: 100;
+                color: $light;
+                opacity: 0.5;
+                margin-bottom: 10px;
+            }
+
+            .avatar-dropdown-header-button {
+                width: 100%;
+                height: 30px;
+                background-color: $secondary;
+                border-radius: 0 0 12px 12px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+
+
+                &:hover {
+                    background-color: $primary-dark;
+                    color: $secondary;
+                }
+            }
+        }
+
+        .primary-navbar {
+            height: 50%;
+
+            .links {
+                height: 100%;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                color: $light;
+                font-size: 2em;
+
+                .link, .settings {
+
+                    border-bottom: 5px solid $secondary;
+
+                    i {
+                        color: $secondary;
+                    }
+                }
+            }
+        }
     }
 }
