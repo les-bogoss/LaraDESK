@@ -115,20 +115,30 @@
                     <h1 class="ticket-title">{{ $ticket->title }}</h1>
                     <div class="ticket-info-header-buttons">
                         @if (Auth::user()->hasPerm('delete-ticket'))
-                            <button name="warningButton" class="ticket-info-header-button" data-msg="to delete this ticket"
-                                data-method="DELETE"
-                                data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">DELETE</button>
+                            <x-button color="danger" name="warningButton" data-msg="to delete this ticket"
+                                data-method="DELETE" data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">
+                                DELETE</x-button>
                         @endif
                     </div>
                     <div class="ticket-content">
-                        <form action="{{ route('tickets.createContent', ['ticket' => $ticket]) }}" method="POST">
+                        <form action="{{ route('tickets.createContent', ['ticket' => $ticket]) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
+                            <label for="image" id="image-label">
+                                <div class="button-component btn-primary" style="width: fit-content; margin-bottom: .2em;">
+                                    <i class="fa-solid fa-paperclip"></i> Attach Image</div>
+                            </label>
+                            <input type="file" name="image" id="image" style="display: none;"
+                                onchange="loadFile(event)">
+                            <img src="" id="output" style="height:250px;display: none;">
+                            <button style="display: none;" id="delete-image" type="button"
+                                onclick="deleteImage()">X</button>
                             <textarea placeholder="{{ $ticket->status_id >= 4 ? 'ticket clos' : 'Ecrivez qlq chose ...' }}" type="text"
                                 name="content" @if ($ticket->status_id >= 4) readonly @endif id="input-content"></textarea>
-                                <button id="submit_content_button" type="submit" class="submit-message"
+                            <button id="submit_content_button" type="submit" class="submit-message"
                                 @if ($ticket->status_id >= 4) disabled @endif>submit</button>
                         </form>
-                        <button id="uploadimageButton">upload image</button>
+                        {{-- display all tickets contents --}}
                         @foreach ($ticket->ticket_content->reverse() as $tc)
                             <div class="ticket-content-card">
                                 <div class="ticket-content-card-header">
@@ -154,12 +164,18 @@
                                         <p class="time">{{ $tc->created_at->diffForHumans() }}</p>
                                     </div>
                                     @if (Auth::user()->hasPerm('delete-ticket') || Auth::user()->id == $tc->user_id)
-                                        <button name="warningButton" data-msg="to delete this message" data-method="DELETE"
+                                        <button name="warningButton" data-msg="to delete this message"
+                                            data-method="DELETE"
                                             data-route="{{ route('tickets.deleteContent', ['ticket' => $ticket, 'content' => $tc]) }}"><i
                                                 class="fa-solid fa-trash-can"></i></button>
                                     @endif
                                 </div>
-                                <p>{!! $tc->text !!}</p>
+                                @if ($tc->media != null)
+                                    <img src="{{ $tc->media }}" alt="image in the ticket content">
+                                @endif
+                                @if ($tc->text != null)
+                                    <p>{!! $tc->text !!}</p>
+                                @endif
                             </div>
                         @endforeach
                     </div>
@@ -257,69 +273,34 @@
 </div>
 </div>
 @isset($ticket)
-<div id="warning" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2>Warning :</h2>
+    <div id="warning" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Warning :</h2>
+            </div>
+            <form action="" method="post" id="warning_form">
+                @csrf
+                @method('')
+                <div class="modal-body">
+                    <p>Are you sure you want <span id="warning_message"></span> ?</p>
+                </div>
+                <div class="modal-footer warning-footer">
+                    <button type="submit">Yes</button>
+                    <button type="button" class="close">No</button>
+                </div>
+            </form>
         </div>
-        <form action="" method="post" id="warning_form">
-            @csrf
-            @method('')
-            <div class="modal-body">
-                <p>Are you sure you want <span id="warning_message"></span> ?</p>
-            </div>
-            <div class="modal-footer warning-footer">
-                <button type="submit">Yes</button>
-                <button type="button" class="close">No</button>
-            </div>
-        </form>
     </div>
-</div>
-<div id="uploadimage" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2>Warning :</h2>
-        </div>
-        <form action="" method="post" id="warning_form">
-            @csrf
-            @method('')
-            <div class="modal-body">
-                <form action="{{ route('tickets.uploadImage', ['ticket' => $ticket]) }}" method="post">
-                    @csrf
-                    @method('POST')
-                    <div class="form-group">
-                        <label for="image">Image</label>
-                        <input type="file" name="image" id="image" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="image_description">Text</label>
-                        <textarea name="text" id="text" cols="30" rows="10"
-                            class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Upload</button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer warning-footer">
-                <button type="submit">Yes</button>
-                <button type="button" class="close">No</button>
-            </div>
-        </form>
-    </div>
-</div>
-
     <script>
         var ticket = document.getElementById('ticket-{{ $ticket->id }}');
-        document.getElementsByClassName('tickets-wrapper')[0].scrollTo(0, ticket.offsetTop - 185);
+        document.getElementsByClassName('tickets-wrapper')[0].scrollTo(0, ticket.offsetTop - 140);
 
         var textarea = document.getElementById("input-content");
 
         function submitOnEnter(event) {
             if (event.which === 13 && !event.shiftKey) {
-                if(document.getElementById("submit_content_button").disabled == false){
+                if (document.getElementById("submit_content_button").disabled == false) {
                     document.getElementById("submit_content_button").click();
                     event.preventDefault();
                 }
@@ -351,14 +332,33 @@
 
         window.onresize = resizeMobileTicketList;
         resizeMobileTicketList();
+
+        function loadFile(event) {
+            var output = document.getElementById('output');
+            output.style.display = "inline-block";
+            document.getElementById('image-label').style.display = "none";
+            document.getElementById('delete-image').style.display = "inline-block";
+
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src)
+            }
+        };
+
+        function deleteImage() {
+            document.getElementById('output').style.display = "none";
+            document.getElementById('image-label').style.display = "inline-block";
+            document.getElementById('delete-image').style.display = "none";
+            document.getElementById('image').value = "";
+        }
     </script>
 
-<a href="{{ route('tickets.index') }}">
-    <button class="return">
+    <a href="{{ route('tickets.index') }}">
+        <button class="return">
             <i class="fas fa-arrow-left"></i>
             <span>Retour</span>
-    </button>
-        </a>
+        </button>
+    </a>
 @else
     <script>
         const ticket = document.querySelector('.ticket');
@@ -377,45 +377,46 @@
 @endisset
 <script>
     var modal = document.querySelectorAll('.modal')
-        modal.forEach(element => {
-            var span = element.querySelectorAll('.close');
-            var open_button = document.getElementsByName(element.id + "Button")
+    modal.forEach(element => {
+        console.log(modal)
+        var span = element.querySelectorAll('.close');
+        var open_button = document.getElementsByName(element.id + "Button")
 
-            open_button.forEach(button => {
-                button.addEventListener('click', () => {
-                    element.style.display = "flex";
-                    if (element.id == "warning") {
-                        element.querySelectorAll("#warning_message").forEach(element => {
-                            element.innerHTML = button.dataset.msg;
-                            document.getElementById("warning_form").action = button.dataset
-                                .route;
-                            document.getElementById("warning_form").querySelector(
-                                    "[name=_method]")
-                                .value = button.dataset.method;
-                        });
-                    }
-                });
-
-                span.forEach(bt => {
-                    bt.addEventListener('click', () => {
-                        element.style.display = "none";
+        open_button.forEach(button => {
+            button.addEventListener('click', () => {
+                element.style.display = "flex";
+                if (element.id == "warning") {
+                    element.querySelectorAll("#warning_message").forEach(element => {
+                        element.innerHTML = button.dataset.msg;
+                        document.getElementById("warning_form").action = button.dataset
+                            .route;
+                        document.getElementById("warning_form").querySelector(
+                                "[name=_method]")
+                            .value = button.dataset.method;
                     });
-                });
-
-
-                if (element.id == "createRole") {
-                    @error('*')
-                        modal.style.display = "flex";
-                    @enderror
-                }
-            })
-        })
-        window.onclick = function(event) {
-            modal.forEach(element => {
-                if (event.target == element) {
-                    element.style.display = "none";
                 }
             });
-        }
+
+            span.forEach(bt => {
+                bt.addEventListener('click', () => {
+                    element.style.display = "none";
+                });
+            });
+
+
+            if (element.id == "createRole") {
+                @error('*')
+                    modal.style.display = "flex";
+                @enderror
+            }
+        })
+    })
+    window.onclick = function(event) {
+        modal.forEach(element => {
+            if (event.target == element) {
+                element.style.display = "none";
+            }
+        });
+    }
 </script>
 @endsection

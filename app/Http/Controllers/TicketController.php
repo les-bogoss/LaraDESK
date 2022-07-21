@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\Ticket_content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class TicketController extends Controller
 {
@@ -235,8 +236,16 @@ class TicketController extends Controller
             if (Auth::user()->hasPerm('update-ticket') || Auth::user()->id == $ticket->user_id) {
                 if ($ticket->status_id < 4) {
                     $content = new Ticket_content;
+                    if ($request->hasFile('image')) {
+                        $filename = time() . '.' . $request->image->getClientOriginalExtension();
+                        $request->file('image')->storeAs('images/tickets_contents/', $filename, 'public');
+
+                        $content->media = '/storage/images/tickets_contents/' . $filename;
+                        $content->type = 'image';
+                    } else {
+                        $content->type = 'text';
+                    }
                     $content->text = nl2br(e($request->input('content')));
-                    $content->type = 'text';
                     $content->user_id = Auth::user()->id;
                     $content->ticket_id = $ticket->id;
                     $content->save();
@@ -261,10 +270,10 @@ class TicketController extends Controller
      * Delete a content for the current ticket
      *
      * @param  \App\Models\Ticket_content  $content
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function deleteContent(Request $request, Ticket_content $content): \Illuminate\Http\RedirectResponse
+    public function deleteContent(Ticket $ticket, Ticket_content $content): \Illuminate\Http\RedirectResponse
     {
         if (Auth::user()->hasPerm('delete-ticket') || Auth::user()->id == $content->user_id) {
             $content->delete();
@@ -304,34 +313,4 @@ class TicketController extends Controller
 
         return redirect()->back();
     }
-
-    public function uploadImage(Request $request, Ticket $ticket): \Illuminate\Http\RedirectResponse
-    {
-        if ((Auth::user()->hasPerm('update-ticket') || Auth::user()->id == $ticket->user_id) && $request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/tickets'), $imageName);
-
-            $content = new Ticket_content;
-            $content->media = '/storages/tickets_contents/' . $imageName;
-            $content->type = 'image';
-            $content->user_id = Auth::user()->id;
-            $content->ticket_id = $ticket->id;
-            $content->save();
-
-            $mailData = [
-                'subject' => 'Ticket content update - LaraDESK',
-                'title' => 'New content for the ticket #' . $ticket->id,
-                'email' => Auth::user()->email,
-                'view' => 'emails.ticketUpdate',
-                'body' => '<a href="https://34.140.17.43/tickets/' . $ticket->id . '">Ticket #' . $ticket->id . '</a> has received a new content',
-            ];
-
-            dispatch(new SendEmailJob($mailData));
-
-            return redirect()->back();
-        } else {
-            return redirect()->back();
-        }
-}
 }
