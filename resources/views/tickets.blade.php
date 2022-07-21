@@ -126,9 +126,10 @@
                             @csrf
                             <label for="image" id="image-label">
                                 <div class="button-component btn-primary" style="width: fit-content; margin-bottom: .2em;">
-                                    <i class="fa-solid fa-paperclip"></i> Attach Image</div>
+                                    <i class="fa-solid fa-paperclip"></i> Attach Image
+                                </div>
                             </label>
-                            <input type="file" name="image" id="image" style="display: none;"
+                            <input type="file" name="image" id="image" accept="image/*" style="display: none;"
                                 onchange="loadFile(event)">
                             <img src="" id="output" style="height:250px;display: none;">
                             <button style="display: none;" id="delete-image" type="button"

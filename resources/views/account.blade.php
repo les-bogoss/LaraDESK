@@ -89,7 +89,7 @@
             <div class="roles">
                 <h2>Roles</h2>
                 @foreach ($user->roles as $role)
-                <p class="role">{{ $role->name }}</p>
+                <p class="role" style="background-color: {{ $role->color }}">{{ $role->name }}</p>
                 @endforeach
             </div>
 
