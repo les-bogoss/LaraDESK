@@ -297,25 +297,40 @@
     }
 }
 
-.mobile-navigation-container {
-    display: none;
-}
-
-.hamburger-menu {
+.mobile-navigation-container, mobile-dashboard-navigation, .hamburger-menu, .mobile-header {
     display: none;
 }
 
 @media screen and (max-width: 1024px) {
+
     .navigation-container {
         display: none;
+    }
+
+    .mobile-bg {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        background-color: $primary-dark;
+    }
+
+    .mobile-header {
+        position: absolute;
+        display: block;
+        width: 100vw;
+        height: 75px;
+        background-color: $primary-dark;
     }
 
     .hamburger-menu {
         width: 50px;
         height: 50px;
         position: absolute;
-        left: 1em;
-        top: 1em;
+        top: calc(50% - 25px);
+        left: 12px;
         z-index: 1000;
         display: flex;
         justify-content: center;
@@ -338,7 +353,8 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: $primary-dark;
+        background-color: #2b2d4299;
+        backdrop-filter: blur(10px) brightness(0.5);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -440,6 +456,42 @@
                         color: $secondary;
                     }
                 }
+            }
+        }
+    }
+
+    .mobile-dashboard-navigation {
+        width: 100%;
+        height: 75px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .layout-dashboard-header {
+            width: 75%;
+
+            ul {
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                color: $primary;
+                font-size: 1em;
+                font-weight: bold;
+                cursor: pointer;
+    
+                a {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+    
+                a.active {
+                    color: $secondary;
+                    opacity: 1;
+                }
+    
             }
         }
     }

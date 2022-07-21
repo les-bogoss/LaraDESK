@@ -1,7 +1,14 @@
 .gist {
     background-color: $primary-dark;
+    border-radius: 25px 0 0 0;
+}
 
-    article {
-        border-radius: 30px 0 0 0;
+@media screen and (max-width: 1024px) {
+    .gist {
+        background-color: $primary-dark;
+        border-radius: 25px 25px 0 0;
+        left: 0 !important;
+        width: 100vw !important;
     }
+    
 }

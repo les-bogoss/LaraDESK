@@ -41,7 +41,8 @@
                                 <x-button color="primary" onclick="edit()">EDIT</x-button>
                             @endif
                             @if (Auth::user()->hasPerm('delete-role'))
-                                <x-button color="danger" name="warningButton" data-msg="to delete the role <strong>{{ $role->name }}</strong>" data-method="DELETE"
+                                <x-button color="danger" name="warningButton"
+                                    data-msg="to delete the role <strong>{{ $role->name }}</strong>" data-method="DELETE"
                                     data-route="{{ route('roles.destroy', ['role' => $role]) }}">DELETE</x-button>
                             @endif
                         </div>
@@ -75,14 +76,14 @@
                 <div class="dashboard-role-roles">
                     <h3>Permissions :</h3>
                     @if (Auth::user()->hasPerm('update-role'))
-                        <form class="add-perm-form" action="{{ route('roles.addPermission', ['role' => $role]) }}" method="post">
+                        <form class="add-perm-form" action="{{ route('roles.addPermission', ['role' => $role]) }}"
+                            method="post">
                             @csrf
                             <x-select color="secondary" name="permission_id" id="permission_id">
                                 <option value="">Select a permission</option>
                                 @foreach ($permissions as $permission)
                                     @if (!isset(
-                                        $role->permissions()->get()->where('id', $permission->id)->first()->id,
-                                    ))
+                                        $role->permissions()->get()->where('id', $permission->id)->first()->id))
                                         <option value="{{ $permission->id }}">{{ $permission->name }}</option>
                                     @endif
                                 @endforeach
@@ -94,9 +95,10 @@
                         @foreach ($role->permissions()->get() as $permission)
                             @if (Auth::user()->hasPerm('update-role'))
                                 <button name="warningButton" class="delete-role-button"
-                                data-msg="to delete the permission <strong>{{ $permission->name }}</strong>"
-                                data-method="DELETE"
-                                data-route="{{ route('roles.removePermission', ['role' => $role, 'permission_id' => $permission->id]) }}">{{ $permission->name }} X</button>
+                                    data-msg="to delete the permission <strong>{{ $permission->name }}</strong>"
+                                    data-method="DELETE"
+                                    data-route="{{ route('roles.removePermission', ['role' => $role, 'permission_id' => $permission->id]) }}">{{ $permission->name }}
+                                    X</button>
                             @else
                                 <button class="delete-role-button">{{ $permission->name }}</button>
                             @endif
@@ -113,43 +115,84 @@
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         @if (Auth::user()->hasPerm('read-user'))
-                                            <a href="{{ route('users.show', ['user' => $user]) }}"><x-button color="primary">VIEW</x-button></a>
+                                            <a href="{{ route('users.show', ['user' => $user]) }}">
+                                                <x-button color="primary">VIEW</x-button>
+                                            </a>
                                         @endif
                                         @if (Auth::user()->hasPerm('update-user'))
                                             <x-button color="danger" name="warningButton"
                                                 data-msg="remove the role <strong>{{ $role->name }}</strong> of <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>"
                                                 data-method="DELETE"
-                                                data-route="{{ route('users.removeRole', ['user' => $user]) }}">REMOVE</x-button>
+                                                data-route="{{ route('users.removeRole', ['user' => $user]) }}">REMOVE
+                                            </x-button>
                                         @endif
                                     </td>
                                 </tr>
                             @endforeach
                     </table>
                 </div>
+                <script>
+                    let roles = document.querySelector('.dashboard-roles');
+                    console.log(roles);
+
+                    function resizeMobileRoles() {
+                        if (window.matchMedia("(max-width: 1024px)").matches) {
+                            roles.style.display = 'none';
+                        } else {
+                            roles.style.display = 'block';
+                        }
+                    }
+
+                    window.onresize = resizeMobileRoles;
+                    resizeMobileRoles();
+                </script>
+
+                <a href="{{ route('roles.index') }}">
+                    <button class="return">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Retour</span>
+                    </button>
+                </a>
+            @else
+                <script>
+                    let role = document.querySelector('.dashboard-role');
+                    console.log(role);
+
+                    function resizeMobileRole() {
+                        if (window.matchMedia("(max-width: 1024px)").matches) {
+                            role.style.display = 'none';
+                        } else {
+                            role.style.display = 'block';
+                        }
+                    }
+
+                    window.onresize = resizeMobileRole;
+                    resizeMobileRole();
+                </script>
             @endisset
         </div>
     </div>
     @if (Auth::user()->hasPerm('create-role'))
-    <div id="warning" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Warning :</h2>
+        <div id="warning" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2>Warning :</h2>
+                </div>
+                <form action="" method="post" id="warning_form">
+                    @csrf
+                    @method('')
+                    <div class="modal-body">
+                        <p>Are you sure you want <span id="warning_message"></span> ?</p>
+                    </div>
+                    <div class="modal-footer warning-footer">
+                        <x-button color="secondary-outline" type="submit">Yes</x-button>
+                        <x-button color="danger" type="button" class="close">No</x-button>
+                    </div>
+                </form>
             </div>
-            <form action="" method="post" id="warning_form">
-                @csrf
-                @method('')
-                <div class="modal-body">
-                    <p>Are you sure you want <span id="warning_message"></span> ?</p>
-                </div>
-                <div class="modal-footer warning-footer">
-                    <x-button color="secondary-outline" type="submit">Yes</x-button>
-                    <x-button color="danger" type="button" class="close">No</x-button>
-                </div>
-            </form>
         </div>
-    </div>
-    
+
         <div id="createRole" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -207,13 +250,15 @@
                     button.addEventListener('click', () => {
                         element.style.display = "flex";
                         if (element.id == "warning") {
-                        element.querySelectorAll("#warning_message").forEach(element => {
-                            element.innerHTML = button.dataset.msg;
-                            document.getElementById("warning_form").action = button.dataset.route;
-                            document.getElementById("warning_form").querySelector("[name=_method]")
-                                .value = button.dataset.method;
-                        });
-                    }
+                            element.querySelectorAll("#warning_message").forEach(element => {
+                                element.innerHTML = button.dataset.msg;
+                                document.getElementById("warning_form").action = button.dataset
+                                    .route;
+                                document.getElementById("warning_form").querySelector(
+                                        "[name=_method]")
+                                    .value = button.dataset.method;
+                            });
+                        }
                     });
 
                     span.forEach(bt => {
@@ -221,7 +266,7 @@
                             element.style.display = "none";
                         });
                     });
-                    
+
 
                     if (element.id == "createRole") {
                         @error('*')

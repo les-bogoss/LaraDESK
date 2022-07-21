@@ -19,7 +19,7 @@
 .btn-primary-outline {
     background-color: $light !important;
     color: $secondary !important;
-    padding: calc(.5em - 6px) calc(2em - 6px) !important;
+    padding: calc(.5em - 3px) calc(2em - 3px) !important;
     border: 3px solid $secondary !important;
 }
 
@@ -31,7 +31,7 @@
 .btn-secondary-outline {
     background-color: $light !important;
     color: $primary !important;
-    padding: calc(.5em - 6px) calc(2em - 6px) !important;
+    padding: calc(.5em - 3px) calc(2em - 3px) !important;
     border: 3px solid $primary !important;
 }
 
@@ -43,7 +43,7 @@
 .btn-danger-outline {
     background-color: $light !important;
     color: $danger !important;
-    padding: calc(.5em - 6px) calc(2em - 6px) !important;
+    padding: calc(.5em - 3px) calc(2em - 3px) !important;
     border: 3px solid $danger !important;
 }
 
@@ -55,6 +55,6 @@
 .btn-success-outline {
     background-color: $light !important;
     color: $success;
-    padding: calc(.5em - 6px) calc(2em - 6px);
+    padding: calc(.5em - 3px) calc(2em - 3px);
     border: 3px solid $success !important;
 }

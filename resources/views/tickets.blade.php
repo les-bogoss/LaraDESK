@@ -125,9 +125,10 @@
                             @csrf
                             <textarea placeholder="{{ $ticket->status_id >= 4 ? 'ticket clos' : 'Ecrivez qlq chose ...' }}" type="text"
                                 name="content" @if ($ticket->status_id >= 4) readonly @endif id="input-content"></textarea>
-                            <button id="submit_content_button" type="submit" class="submit-message"
+                                <button id="submit_content_button" type="submit" class="submit-message"
                                 @if ($ticket->status_id >= 4) disabled @endif>submit</button>
                         </form>
+                        <button id="uploadimageButton">upload image</button>
                         @foreach ($ticket->ticket_content->reverse() as $tc)
                             <div class="ticket-content-card">
                                 <div class="ticket-content-card-header">
@@ -256,28 +257,126 @@
 </div>
 </div>
 @isset($ticket)
-    <div id="warning" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Warning :</h2>
-            </div>
-            <form action="" method="post" id="warning_form">
-                @csrf
-                @method('')
-                <div class="modal-body">
-                    <p>Are you sure you want <span id="warning_message"></span> ?</p>
-                </div>
-                <div class="modal-footer warning-footer">
-                    <button type="submit">Yes</button>
-                    <button type="button" class="close">No</button>
-                </div>
-            </form>
+<div id="warning" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Warning :</h2>
         </div>
+        <form action="" method="post" id="warning_form">
+            @csrf
+            @method('')
+            <div class="modal-body">
+                <p>Are you sure you want <span id="warning_message"></span> ?</p>
+            </div>
+            <div class="modal-footer warning-footer">
+                <button type="submit">Yes</button>
+                <button type="button" class="close">No</button>
+            </div>
+        </form>
     </div>
+</div>
+<div id="uploadimage" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Warning :</h2>
+        </div>
+        <form action="" method="post" id="warning_form">
+            @csrf
+            @method('')
+            <div class="modal-body">
+                <form action="{{ route('tickets.uploadImage', ['ticket' => $ticket]) }}" method="post">
+                    @csrf
+                    @method('POST')
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" name="image" id="image" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="image_description">Text</label>
+                        <textarea name="text" id="text" cols="30" rows="10"
+                            class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Upload</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer warning-footer">
+                <button type="submit">Yes</button>
+                <button type="button" class="close">No</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <script>
-        var modal = document.querySelectorAll('.modal')
+        var ticket = document.getElementById('ticket-{{ $ticket->id }}');
+        document.getElementsByClassName('tickets-wrapper')[0].scrollTo(0, ticket.offsetTop - 185);
+
+        var textarea = document.getElementById("input-content");
+
+        function submitOnEnter(event) {
+            if (event.which === 13 && !event.shiftKey) {
+                if(document.getElementById("submit_content_button").disabled == false){
+                    document.getElementById("submit_content_button").click();
+                    event.preventDefault();
+                }
+            }
+        }
+        document.getElementById("submit_content_button").onclick = function() {
+            if (textarea.value.length > 0) {
+                document.getElementById("submit_content_button").disabled = "true";
+                document.getElementById("submit_content_button").innerHTML = "En cours...";
+                document.getElementById("submit_content_button").parentNode.submit();
+            } else {
+                event.preventDefault();
+            }
+        };
+        textarea.addEventListener("keypress", submitOnEnter);
+        @if ($ticket->status_id < 4)
+            textarea.focus();
+        @endif
+
+        const ticketList = document.querySelector('.tickets-wrapper');
+
+        function resizeMobileTicketList() {
+            if (window.matchMedia("(max-width: 1024px)").matches) {
+                ticketList.style.display = 'none';
+            } else {
+                ticketList.style.display = 'block';
+            }
+        }
+
+        window.onresize = resizeMobileTicketList;
+        resizeMobileTicketList();
+    </script>
+
+<a href="{{ route('tickets.index') }}">
+    <button class="return">
+            <i class="fas fa-arrow-left"></i>
+            <span>Retour</span>
+    </button>
+        </a>
+@else
+    <script>
+        const ticket = document.querySelector('.ticket');
+
+        function resizeMobileTicket() {
+            if (window.matchMedia("(max-width: 1024px)").matches) {
+                ticket.style.display = 'none';
+            } else {
+                ticket.style.display = 'block';
+            }
+        }
+
+        window.onresize = resizeMobileTicket;
+        resizeMobileTicket();
+    </script>
+@endisset
+<script>
+    var modal = document.querySelectorAll('.modal')
         modal.forEach(element => {
             var span = element.querySelectorAll('.close');
             var open_button = document.getElementsByName(element.id + "Button")
@@ -318,67 +417,5 @@
                 }
             });
         }
-
-        var ticket = document.getElementById('ticket-{{ $ticket->id }}');
-        document.getElementsByClassName('tickets-wrapper')[0].scrollTo(0, ticket.offsetTop - 185);
-
-        var textarea = document.getElementById("input-content");
-
-        function submitOnEnter(event) {
-            if (event.which === 13 && !event.shiftKey) {
-                event.target.form.submit();
-                event
-                    .preventDefault(); // Prevents the addition of a new line in the text field (not needed in a lot of cases)
-            }
-        }
-        document.getElementById("submit_content_button").onclick = function() {
-            if (textarea.value.length > 0) {
-                document.getElementById("submit_content_button").disabled = "true";
-                document.getElementById("submit_content_button").innerHTML = "En cours...";
-                document.getElementById("submit_content_button").parentNode.submit();
-            } else {
-                event.preventDefault();
-            }
-        };
-        textarea.addEventListener("keypress", submitOnEnter);
-        @if ($ticket->status_id < 4)
-            textarea.focus();
-        @endif
-
-        const ticketList = document.querySelector('.tickets-wrapper');
-
-        function resizeMobileTicketList() {
-            if (window.matchMedia("(max-width: 1024px)").matches) {
-                ticketList.style.display = 'none';
-            } else {
-                ticketList.style.display = 'block';
-            }
-        }
-
-        window.onresize = resizeMobileTicketList;
-        resizeMobileTicketList();
-    </script>
-
-    <button class="return">
-        <a href="{{ route('tickets.index') }}">
-            <i class="fas fa-arrow-left"></i>
-            <span>Retour</span>
-        </a>
-    </button>
-@else
-    <script>
-        const ticket = document.querySelector('.ticket');
-
-        function resizeMobileTicket() {
-            if (window.matchMedia("(max-width: 1024px)").matches) {
-                ticket.style.display = 'none';
-            } else {
-                ticket.style.display = 'block';
-            }
-        }
-
-        window.onresize = resizeMobileTicket;
-        resizeMobileTicket();
-    </script>
-@endisset
+</script>
 @endsection

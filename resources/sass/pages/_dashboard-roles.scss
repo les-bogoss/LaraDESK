@@ -393,3 +393,21 @@
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .dashboard-container {
+        .dashboard-roles {
+        height: calc(100vh - 75px) !important;
+        width: 100vw;
+            background-color: $light;
+            border-radius: 25px 25px 0 0;
+        }
+
+        .dashboard-role {
+        height: calc(100vh - 75px) !important;
+        width: 100vw;
+            background-color: $light;
+            border-radius: 25px 25px 0 0;
+            padding-top: 3em;
+        }
+    }
+}

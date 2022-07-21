@@ -89,12 +89,24 @@
 
 {{-- MOBILE NAVIGATION --}}
 
+<div class="mobile-bg">
+    
+</div>
+
+<div class="mobile-header">
+    
+<div class="mobile-dashboard-navigation">
+    @if (request()->routeIs('data*') || request()->routeIs('users*') || request()->routeIs('roles*'))
+        @include('layouts.dashboard-navigation')
+    @endif
+</div>
 
 <button class="hamburger-menu" onclick="clickHandler()">
     <i class="fa-solid fa-bars"></i>
 </button>
 
 <div class="mobile-navigation-container">
+
 
     <div class="avatar" onclick="switchState();">
         <img src="{{ Auth::user()->avatar }}" alt="">
@@ -111,6 +123,7 @@
     </div>
 
     <div class="primary-navbar">
+
 
         <div class="links">
 
@@ -157,6 +170,8 @@
         <x-button type="submit" color="danger" class="avatar-dropdown-header-button">Logout</x-button>
     </form>
 </div>
+</div>
+
 
 <script defer>
     let isOpen = false;

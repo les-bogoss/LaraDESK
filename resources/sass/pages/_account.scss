@@ -216,3 +216,14 @@
         }
     }
 }
+
+@media screen and (max-width : 1024px) {
+    .account-bg {
+        left: 0;
+        width: 100vw;
+
+        .account-container {
+            border-radius: 25px 25px 0 0;
+        }
+    }
+}

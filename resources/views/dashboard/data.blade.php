@@ -13,8 +13,9 @@
         google.charts.setOnLoadCallback(drawChartOpenCloseTickets);
 
         var options = {
-            width: 600,
-            height: 300,
+                width: '100%',
+                height: 300,
+                responsive: true,
             pieHole: 0.8,
             pieSliceText: 'none',
             legend: 'labeled',
@@ -81,8 +82,9 @@
             var options = {
                 title: 'Tickets opened and closed per day',
                 colors: ['#FFDD4A', '#7E38F3', '#C9E8FC', '#3DBD00', '#C5D0FA', '#F8D5C4'],
-                width: 600,
+                width: '100%',
                 height: 300,
+                responsive: true,
                 pointsVisible: true,
                 backgroundColor: {
                     fill: 'transparent'
@@ -120,8 +122,9 @@
 
             var options = {
                 title: "Pourcentage of satisfaction",
-                width: 600,
+                width: '100%',
                 height: 300,
+                responsive: true,
                 bar: {
                     groupWidth: "95%"
                 },
@@ -131,8 +134,7 @@
                 backgroundColor: {
                     fill: 'transparent'
                 },
-                vAxis: { 
-              title: "Percentage Uptime", 
+                vAxis: {  
               viewWindowMode:'explicit',
               viewWindow:{
                 max:100,
@@ -141,8 +143,16 @@
             }
             };
             var chart = new google.visualization.ColumnChart(document.getElementById("ChartSatisfaction"));
-            chart.draw(view, options);
+            chart.draw(view, options)
+        
         }
+
+        window.onresize = function () {
+            drawChartCategories();
+            drawChartStatus();
+            drawChartOpenCloseTickets();
+            drawChartSatisfaction();
+        };
     </script>
     <div class="dashboard-data-container">
         <div class="dashboard-title">
