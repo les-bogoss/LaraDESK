@@ -29,7 +29,7 @@ class TicketContentController extends Controller
             if ($ticket) {
                 if ($user->hasVerifiedEmail()) {
                     //verify if the user is assigned to ticket or is owner of the ticket
-                    if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id) {
+                    if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id || $user->hasPerm('update-ticket')) {
                         //create ticket content
                         if (TicketContentController::add_content($request->ticketId, $user->id, $request->content_type, $request->text)) {
                             return response()->json(['message' => 'Ticket content added'], 200);
@@ -71,6 +71,7 @@ class TicketContentController extends Controller
                         //get first name and last name of user and link to user profile
 
                         foreach ($content as $key => $value) {
+
                             $user = Ticket_content::where('ticket_id', $ticket->id)
                                 ->where('id', $content[$key]->id)->first()->User()->first();
 

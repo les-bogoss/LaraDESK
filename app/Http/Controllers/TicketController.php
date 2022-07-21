@@ -176,7 +176,7 @@ class TicketController extends Controller
         return redirect()->back();
     }
 
-    /** 
+    /**
      * Edit the rating of the current ticket
      *
      * @param  \Illuminate\Http\Request  $request
@@ -185,8 +185,10 @@ class TicketController extends Controller
      */
     public function editRating(Request $request, Ticket $ticket): \Illuminate\Http\RedirectResponse
     {
-        $ticket->rating = $request->input('rating');
-        $ticket->save();
+        if (Auth::user()->id == $ticket->user_id) {
+            $ticket->rating = $request->input('rating');
+            $ticket->save();
+        }
 
         return redirect()->back();
     }
@@ -302,4 +304,34 @@ class TicketController extends Controller
 
         return redirect()->back();
     }
+
+    public function uploadImage(Request $request, Ticket $ticket): \Illuminate\Http\RedirectResponse
+    {
+        if ((Auth::user()->hasPerm('update-ticket') || Auth::user()->id == $ticket->user_id) && $request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/tickets'), $imageName);
+
+            $content = new Ticket_content;
+            $content->media = '/storages/tickets_contents/' . $imageName;
+            $content->type = 'image';
+            $content->user_id = Auth::user()->id;
+            $content->ticket_id = $ticket->id;
+            $content->save();
+
+            $mailData = [
+                'subject' => 'Ticket content update - LaraDESK',
+                'title' => 'New content for the ticket #' . $ticket->id,
+                'email' => Auth::user()->email,
+                'view' => 'emails.ticketUpdate',
+                'body' => '<a href="https://34.140.17.43/tickets/' . $ticket->id . '">Ticket #' . $ticket->id . '</a> has received a new content',
+            ];
+
+            dispatch(new SendEmailJob($mailData));
+
+            return redirect()->back();
+        } else {
+            return redirect()->back();
+        }
+}
 }

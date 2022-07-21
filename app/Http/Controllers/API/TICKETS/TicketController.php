@@ -164,7 +164,7 @@ class TicketController extends Controller
                 if ($ticket) {
                     //verify if user is assigned to ticket or is admin
                     if ($user->id === $ticket->assignedUser || $user->hasPerm('update-ticket')) {
-                        if (Ticket::update_header($request->id, $request->title, $request->category_id, $request->rating, $request->category, $request->status)) {
+                        if (Ticket::update_header($request->id, $request->title, $request->priority, $request->rating, $request->category_id, $request->status_id)) {
                             return response()->json(['message' => 'Ticket updated'], 200);
                         } else {
                             return response()->json(['error' => 'Ticket not updated'], 500);
