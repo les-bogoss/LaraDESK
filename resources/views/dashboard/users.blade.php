@@ -31,8 +31,8 @@
                 </script>
                 <div class="users-wrapper" id="users-list">
                     @foreach ($users as $u)
-                        <div class="user-item" onclick="window.location.href = '{{ route('users.show', ['user' => $u]) }}'"
-                            class="{{ isset($user) && $u == $user ? 'active' : 'inactive' }}"
+                        <div onclick="window.location.href = '{{ route('users.show', ['user' => $u]) }}'"
+                            class="user-item {{ isset($user) && $u == $user ? 'active' : 'inactive' }}"
                             id="user-{{ $u->id }}">
                             <div class="user-details"><img src="{{ $u->avatar }}"
                                     alt="{{ $u->first_name }} {{ $u->last_name }} avatar" width="50px">

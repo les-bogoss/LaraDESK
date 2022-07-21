@@ -18,7 +18,7 @@
 
     .logo {
         position: absolute;
-        width: 75px;
+        width: 50px;
         left: 0;
         top: 0;
         display: flex;
@@ -27,12 +27,12 @@
     }
 
     .layout-dashboard-header {
-        width: calc(100% - 75px);
+        width: calc(100% - 50px);
         height: 40px;
         background-color: $primary-dark;
         position: absolute;
         right: 0;
-        top: 75px;
+        top: 50px;
         z-index: -1;
 
         ul {
@@ -77,7 +77,7 @@
 
     .layout-header {
         width: 100%;
-        height: 75px;
+        height: 50px;
         background-color: $primary-dark;
         position: absolute;
         right: 0;
@@ -86,36 +86,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
-        .searchbar {
-            width: 35%;
-            height: 25px;
-            background-color: $primary;
-            border-radius: 12px;
-            display: flex;
-
-            .icon {
-                width: 50px;
-                height: 100%;
-                border-right: 5px solid $primary-dark ;
-                text-align: center;
-            }
-
-            input {
-                width: calc(100% - 50px);
-                height: 100%;
-                border: none;
-                background-color: transparent;
-                border-radius: 0px 12px 12px 0;
-                color: $light;
-
-                &::placeholder {
-                    color: $light;
-                    opacity: 0.3;
-                    font-style: italic;
-                }
-            }
-        }
 
         .avatar {
             width: 35px;
@@ -187,11 +157,11 @@
 
     .primary-navbar {
         background-color: $primary-dark;
-        height: calc(100vh - 75px);
-        width: 75px;
+        height: calc(100vh - 50px);
+        width: 50px;
         position: absolute;
         left: 0;
-        top: 75px;
+        top: 50px;
         z-index: 1;
 
 
@@ -217,7 +187,7 @@
                 i {
                     color: $secondary;
                     opacity: 0.3;
-                    font-size: 1.3em;
+                    font-size: 1em;
                 }
 
                 i.active {
@@ -321,15 +291,15 @@
         position: absolute;
         display: block;
         width: 100vw;
-        height: 75px;
+        height: 50px;
         background-color: $primary-dark;
     }
 
     .hamburger-menu {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         position: absolute;
-        top: calc(50% - 25px);
+        top: calc(50% - 20px);
         left: 12px;
         z-index: 1000;
         display: flex;
@@ -390,7 +360,7 @@
             border-top: 2px solid $secondary;
             position: absolute;
             right: 0;
-            top: 75px;
+            top: 50px;
             display: none;
             justify-content: center;
             align-items: center;
@@ -462,7 +432,7 @@
 
     .mobile-dashboard-navigation {
         width: 100%;
-        height: 75px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -1,9 +1,9 @@
 .dashboard-data-container {
     // width: 90%;
-    height: calc(100vh - 115px);
+    height: calc(100vh - 90px);
     position: absolute;
-    top: 115px;
-    left: 75px;
+    top: 90px;
+    left: 50px;
     overflow: scroll;
     overflow-x: hidden;
     background-color: $light;
@@ -14,7 +14,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 3em;
+        margin-top: 2em;
 
         .dashboard-total {
             width: 300px;
@@ -56,9 +56,9 @@
 @media screen and (max-width: 1024px) {
     .dashboard-data-container {
         width: 100%;
-        height: calc(100vh - 75px);
+        height: calc(100vh - 50px);
         position: absolute;
-        top: 75px;
+        top: 50px;
         left: 0;
         overflow: scroll;
         overflow-x: hidden;

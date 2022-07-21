@@ -1,6 +1,10 @@
 .gist {
     background-color: $primary-dark;
     border-radius: 25px 0 0 0;
+    top: 50px !important;
+    left: 50px !important;
+    height: calc(100vh - 50px) !important;
+    width: calc(100vw - 50px) !important;
 }
 
 @media screen and (max-width: 1024px) {

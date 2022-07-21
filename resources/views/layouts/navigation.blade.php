@@ -2,10 +2,6 @@
     <div class="content-bg"></div>
 
     <div class="layout-header">
-        <div class="searchbar">
-            <div class="icon">🔎</div>
-            <input type="text" placeholder="Search for a ticket, a user or something else !">
-        </div>
 
         <div class="avatar" onclick="switchState();">
             <img src="{{ Auth::user()->avatar }}" alt="">
