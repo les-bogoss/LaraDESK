@@ -126,7 +126,7 @@
                             enctype="multipart/form-data">
                             @csrf
                             <label for="image" id="image-label">
-                                <div class="button-component btn-primary" style="width: fit-content; margin-bottom: .2em;">
+                                <div class="button-component btn-primary" style="width: fit-content; margin-bottom: .2em; display: inline-block;">
                                     <i class="fa-solid fa-paperclip"></i> Attach Image
                                 </div>
                             </label>
@@ -216,7 +216,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Warning :</h2>
+                <h2>Tickets info :</h2>
             </div>
             <div class="ticket-info-body">
                 <div class="ticket-info-section">

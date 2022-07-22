@@ -350,6 +350,13 @@
             align-items: center;
             margin: 0 0 5px 0;
 
+            img {
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                border-radius: 999px;
+            }
+
             h2 {
                 font-size: 1.5em;
                 font-weight: bold;
@@ -359,15 +366,6 @@
                 font-size: 1.2em;
                 font-weight: 400;
                 color: $primary-dark;
-            }
-
-            .user-info {
-                img {
-                    width: 100px;
-                    height: 100px;
-                    object-fit: cover;
-                    border-radius: 999px;
-                }
             }
         }
 

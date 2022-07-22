@@ -1014,6 +1014,13 @@
   align-items: center;
   margin: 0 0 5px 0;
 }
+.modal .ticket-info-body .ticket-info-section img {
+  width: 100px;
+  height: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 999px;
+}
 .modal .ticket-info-body .ticket-info-section h2 {
   font-size: 1.5em;
   font-weight: bold;
@@ -1022,13 +1029,6 @@
   font-size: 1.2em;
   font-weight: 400;
   color: #2b2d42;
-}
-.modal .ticket-info-body .ticket-info-section .user-info img {
-  width: 100px;
-  height: 100px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  border-radius: 999px;
 }
 
 @-webkit-keyframes animatetop {
