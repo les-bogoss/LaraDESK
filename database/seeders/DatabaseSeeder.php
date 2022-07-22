@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,7 +24,9 @@ class DatabaseSeeder extends Seeder
 
         //if the current env is not production, seed the database with fake data
         if (env('APP_ENV') !== 'production') {
-            User::factory()->count(5)->create();
+            User::factory()->count(5)->create()->each(function ($user) {
+                $user->roles()->attach(Role::all()->random(1));
+            });
             Ticket::factory()->count(50)->create();
         }
     }
