@@ -23,18 +23,20 @@ class AuthController extends Controller
     {
         $user = User::where('email', request('email'))->first();
         if ($user) {
-            if (Hash::check(request('password'), $user->password)) {
-                $user->save();
+            if ($user->hasRole('Administrator') || $user->hasRole('Technician')) {
+                if (Hash::check(request('password'), $user->password)) {
+                    $user->save();
 
-                return response()->json(['api_token' => $user->api_token], 200);
+                    return response()->json(['api_token' => $user->api_token], 200);
+                } else {
+                    return response()->json(['error' => 'Verfiy password'], 403);
+                }
             } else {
-                return response()->json(['error' => 'Verfiy password'], 403);
+                return response()->json(['error' => 'No sufficient roles'], 403);
             }
         } else {
             return response()->json(['error' => 'Verfiy email'], 403);
         }
-
-        return ['api_token' => $user->api_token];
     }
 
     /**
