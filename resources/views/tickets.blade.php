@@ -259,14 +259,13 @@
                     <form action="{{ route('tickets.editRating', ['ticket' => $ticket]) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <select name="rating"
-                            class="rating @isset($ticket->rating) {{ $priorityColor[$ticket->rating] }} @endisset"
+                        <x-select color="secondary" name="rating"
                             id="ticket-rating-select" onchange="this.form.submit();">
                             <option value="1" {{ $ticket->rating == '1' ? 'selected' : '' }}>1 ⭐️</option>
                             <option value="2" {{ $ticket->rating == '2' ? 'selected' : '' }}>2 ⭐️</option>
                             <option value="3" {{ $ticket->rating == '3' ? 'selected' : '' }}>3 ⭐️</option>
 
-                        </select>
+                        </x-select>
                     </form>
                 </div>
                 <div class="ticket-info-section">
