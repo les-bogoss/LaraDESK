@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use App\Models\Ticket_content;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class TicketContentController extends Controller
 {
@@ -31,8 +33,12 @@ class TicketContentController extends Controller
                     //verify if the user is assigned to ticket or is owner of the ticket
                     if ($user->id === $ticket->assignedUser || $user->id === $ticket->user_id || $user->hasPerm('update-ticket')) {
                         //create ticket content
-                        if (TicketContentController::add_content($request->ticketId, $user->id, $request->content_type, $request->text)) {
-                            return response()->json(['message' => 'Ticket content added'], 200);
+                        if ($request->text) {
+                            if (TicketContentController::add_content($request->ticketId, $user->id, $request->content_type, $request->text, $request->file)) {
+                                return response()->json(['message' => 'Ticket content added'], 200);
+                            } else {
+                                return response()->json(['error' => 'Ticket content not added'], 500);
+                            }
                         } else {
                             return response()->json(['error' => 'Ticket content not added'], 500);
                         }
@@ -138,16 +144,29 @@ class TicketContentController extends Controller
     }
 
     // add content where ticket is already created
-    public static function add_content($ticket_id, $user_id, $content_type, $text): bool
+    public static function add_content($ticket_id, $user_id, $content_type, $text, $file): bool
     {
         $ticket_content = new Ticket_content();
         $ticket_content->ticket_id = $ticket_id;
-        if ($content_type && $text) {
+        if ($content_type && $text || $file) {
             $ticket_content->type = $content_type;
-            $ticket_content->text = $text;
-            $ticket_content->user_id = $user_id;
-            $ticket_content->save();
 
+            $ticket_content->user_id = $user_id;
+            if ($file) {
+                //decode base 64 image
+                $image = base64_decode($file);
+                //create image name
+                $image_name = time() . '_' . $user_id . '_' . $ticket_id . '_' . $content_type . '_.jpg';
+                //create image path
+                $image_path =  '/images/tickets_contents/' . $image_name;
+
+                //save image
+                Storage::disk('public')->put($image_path, $image);
+                $ticket_content->media = "/storage" . $image_path;
+            }
+            $ticket_content->text = $text;
+
+            $ticket_content->save();
             return true;
         } else {
             return false;

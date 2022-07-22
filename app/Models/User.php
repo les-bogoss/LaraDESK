@@ -41,6 +41,32 @@ class User extends Authenticatable implements MustVerifyEmail
         return false;
     }
 
+    public function hasRole($role): bool
+    {
+        // foreach role check if it contains the role
+
+        if ($this->roles()->get()->contains('name', $role)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function permissions()
+    {
+        $permissions = [];
+        // foreach role check if it contains the permission
+        foreach ($this->roles()->get() as $role) {
+            foreach ($role->permissions()->get() as $permission) {
+                $permissions[] = $permission->name;
+            }
+        }
+        return $permissions;
+    }
+
+
+
+
     /**
      * The attributes that are mass assignable.
      *

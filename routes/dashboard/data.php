@@ -15,3 +15,4 @@ Route::get('/dashboard', function () {
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard/data', [DashboardDataController::class, 'index'])->middleware(['auth', 'verified'])->middleware(['auth', 'perm:read-data'])->name('data.index');
+Route::get('/dashboard/data/extract', [DashboardDataController::class, 'extract'])->middleware(['auth', 'verified'])->middleware(['auth', 'perm:read-data'])->name('data.extract');
