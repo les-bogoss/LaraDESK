@@ -69,7 +69,7 @@
                     <div class="account-profile-avatar">
                         <img src="{{ Auth::user()->avatar }}" alt="">
                     </div>
-                    <button onclick="edit()" class="account-edit">EDIT</button>
+                    <x-button onclick="edit()" color="primary" class="edit-picture">EDIT</x-button>
                 </div>
                 <div class="details">
                     <p>

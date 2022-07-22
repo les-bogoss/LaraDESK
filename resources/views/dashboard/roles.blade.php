@@ -10,21 +10,15 @@
                     <x-button name="createRoleButton" color="primary">Create Role</x-button>
                 </div>
             @endif
-            <table class="dashboard-roles-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($roles as $r)
-                        <tr onclick="window.location.href = '{{ route('roles.show', ['role' => $r]) }}'"
-                            class="{{ isset($role) && $r == $role ? 'active' : 'inactive' }}">
-                            <td>{{ strtoupper($r->name) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="roles-wrapper" id="roles-list">
+                @foreach ($roles as $r)
+                    <div onclick="window.location.href = '{{ route('roles.show', ['role' => $r]) }}'"
+                        class="role-item {{ isset($role) && $r == $role ? 'active' : 'inactive' }}"
+                        id="role-{{ $r->id }}">
+                        <div class="role-item-name">{{ $r->name }}</div>
+                    </div>
+                @endforeach
+            </div>
         </div>
         <div class="dashboard-role">
             @isset($role)
@@ -123,7 +117,7 @@
                                             <x-button color="danger" name="warningButton"
                                                 data-msg="remove the role <strong>{{ $role->name }}</strong> of <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>"
                                                 data-method="DELETE"
-                                                data-route="{{ route('users.removeRole', ['user' => $user]) }}">REMOVE
+                                                data-route="{{ route('users.removeRole', ['user' => $user, 'role_id' => $role]) }}">REMOVE
                                             </x-button>
                                         @endif
                                     </td>
@@ -234,7 +228,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit">CREATE</button>
+                        <x-button color="primary" type="submit">CREATE</x-button>
                     </div>
                 </form>
             </div>

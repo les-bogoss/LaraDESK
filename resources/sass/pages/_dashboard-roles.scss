@@ -5,11 +5,10 @@
     margin: 0 0 0 50px;
 
     .dashboard-roles {
-        width: 35%;
+        width: 25%;
         height: calc(100vh - 90px);
-        border-right: 2px solid $secondary;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         overflow: scroll;
+        border-right: 2px solid $primary;
         overflow-x: hidden;
 
         .dashboard-roles-create {
@@ -18,41 +17,48 @@
             padding: 20px 0;
         }
 
-        .dashboard-roles-table {
+        .roles-wrapper {
             width: 100%;
-            overflow-y: auto;
+            height: calc(100% - 150px);
+            overflow: hidden;
+            padding-left: 1em;
+            padding-right: 1em;
 
-            thead {
-                border-bottom: 1px solid $primary-dark;
+            .role-item {
+                transition: background-color 0.2s ease-in-out;
+                width: 100%;
+                height: 50px;
+                margin-bottom: 1em;
+                cursor: pointer;
+                border-radius: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+                background-color: $light;
+
+                &:hover {
+                    background-color: $hover-blue;
+                }
+
+                .role-item-name {
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
             }
 
-            tbody {
-                tr {
-                    border-bottom: 2px solid $primary-dark;
+            .inactive {
+                cursor: pointer;
+            }
 
-                    td {
-                        padding: 20px 10px;
-                        text-align: center;
-
-                        img {
-                            border-radius: 50%;
-                        }
-                    }
-                }
-
-                .inactive {
-                    cursor: pointer;
-                }
-
-                .active {
-                    background-color: rgb(205, 205, 205);
-                }
+            .active {
+                background-color: $hover-blue;
             }
         }
     }
 
     .dashboard-role {
-        width: 65%;
+        width: 75%;
         height: calc(100vh - 90px);
         overflow-y: auto;
 
@@ -142,7 +148,7 @@
                                 color: $primary-dark;
                                 font-variant-position: sub;
                             }
-        
+
                             &[type="color"] {
                                 width: 50px;
                                 height: 20px;
@@ -171,17 +177,14 @@
                 text-decoration: underline;
             }
 
-            select {
-                border-radius: 10px;
-                padding: 5px 30px 5px 12px;
-            }
-
             .add-perm-form {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                justify-content: space-between;
-                width: 320px;
+
+                button {
+                    margin: 0 0 0 10px;
+                }
             }
 
             .dashboard-role-roles-have {
@@ -360,7 +363,8 @@
         border: 1px solid #888;
         width: 30%;
         min-width: 400px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);
         animation-name: animatetop;
         animation-duration: 0.4s;
         border-radius: 20px;
@@ -384,27 +388,27 @@
 @keyframes animatetop {
     from {
         top: -300px;
-        opacity: 0
+        opacity: 0;
     }
 
     to {
         top: 0;
-        opacity: 1
+        opacity: 1;
     }
 }
 
 @media screen and (max-width: 1024px) {
     .dashboard-container {
         .dashboard-roles {
-        height: calc(100vh - 75px) !important;
-        width: 100vw;
+            height: calc(100vh - 75px) !important;
+            width: 100vw;
             background-color: $light;
             border-radius: 25px 25px 0 0;
         }
 
         .dashboard-role {
-        height: calc(100vh - 75px) !important;
-        width: 100vw;
+            height: calc(100vh - 75px) !important;
+            width: 100vw;
             background-color: $light;
             border-radius: 25px 25px 0 0;
             padding-top: 3em;

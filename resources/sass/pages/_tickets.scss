@@ -4,8 +4,7 @@
     padding: 50px 0 0 50px;
     background-color: $primary-dark;
 
-    a,
-    button {
+    a {
         transition: all 0.1s ease-in-out;
 
         &:hover {
@@ -29,16 +28,16 @@
     .tickets-wrapper {
         width: 25%;
         height: calc(100vh - 50px);
-        border-right: 2px solid $secondary;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         overflow-x: hidden;
         background-color: $light;
+        border-right: 2px solid $primary;
 
 
         .tickets-create {
             width: 100%;
             text-align: center;
-            height: 75px;
+            height: 100px;
             position: sticky;
             top: 0;
             z-index: 1;
@@ -53,19 +52,8 @@
                 justify-content: center;
                 flex-flow: column;
                 background-color: $light;
-                border-bottom: 2px solid $primary-dark;
+                border-bottom: 2px solid $primary;
                 box-shadow: 0 0 100px 10px rgba(0, 0, 0, 0.1);
-
-                button {
-                    border-radius: 50px;
-                    height: 2em;
-                    width: 150px;
-                    background-color: $secondary;
-
-                    color: white;
-                    font-weight: bold;
-                    cursor: pointer;
-                }
 
                 #search {
                     background-color: $primary;
@@ -198,7 +186,7 @@
                 flex-flow: column nowrap;
                 align-items: flex-start;
                 padding: 20px;
-                width: 80%;
+                width: 100%;
 
                 #ticket-info-border {
                     border-bottom: 120px solid #0004ff;
@@ -218,6 +206,7 @@
                 .ticket-title {
                     font-size: 1.5rem;
                     font-weight: bold;
+                    word-break: break-word;
                 }
 
                 .ticket-info-header-buttons {
@@ -237,126 +226,7 @@
                     }
                 }
             }
-
-            .ticket-info-body {
-                display: flex;
-                flex-flow: column nowrap;
-                align-items: flex-start;
-                padding: 20px;
-                width: 20%;
-
-
-                padding: 0 0 0 0;
-
-                .ticket-info-section {
-                    display: flex;
-                    flex-flow: column nowrap;
-                    align-items: flex-start;
-                    width: 100%;
-                    padding: 10px 0;
-
-                    .avatar {
-                        width: 200px;
-                        height: 200px;
-                        object-fit: cover;
-                        border-radius: 500px;
-                        max-width: fit-content;
-                    }
-
-                    h2 {
-                        font-size: 1.5rem;
-                        font-weight: bold;
-                    }
-                }
-
-                #ticket-status-select {
-                    border-radius: 7px;
-                    padding: 5px 10px;
-                    border: none;
-                    cursor: pointer;
-                }
-
-                .ticket-status-open {
-                    background-color: #00ff00;
-                    color: white;
-                }
-
-                .ticket-status-assigned {
-                    background-color: #ff0000;
-                    color: white;
-                }
-
-                .ticket-status-waiting {
-                    background-color: #0000ff;
-                    color: white;
-                }
-
-                .ticket-status-closed {
-                    background-color: #ff0000;
-                    color: white;
-                }
-
-                .ticket-status-solved {
-                    background-color: #ff0000;
-                    color: white;
-                }
-
-                .ticket-category {
-                    border-radius: 7px;
-                    padding: 5px 10px;
-                    border: none;
-                }
-
-                .ticket-category-bug {
-                    background-color: #ff0000;
-                    color: white;
-                }
-
-                .ticket-category-feature {
-                    background-color: #00ff00;
-                    color: white;
-                }
-
-                .ticket-category-question {
-                    background-color: #0000ff;
-                    color: white;
-                }
-
-                .ticket-priority {
-                    border-radius: 7px;
-                    padding: 5px 40px 5px 10px;
-                    border: none;
-                    cursor: pointer;
-                }
-
-                .rating {
-                    border-radius: 7px;
-                    padding: 5px 40px 5px 10px;
-                    border: none;
-                    cursor: pointer;
-                }
-
-                .ticket-priority-low {
-                    background-color: #00ff00;
-                    color: white;
-                }
-
-                .ticket-priority-medium {
-                    background-color: orange;
-                    color: white;
-                }
-
-                .ticket-priority-high {
-                    background-color: #ff0000;
-                    color: white;
-                }
-
-
-
-            }
         }
-
-
     }
 }
 
@@ -443,7 +313,7 @@
         padding: 0;
         border: 1px solid #888;
         width: 30%;
-        min-width: 400px;
+        min-width: 250px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         animation-name: animatetop;
         animation-duration: 0.4s;
@@ -462,6 +332,45 @@
         color: black;
         text-decoration: none;
         cursor: pointer;
+    }
+
+    .ticket-info-body {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        .ticket-info-section {
+            width: 100%;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0 5px 0;
+
+            h2 {
+                font-size: 1.5em;
+                font-weight: bold;
+            }
+
+            p {
+                font-size: 1.2em;
+                font-weight: 400;
+                color: $primary-dark;
+            }
+
+            .user-info {
+                img {
+                    width: 100px;
+                    height: 100px;
+                    object-fit: cover;
+                    border-radius: 999px;
+                }
+            }
+        }
+
     }
 }
 

@@ -25,8 +25,8 @@
         <p class="welcome-text">LaraDESK is a simple, easy to use, and powerful tool for managing your Laravel
             application.</p>
         <div class="welcome-buttons">
-            <a href="{{ route('register') }}" id="welcome-button-register">register</a>
-            <a href="{{ route('login') }}" id="welcome-button-login">login</a>
+            <a href="{{ route('register') }}"><x-button color="dark" style="margin-right: .5em">Register</x-button></a>
+            <a href="{{ route('login') }}"><x-button color="dark-outline" style="margin-left: .5em">Login</x-button></a>
         </div>
     </div>
 </body>

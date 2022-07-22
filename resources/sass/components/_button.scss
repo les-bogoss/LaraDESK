@@ -6,8 +6,19 @@
     font-weight: 600;
     cursor: pointer;
 
-    &:hover {
+    i {
+        margin-right: .5em;
+    }
+
+
+
+    &:hover:not(:disabled) {
         transform: scale(1.05);
+    }
+
+    &:disabled, &[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 }
 
@@ -33,6 +44,18 @@
     color: $primary !important;
     padding: calc(.5em - 3px) calc(2em - 3px) !important;
     border: 3px solid $primary !important;
+}
+
+.btn-dark {
+    background-color: $primary-dark !important;
+    color: $light !important;
+}
+
+.btn-dark-outline {
+    background-color: $light !important;
+    color: $primary-dark !important;
+    padding: calc(.5em - 3px) calc(2em - 3px) !important;
+    border: 3px solid $primary-dark !important;
 }
 
 .btn-danger {

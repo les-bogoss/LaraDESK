@@ -58,13 +58,13 @@
                         </p>
                         <div class="dashboard-user-info-settings">
                             @if (Auth::user()->hasPerm('update-user'))
-                                <button onclick="edit()" class="dashboard-user-info-settings-edit">EDIT</button>
+                                <x-button color="primary" onclick="edit()" class="dashboard-user-info-settings-edit">EDIT</x-button>
                             @endif
                             @if (Auth::user()->hasPerm('delete-user'))
-                                <button name="warningButton" class="delete-role-button"
+                                <x-button color="danger" name="warningButton" class="delete-role-button"
                                     data-msg="to delete the user <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>"
                                     data-method="DELETE"
-                                    data-route="{{ route('users.destroy', ['user' => $user]) }}">DELETE</button>
+                                    data-route="{{ route('users.destroy', ['user' => $user]) }}">DELETE</x-button>
                             @endif
                         </div>
                     </div>
@@ -85,8 +85,8 @@
                             </div>
                             <input type="text" name="email" value="{{ $user->email }}" placeholder="Email">
                             <div class="dashboard-user-info-settings">
-                                <button type="submit">SAVE</button>
-                                <button type="button" onclick="cancel()">CANCEL</button>
+                                <x-button color="primary" type="submit">SAVE</x-button>
+                                <x-button color="secondary" type="button" onclick="cancel()">CANCEL</x-button>
                             </div>
                         </div>
                         <img src="{{ $user->avatar }}" alt="{{ $user->first_name }} {{ $user->last_name }} avatar"
@@ -98,7 +98,7 @@
                     @if (Auth::user()->hasPerm('update-user'))
                         <form action="{{ route('users.addRole', ['user' => $user]) }}" method="post">
                             @csrf
-                            <select name="role_id" id="role_id">
+                            <x-select color="secondary" name="role_id" id="role_id">
                                 <option value="">Select a role</option>
                                 @foreach ($roles as $role)
                                     @if (!isset(
@@ -106,8 +106,8 @@
                                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                                     @endif
                                 @endforeach
-                            </select>
-                            <button class="add-role-button" type="submit">ADD</button>
+                            </x-select>
+                            <x-button color="primary" class="add-role-button" type="submit">ADD</x-button>
                         </form>
                     @endif
                     <div class="dashboard-user-roles-have">
@@ -134,11 +134,11 @@
                                     <td><span>[{{ $ticket->id }}]</span> - {{ $ticket->title }}</td>
                                     <td>
                                         @if (Auth::user()->hasPerm('read-ticket'))
-                                            <a href="{{ route('tickets.show', ['ticket' => $ticket]) }}">VIEW</a>
+                                            <x-button color="primary"><a href="{{ route('tickets.show', ['ticket' => $ticket]) }}">VIEW</a></x-button>
                                         @endif
                                         @if (Auth::user()->hasPerm('delete-ticket'))
-                                            <button name="warningButton" data-msg="to delete this ticket" data-method="DELETE"
-                                                data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">DELETE</button>
+                                            <x-button color="danger" name="warningButton" data-msg="to delete this ticket" data-method="DELETE"
+                                                data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">DELETE</x-button>
                                         @endif
                                     </td>
                                 </tr>
@@ -162,8 +162,8 @@
                         <p>Are you sure you want <span id="warning_message"></span> ?</p>
                     </div>
                     <div class="modal-footer warning-footer">
-                        <button type="submit">Yes</button>
-                        <button type="button" class="close">No</button>
+                        <x-button color="primary-outline" type="submit">Yes</x-button>
+                        <x-button color="danger" type="button" class="close">No</x-button>
                     </div>
                 </form>
             </div>

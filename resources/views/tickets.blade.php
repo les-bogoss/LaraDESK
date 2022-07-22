@@ -11,7 +11,7 @@
         @if (Auth::user()->hasPerm('create-ticket'))
             <div class="tickets-create">
                 <div class="create-bg">
-                    <button name="createRoleButton">+ Create Ticket</button>
+                    <x-button color="primary" name="createRoleButton">+ Create Ticket</x-button>
                     <div id="search"><input id="search-bar" onkeyup="searchTickets()" /><i class="fa fa-search"></i>
                     </div>
                     <script>
@@ -38,7 +38,6 @@
                 </div>
             </div>
             <div id="createRole" class="modal">
-
                 <!-- Modal content -->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -74,7 +73,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit">CREATE</button>
+                            <x-button type="submit" color='primary' id="create-ticket-button">CREATE</x-button>
                         </div>
                     </form>
                 </div>
@@ -119,6 +118,8 @@
                                 data-method="DELETE" data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">
                                 DELETE</x-button>
                         @endif
+                        <x-button color="primary" name="ticket-infoButton" style="margin-left: 1em;"><i
+                                class="fa-solid fa-circle-info"></i>INFO</x-button>
                     </div>
                     <div class="ticket-content">
                         <form action="{{ route('tickets.createContent', ['ticket' => $ticket]) }}" method="POST"
@@ -132,12 +133,15 @@
                             <input type="file" name="image" id="image" accept="image/*" style="display: none;"
                                 onchange="loadFile(event)">
                             <img src="" id="output" style="height:250px;display: none;">
-                            <button style="display: none;" id="delete-image" type="button"
-                                onclick="deleteImage()">X</button>
+                            <x-button style="display: none;" id="delete-image" color="danger" type="button"
+                                onclick="deleteImage()">X</x-button>
                             <textarea placeholder="{{ $ticket->status_id >= 4 ? 'ticket clos' : 'Ecrivez qlq chose ...' }}" type="text"
                                 name="content" @if ($ticket->status_id >= 4) readonly @endif id="input-content"></textarea>
-                            <button id="submit_content_button" type="submit" class="submit-message"
-                                @if ($ticket->status_id >= 4) disabled @endif>submit</button>
+                            <div class="submit-wrapper"
+                                style="width: 100%; margin-top: .2em; display: flex; justify-content: flex-end"><button
+                                    color="success" id="submit_content_button" type="submit"
+                                    class="button-component btn-success" @if ($ticket->status_id >= 4) disabled @endif>
+                                    <i class="fa-solid fa-paper-plane"></i>Submit</button></div>
                         </form>
                         {{-- display all tickets contents --}}
                         @foreach ($ticket->ticket_content->reverse() as $tc)
@@ -181,92 +185,6 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="ticket-info-body">
-                    <div class="ticket-info-section">
-                        <h2>Date</h2>
-                        <p>{{ $ticket->created_at->diffForHumans() }}</p>
-                    </div>
-                    <div class="ticket-info-section">
-                        <h2>Status</h2>
-                        <form action="{{ route('tickets.editStatus', ['ticket' => $ticket]) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <x-select color="secondary" name="ticket_status"
-                                class="{{ $statusColor[$ticket->status_id] }}" id="ticket-status-select"
-                                onchange="this.form.submit();">
-                                <option value="OUVERT" {{ $ticket->status_id == '1' ? 'selected' : '' }}>OUVERT</option>
-                                <option value="ATTRIBUÉ" {{ $ticket->status_id == '2' ? 'selected' : '' }}>ATTRIBUÉ
-                                </option>
-                                <option value="EN ATTENTE" {{ $ticket->status_id == '3' ? 'selected' : '' }}>ATTENTE
-                                    RÉPONSE</option>
-                                <option value="CLOS" {{ $ticket->status_id == '4' ? 'selected' : '' }}>CLOS</option>
-                                <option value="RÉSOLU" {{ $ticket->status_id == '5' ? 'selected' : '' }}>RÉSOLU</option>
-                            </x-select>
-                        </form>
-                    </div>
-                    <div class="ticket-info-section">
-                        <h2>Priority</h2>
-                        <form action="{{ route('tickets.editPriority', ['ticket' => $ticket]) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <x-select color="primary" name="ticket_priority"
-                                class="ticket-priority {{ $priorityColor[$ticket->priority] }}"
-                                id="ticket-priority-select" onchange="this.form.submit();">
-                                <option value="1" {{ $ticket->priority == '1' ? 'selected' : '' }}>1</option>
-                                <option value="2" {{ $ticket->priority == '2' ? 'selected' : '' }}>2</option>
-                                <option value="3" {{ $ticket->priority == '3' ? 'selected' : '' }}>3</option>
-                            </x-select>
-                        </form>
-                    </div>
-                    <div class="ticket-info-section">
-                        <h2>Category</h2>
-                        <p>{{ $ticket->ticket_category()->first()->name }}</p>
-                    </div>
-                    <div class="ticket-info-section">
-                        <h2>Rating</h2>
-                        <form action="{{ route('tickets.editRating', ['ticket' => $ticket]) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <select name="rating"
-                                class="rating @isset($ticket->rating) {{ $priorityColor[$ticket->rating] }} @endisset"
-                                id="ticket-rating-select" onchange="this.form.submit();">
-                                <option value="1" {{ $ticket->rating == '1' ? 'selected' : '' }}>1 ⭐️</option>
-                                <option value="2" {{ $ticket->rating == '2' ? 'selected' : '' }}>2 ⭐️</option>
-                                <option value="3" {{ $ticket->rating == '3' ? 'selected' : '' }}>3 ⭐️</option>
-
-                            </select>
-                        </form>
-                    </div>
-                    <div class="ticket-info-section">
-                        <h2>Assignee</h2>
-                        @isset($ticket->assignedUser()->first()->first_name)
-                            <img class="avatar" src="{{ $ticket->assignedUser()->first()->avatar }}">
-                            </p>
-                        @endisset
-                        <form action="{{ route('tickets.editTechnician', ['ticket' => $ticket]) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <x-select color="secondary" name="technician" class="technician"
-                                onchange="this.form.submit();">
-                                @if (!isset($ticket->assignedUser()->first()->first_name))
-                                    <option value="">No assignee</option>
-                                @endif
-                                @foreach ($technicians as $technician)
-                                    <option value="{{ $technician->id }}"
-                                        {{ isset($ticket->assignedUser->first()->id) ? ($ticket->assignedUser->first()->id == $technician->id ? 'selected' : '') : '' }}>
-                                        {{ $technician->first_name . ' ' . $technician->last_name }}</option>
-                                @endforeach
-                            </x-select>
-                        </form>
-                    </div>
-                    <div class="ticket-info-section">
-                        <h2>User</h2>
-                        <div class="user-info">
-                            <img class="avatar" src="{{ $ticket->user()->first()->avatar }}">
-                            <p>{{ $ticket->user()->first()->first_name . ' ' . $ticket->user()->first()->last_name }}</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -287,15 +205,106 @@
                     <p>Are you sure you want <span id="warning_message"></span> ?</p>
                 </div>
                 <div class="modal-footer warning-footer">
-                    <button type="submit">Yes</button>
-                    <button type="button" class="close">No</button>
+                    <x-button type="submit" color="success-outline">Yes</x-button>
+                    <x-button type="button" color="danger">No</x-button>
                 </div>
             </form>
         </div>
     </div>
+
+    <div id="ticket-info" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Warning :</h2>
+            </div>
+            <div class="ticket-info-body">
+                <div class="ticket-info-section">
+                    <h2>Date</h2>
+                    <p>{{ $ticket->created_at->diffForHumans() }}</p>
+                </div>
+                <div class="ticket-info-section">
+                    <h2>Status</h2>
+                    <form action="{{ route('tickets.editStatus', ['ticket' => $ticket]) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <x-select color="secondary" name="ticket_status" class="{{ $statusColor[$ticket->status_id] }}"
+                            id="ticket-status-select" onchange="this.form.submit();">
+                            <option value="OUVERT" {{ $ticket->status_id == '1' ? 'selected' : '' }}>OUVERT</option>
+                            <option value="ATTRIBUÉ" {{ $ticket->status_id == '2' ? 'selected' : '' }}>ATTRIBUÉ
+                            </option>
+                            <option value="EN ATTENTE" {{ $ticket->status_id == '3' ? 'selected' : '' }}>ATTENTE
+                                RÉPONSE</option>
+                            <option value="CLOS" {{ $ticket->status_id == '4' ? 'selected' : '' }}>CLOS</option>
+                            <option value="RÉSOLU" {{ $ticket->status_id == '5' ? 'selected' : '' }}>RÉSOLU</option>
+                        </x-select>
+                    </form>
+                </div>
+                <div class="ticket-info-section">
+                    <h2>Priority</h2>
+                    <form action="{{ route('tickets.editPriority', ['ticket' => $ticket]) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <x-select color="primary" name="ticket_priority"
+                            class="ticket-priority {{ $priorityColor[$ticket->priority] }}" id="ticket-priority-select"
+                            onchange="this.form.submit();">
+                            <option value="1" {{ $ticket->priority == '1' ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ $ticket->priority == '2' ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ $ticket->priority == '3' ? 'selected' : '' }}>3</option>
+                        </x-select>
+                    </form>
+                </div>
+                <div class="ticket-info-section">
+                    <h2>Rating</h2>
+                    <form action="{{ route('tickets.editRating', ['ticket' => $ticket]) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <select name="rating"
+                            class="rating @isset($ticket->rating) {{ $priorityColor[$ticket->rating] }} @endisset"
+                            id="ticket-rating-select" onchange="this.form.submit();">
+                            <option value="1" {{ $ticket->rating == '1' ? 'selected' : '' }}>1 ⭐️</option>
+                            <option value="2" {{ $ticket->rating == '2' ? 'selected' : '' }}>2 ⭐️</option>
+                            <option value="3" {{ $ticket->rating == '3' ? 'selected' : '' }}>3 ⭐️</option>
+
+                        </select>
+                    </form>
+                </div>
+                <div class="ticket-info-section">
+                    <h2>Assignee</h2>
+                    @isset($ticket->assignedUser()->first()->first_name)
+                        <img class="avatar" src="{{ $ticket->assignedUser()->first()->avatar }}">
+                        </p>
+                    @endisset
+                    <form action="{{ route('tickets.editTechnician', ['ticket' => $ticket]) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <x-select color="secondary" name="technician" class="technician" onchange="this.form.submit();">
+                            @if (!isset($ticket->assignedUser()->first()->first_name))
+                                <option value="">No assignee</option>
+                            @endif
+                            @foreach ($technicians as $technician)
+                                <option value="{{ $technician->id }}"
+                                    {{ isset($ticket->assignedUser->first()->id) ? ($ticket->assignedUser->first()->id == $technician->id ? 'selected' : '') : '' }}>
+                                    {{ $technician->first_name . ' ' . $technician->last_name }}</option>
+                            @endforeach
+                        </x-select>
+                    </form>
+                </div>
+                <div class="ticket-info-section">
+                    <h2>User</h2>
+                    <div class="user-info">
+                        <img class="avatar" src="{{ $ticket->user()->first()->avatar }}">
+                        <p>{{ $ticket->user()->first()->first_name . ' ' . $ticket->user()->first()->last_name }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         var ticket = document.getElementById('ticket-{{ $ticket->id }}');
-        document.getElementsByClassName('tickets-wrapper')[0].scrollTo(0, ticket.offsetTop - 140);
+        document.getElementsByClassName('tickets-wrapper')[0].scrollTo(0, ticket.offsetTop - 165);
 
         var textarea = document.getElementById("input-content");
 
@@ -311,11 +320,18 @@
             if (textarea.value.length > 0) {
                 document.getElementById("submit_content_button").disabled = "true";
                 document.getElementById("submit_content_button").innerHTML = "En cours...";
-                document.getElementById("submit_content_button").parentNode.submit();
+                document.getElementById("submit_content_button").parentNode.parentNode.submit();
             } else {
                 event.preventDefault();
             }
         };
+        @if (Auth::user()->hasPerm('create-ticket'))
+            document.getElementById("create-ticket-button").onclick = function() {
+                document.getElementById("create-ticket-button").disabled = "true";
+                document.getElementById("create-ticket-button").innerHTML = "En cours...";
+                document.getElementById("create-ticket-button").parentNode.parentNode.submit();
+            };
+        @endif
         textarea.addEventListener("keypress", submitOnEnter);
         @if ($ticket->status_id < 4)
             textarea.focus();

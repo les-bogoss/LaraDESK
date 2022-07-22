@@ -1,0 +1,20 @@
+.data-extract-layout {
+    display: flex;
+    flex-flow: row wrap;
+
+    .data-extract-section {
+        background-color: $primary-dark;
+        color: $light;
+        border-radius: 25px;
+
+        padding: 20px;
+        margin: 20px;
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+    }
+}

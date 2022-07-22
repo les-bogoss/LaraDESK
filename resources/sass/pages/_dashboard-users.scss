@@ -6,325 +6,287 @@
     .dashboard-users {
         width: 25%;
         height: 100%;
+        border-right: 2px solid $primary;
         overflow-y: scroll;
 
-    .dashboard-users-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-
-        #search {
-            position: fixed;
-            margin-top: 1em;
-            z-index: 3;
-            background-color: $primary;
-            border-radius: 50px;
-            width: 200px;
-            border: 5px solid $light;
-            box-shadow: 0 0 10px #00000050;
-            color: $light;
-
-            input {
-                width: 80%;
-                background:none ;
-                margin-left: 5%;
-                &:focus {
-                    outline: none;
-                }
-            }
-
-            i {
-                padding: 2px 5px 2px 2px;
-            }
-
-        }
-        .users-wrapper {
+        .dashboard-users-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
-            height: calc(100% - 150px);
-            overflow: hidden;
-            padding-left: 1em;
-            padding-right: 1em;
-            padding-top: 2em;
 
-            .user-item {
-                transition: background-color 0.2s ease-in-out;
-                width: 100%;
-                height: 50px;
-                margin-top: 2em;
-                margin-bottom: 2em;
-                cursor: pointer;
-                border-radius: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-                background-color: $light;
-
-                &:hover {
-                    background-color: $hover-blue;
-                }
-
-                .user-details {
-                    position: relative;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 90%;
-                    height: 100%;
-
-                    img {
-                        position: absolute;
-                        z-index: 0;
-                        left: -25px;
-                        width: 50px;
-                        height: 50px;
-                        object-fit: cover;
-                        border-radius: 100%;
-                    }
-
-                    div {
-                        position: absolute;
-                        right: .5em;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: flex-end;
-                        align-items: flex-end;
-
-                        .name {
-                            font-size: 1.2em;
-                            font-weight: 600;
-                            font-family: $font;
-                            color: $primary-dark;
-                        }
-
-                        .email {
-                            font-size: 1em;
-                            font-weight: 400;
-                            font-family: $font;
-                            color: $primary-dark;
-                            opacity: 0.5;
-                        }
-                    }
-                }
-            }
-
-            .inactive {
-                cursor: pointer;
-            }
-
-            .active {
-                background-color: $hover-blue;
-            }
-        }
-    }
-    }
-
-.dashboard-user {
-    width: 75%;
-    height: 100%;
-
-    .dashboard-user-info {
-        width: 100%;
-        height: 20%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 10%;
-
-        .dashboard-user-info-name {
-            line-height: 20px;
-
-            .dashboard-user-info-settings {
-                display: flex;
-                flex-flow: row;
-                align-items: center;
-                justify-content: space-around;
+            #search {
+                position: fixed;
+                margin-top: 1em;
+                z-index: 3;
+                background-color: $primary;
+                border-radius: 50px;
                 width: 200px;
+                border: 5px solid $light;
+                box-shadow: 0 0 10px #00000050;
+                color: $light;
 
-                a,
-                button {
-                    border-radius: 10px;
-                    padding: 6px 15px;
-                    color: white;
-                    font-weight: bold;
+                input {
+                    width: 80%;
+                    background: none;
+                    margin-left: 5%;
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
+                i {
+                    padding: 2px 5px 2px 2px;
+                }
+            }
+            .users-wrapper {
+                width: 100%;
+                height: calc(100% - 150px);
+                overflow: hidden;
+                padding-left: 1em;
+                padding-right: 1em;
+                padding-top: 2em;
+
+                .user-item {
+                    transition: background-color 0.2s ease-in-out;
+                    width: 100%;
+                    height: 50px;
+                    margin-top: 2em;
+                    margin-bottom: 2em;
+                    cursor: pointer;
+                    border-radius: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+                    background-color: $light;
+
+                    &:hover {
+                        background-color: $hover-blue;
+                    }
+
+                    .user-details {
+                        position: relative;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 90%;
+                        height: 100%;
+
+                        img {
+                            position: absolute;
+                            z-index: 0;
+                            left: -25px;
+                            width: 50px;
+                            height: 50px;
+                            object-fit: cover;
+                            border-radius: 100%;
+                        }
+
+                        div {
+                            position: absolute;
+                            right: 0.5em;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: flex-end;
+                            align-items: flex-end;
+
+                            .name {
+                                font-size: 1.2em;
+                                font-weight: 600;
+                                font-family: $font;
+                                color: $primary-dark;
+                            }
+
+                            .email {
+                                font-size: 1em;
+                                font-weight: 400;
+                                font-family: $font;
+                                color: $primary-dark;
+                                opacity: 0.5;
+                            }
+                        }
+                    }
+                }
+
+                .inactive {
                     cursor: pointer;
                 }
 
-                button:nth-child(1) {
-                    background-color: $yellow;
-                }
-
-                button:nth-child(2),
-                form button {
-                    background-color: $secondary;
+                .active {
+                    background-color: $hover-blue;
                 }
             }
         }
-
-        h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: $primary-dark;
-        }
-
-        p {
-            font-size: 1rem;
-            color: $primary-dark;
-            font-variant-position: sub;
-        }
-
-        img {
-            border-radius: 50px;
-        }
     }
 
-    .edit-form {
-        display: flex;
-        height: 20%;
-        align-items: center;
+    .dashboard-user {
+        width: 75%;
+        height: 100%;
 
-        .editable {
-            input {
-                border: none;
-                border-bottom: 1px solid $primary-dark;
-                padding: 5px;
+        .dashboard-user-info {
+            width: 100%;
+            height: 20%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10%;
+
+            .dashboard-user-info-name {
+                line-height: 20px;
+
+                .dashboard-user-info-settings {
+                    display: flex;
+                    flex-flow: row;
+                    align-items: center;
+                    justify-content: space-around;
+
+                    button:last-of-type {
+                        margin: 0 0 0 10px;
+                    }
+                }
+            }
+
+            h3 {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: $primary-dark;
+            }
+
+            p {
                 font-size: 1rem;
                 color: $primary-dark;
                 font-variant-position: sub;
             }
-        }
-    }
 
-    .dashboard-user-roles {
-        width: 80%;
-        height: 25%;
-        margin: 2% auto;
-        border-radius: 40px;
-        box-shadow: 5px 5px 15px 5px rgb(0 0 0 / 10%);
-        padding: 15px 30px;
-
-        h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: $primary-dark;
-            text-decoration: underline;
-            margin: 0 0 20px 0;
-        }
-
-        select {
-            border-radius: 10px;
-            padding: 5px 30px 5px 12px;
-        }
-
-        .add-role-button {
-            border-radius: 10px;
-            padding: 6px 15px;
-            background-color: $secondary;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .dashboard-user-roles-have {
-            margin: 10px 0 0 0;
-
-            form {
-                display: inline-block;
-            }
-
-            .delete-role-button {
-                border: rgba(0, 0, 0, 0.3) 1px solid;
-                border-radius: 10px;
-                padding: 1px 15px;
-                background-color: rgba(0, 0, 0, 0.2);
-                color: rgba(0, 0, 0, 0.3);
-                cursor: pointer;
+            img {
+                border-radius: 50px;
             }
         }
-    }
 
-    .dashboard-user-tickets {
-        width: 80%;
-        height: 45%;
-        margin: 2% auto;
-        border-radius: 40px;
-        box-shadow: 5px 5px 15px 5px rgb(0 0 0 / 10%);
-        overflow: hidden;
-
-        h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: $primary-dark;
-            text-decoration: underline;
-            margin: 15px 0 15px 30px;
-        }
-
-        table {
+        .edit-form {
             display: flex;
-            width: -webkit-fill-available;
-            height: 88%;
-            overflow: auto;
-            align-items: flex-start;
+            height: 20%;
+            align-items: center;
+
+            .editable {
+                input {
+                    border: none;
+                    border-bottom: 1px solid $primary-dark;
+                    padding: 5px;
+                    font-size: 1rem;
+                    color: $primary-dark;
+                    font-variant-position: sub;
+                }
+            }
         }
 
-        tbody {
-            width: 100%;
-            display: table;
-            margin: 0 0 15px 0;
+        .dashboard-user-roles {
+            width: 80%;
+            min-height: 25%;
+            margin: 2% auto;
+            border-radius: 40px;
+            box-shadow: 5px 5px 15px 5px rgb(0 0 0 / 10%);
+            padding: 15px 30px;
 
-            tr {
-                height: 70px;
-                border-bottom: 2px solid $primary-dark;
-            }
-
-            tr td:first-of-type {
-                padding: 0 0 0 30px;
-                width: 70%;
+            h3 {
+                font-size: 1.5rem;
                 font-weight: bold;
                 color: $primary-dark;
-                font-size: 1.1em;
+                text-decoration: underline;
+                margin: 0 0 20px 0;
+            }
 
-                span {
-                    font-weight: bold;
-                    color: $yellow;
+            form {
+                display: flex;
+
+                button {
+                    margin: 0 0 0 10px;
                 }
             }
 
-            tr td:last-of-type {
-                padding: 0 30px 0 0;
-                text-align: right;
+            .dashboard-user-roles-have {
+                margin: 10px 0 0 0;
 
-                button {
+                form {
+                    display: inline-block;
+                }
+
+                .delete-role-button {
+                    border: rgba(0, 0, 0, 0.3) 1px solid;
                     border-radius: 10px;
-                    padding: 6px 15px;
-                    color: white;
-                    font-weight: bold;
+                    padding: 1px 15px;
+                    background-color: rgba(0, 0, 0, 0.2);
+                    color: rgba(0, 0, 0, 0.3);
                     cursor: pointer;
                 }
+            }
+        }
 
-                a {
-                    background-color: $yellow;
-                    margin: 0 20px 0 0;
-                    border-radius: 10px;
-                    padding: 6px 15px;
-                    color: #FFF;
-                    font-weight: bold;
+        .dashboard-user-tickets {
+            width: 80%;
+            height: 45%;
+            margin: 2% auto;
+            border-radius: 40px;
+            box-shadow: 5px 5px 15px 5px rgb(0 0 0 / 10%);
+            overflow: hidden;
+
+            h3 {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: $primary-dark;
+                text-decoration: underline;
+                margin: 15px 0 15px 30px;
+            }
+
+            table {
+                display: flex;
+                width: -webkit-fill-available;
+                height: 88%;
+                overflow: auto;
+                align-items: flex-start;
+            }
+
+            tbody {
+                width: 100%;
+                display: table;
+                margin: 0 0 15px 0;
+
+                tr {
+                    height: 70px;
+                    border-bottom: 2px solid $primary-dark;
                 }
 
+                tr td:first-of-type {
+                    padding: 0 0 0 30px;
+                    width: 70%;
+                    font-weight: bold;
+                    color: $primary-dark;
+                    font-size: 1.1em;
 
-                button {
-                    background-color: $secondary;
+                    span {
+                        font-weight: bold;
+                        color: $yellow;
+                    }
+                }
 
+                tr td:last-of-type {
+                    padding: 0 30px 0 0;
+                    text-align: right;
+                    display: flex;
+                    align-items: center;
+                    height: 70px;
+
+                    button:last-of-type {
+                        margin: 0 0 0 10px;
+                    }
                 }
             }
         }
     }
-}
 }
 
 @media screen and (max-width: 1024px) {
-
     .dashboard-container {
         margin: 0 !important;
         padding: 50px 0 0 0 !important;
