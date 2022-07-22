@@ -23,7 +23,7 @@ class AuthController extends Controller
     {
         $user = User::where('email', request('email'))->first();
         if ($user) {
-            if ($user->hasRole('Administrator') || $user->hasRole('Technician')) {
+            if ($user->hasRole(1) || $user->hasRole(2)) {
                 if (Hash::check(request('password'), $user->password)) {
                     $user->save();
 

@@ -41,11 +41,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return false;
     }
 
-    public function hasRole($role): bool
+    public function hasRole($roleId): bool
     {
         // foreach role check if it contains the role
 
-        if ($this->roles()->get()->contains('name', $role)) {
+        if ($this->roles()->get()->contains('id', $roleId)) {
             return true;
         } else {
             return false;

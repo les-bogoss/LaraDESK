@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('avatar')->default('https://www.ecranlarge.com/media/cache/1600x1200/uploads/image/001/431/avatar-la-voie-de-leau-affiche-officielle-1431356.jpg');
+            $table->string('avatar')->default('/storage/images/default.jpeg');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('api_token')->unique();
