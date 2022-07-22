@@ -26,7 +26,7 @@ class TicketController extends Controller
             if ($user->hasVerifiedEmail()) {
                 //get all ticket
                 if ($user->hasPerm('read-ticket')) {
-                    $tickets = Ticket::all();
+                    $tickets = Ticket::orderByDesc('updated_at')->get();
                     //get first_name and last_name and avatar of user
                     foreach ($tickets as $ticket) {
                         $userd = Ticket::where('id', $ticket->id)->first()->user()->get()->first();
@@ -81,15 +81,16 @@ class TicketController extends Controller
                 $ticket = new Ticket();
                 $ticket->user_id = $user->id;
                 $ticket->title = $request->title;
+                $ticket->priority = $request->priority;
                 $ticket->category_id = $request->category_id;
+
                 $ticket->save();
 
                 //create ticket content
-                $ticket_content = TicketContentController::add_content($ticket->id, $user->id, $request->content_type, $request->text);
 
                 // if ticket is created
-                if ($ticket && $ticket_content) {
-                    return response()->json(['message' => 'Ticket created ID : ' . $ticket->id . ''], 201);
+                if ($ticket) {
+                    return response()->json(['message' => 'Ticket created ID', 'id' => $ticket->id], 201);
                 } else {
                     return response()->json(['error' => 'Ticket not created'], 500);
                 }
@@ -120,7 +121,12 @@ class TicketController extends Controller
                     //verify user has permission to read ticket or is owner of ticket
                     if ($user->hasPerm('read-ticket') || $user->id == $ticket->user_id) {
                         //get assigned ticket by ticket id
+
                         $assigned_ticket = Ticket::where('id', $ticket->id)->first()->assignedUser()->get()->first();
+
+
+
+
                         if ($assigned_ticket) {
                             //if ticket is assigned then set assigned to true and get user id
                             $ticket->assigned = true;
