@@ -6,46 +6,7 @@
 <div class="account-bg">
 <div class="account-container">
     <div>
-        <x-button color="primary">primary</x-button>
-        <x-button color="primary-outline">primary-outline</x-button>
-        <x-button color="secondary">secondary</x-button>
-        <x-button color="secondary-outline">secondary-outline</x-button>
-        <x-button color="danger">danger</x-button>
-        <x-button color="danger-outline">danger-outline</x-button>
-        <x-button color="success">success</x-button>
-        <x-button color="success-outline">success-outline</x-button>
-        <x-input placeholder="input"/>
-        <x-input placeholder="input-error" error="true"/>
-        <x-select color="primary">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </x-select>
-        <x-select color="secondary">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </x-select>
-        <x-select color="danger">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </x-select>
-        <x-select color="success">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </x-select>
-        <x-select color="warning">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </x-select>
         <h1>Account Settings</h1>
-        {{-- <p>
-                <a href="{{ route("account.edit") }}">Edit</a>
-        </p> --}}
-
         <h2>Profile</h2>
         <div class="account-profile">
             <script>

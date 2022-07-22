@@ -71,6 +71,7 @@ class UserController extends Controller
             if ($user->hasVerifiedEmail()) {
                 $userf = User::find($request->id);
                 if ($userf) {
+                    $userf->roles = $userf->roles;
                     return response()->json($userf);
                 } else {
                     return response()->json(['error' => 'User not found.'], 404);
