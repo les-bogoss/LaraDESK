@@ -161,7 +161,7 @@ Project Link: [https://github.com/les-bogoss/LaraDESK](https://github.com/les-bo
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [Aléxis PETIT](https://www.linkedin.com/in/alexispe/)
+* [Alexis PETIT](https://www.linkedin.com/in/alexispe/)
 * [Maxence MACHU](https://www.linkedin.com/in/maxence-machu/)
 * [Benoît BÉRENGER](https://www.linkedin.com/in/benoitberenger/)
 
