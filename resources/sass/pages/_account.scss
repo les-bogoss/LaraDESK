@@ -1,9 +1,9 @@
 .account-bg {
-    height: calc(100vh - 75px);
-    width: calc(100vw - 75px);
+    height: calc(100vh - 50px);
+    width: calc(100vw - 50px);
     position: absolute;
-    top: 75px;
-    left: 75px;
+    top: 50px;
+    left: 50px;
     background-color : $primary-dark;
 
     .account-container {
@@ -213,6 +213,17 @@
                     margin-bottom: 1rem;
                 }
             }
+        }
+    }
+}
+
+@media screen and (max-width : 1024px) {
+    .account-bg {
+        left: 0;
+        width: 100vw;
+
+        .account-container {
+            border-radius: 25px 25px 0 0;
         }
     }
 }

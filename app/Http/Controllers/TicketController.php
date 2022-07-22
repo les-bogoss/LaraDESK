@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\Ticket_content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class TicketController extends Controller
 {
@@ -62,10 +63,10 @@ class TicketController extends Controller
         $ticket->save();
         $mailData = [
             'subject' => 'Ticket Created - LaraDESK',
-            'title' => 'Ticket created with id #'.$ticket->id,
+            'title' => 'Ticket created with id #' . $ticket->id,
             'email' => Auth::user()->email,
             'view' => 'emails.ticketUpdate',
-            'body' => 'Your <a href="https://34.140.17.43/tickets/'.$ticket->id.'">ticket #'.$ticket->id.'</a> has been created ,we are on it !',
+            'body' => 'Your <a href="https://34.140.17.43/tickets/' . $ticket->id . '">ticket #' . $ticket->id . '</a> has been created ,we are on it !',
         ];
 
         dispatch(new SendEmailJob($mailData));
@@ -79,7 +80,7 @@ class TicketController extends Controller
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Contracts\View\View
      */
-    public function show(Ticket $ticket): \Illuminate\Contracts\View\View
+    public function show(Ticket $ticket)
     {
         $statusColor = [
             '1' => 'ticket-status-open',
@@ -101,7 +102,7 @@ class TicketController extends Controller
         ];
         $technicians = Role::where('name', 'Technician')->first()->users;
 
-        if (! Auth::user()->hasPerm('read-ticket')) {
+        if (!Auth::user()->hasPerm('read-ticket')) {
             if (Auth::user()->id != $ticket->user_id) {
                 return redirect()->route('tickets.index');
             } else {
@@ -146,10 +147,10 @@ class TicketController extends Controller
 
         $mailData = [
             'subject' => 'Ticket Status updated - LaraDESK',
-            'title' => 'Status updated on ticket #'.$ticket->id,
+            'title' => 'Status updated on ticket #' . $ticket->id,
             'email' => Auth::user()->email,
             'view' => 'emails.ticketUpdate',
-            'body' => '<a href="https://34.140.17.43/tickets/'.$ticket->id.'">Ticket #'.$ticket->id.'</a> has been updated to <strong>'.$request->input('ticket_status').'</strong>',
+            'body' => '<a href="https://34.140.17.43/tickets/' . $ticket->id . '">Ticket #' . $ticket->id . '</a> has been updated to <strong>' . $request->input('ticket_status') . '</strong>',
         ];
 
         $ticket->status_id = $statusId[$request->input('ticket_status')];
@@ -185,8 +186,10 @@ class TicketController extends Controller
      */
     public function editRating(Request $request, Ticket $ticket): \Illuminate\Http\RedirectResponse
     {
-        $ticket->rating = $request->input('rating');
-        $ticket->save();
+        if (Auth::user()->id == $ticket->user_id) {
+            $ticket->rating = $request->input('rating');
+            $ticket->save();
+        }
 
         return redirect()->back();
     }
@@ -233,8 +236,16 @@ class TicketController extends Controller
             if (Auth::user()->hasPerm('update-ticket') || Auth::user()->id == $ticket->user_id) {
                 if ($ticket->status_id < 4) {
                     $content = new Ticket_content;
+                    if ($request->hasFile('image')) {
+                        $filename = time() . '.' . $request->image->getClientOriginalExtension();
+                        $request->file('image')->storeAs('images/tickets_contents/', $filename, 'public');
+
+                        $content->media = '/storage/images/tickets_contents/' . $filename;
+                        $content->type = 'image';
+                    } else {
+                        $content->type = 'text';
+                    }
                     $content->text = nl2br(e($request->input('content')));
-                    $content->type = 'text';
                     $content->user_id = Auth::user()->id;
                     $content->ticket_id = $ticket->id;
                     $content->save();
@@ -244,10 +255,10 @@ class TicketController extends Controller
 
         $mailData = [
             'subject' => 'Ticket content update - LaraDESK',
-            'title' => 'New content for the ticket #'.$ticket->id,
+            'title' => 'New content for the ticket #' . $ticket->id,
             'email' => Auth::user()->email,
             'view' => 'emails.ticketUpdate',
-            'body' => '<a href="https://34.140.17.43/tickets/'.$ticket->id.'">Ticket #'.$ticket->id.'</a> has received a new content',
+            'body' => '<a href="https://34.140.17.43/tickets/' . $ticket->id . '">Ticket #' . $ticket->id . '</a> has received a new content',
         ];
 
         dispatch(new SendEmailJob($mailData));
@@ -259,10 +270,10 @@ class TicketController extends Controller
      * Delete a content for the current ticket
      *
      * @param  \App\Models\Ticket_content  $content
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function deleteContent(Request $request, Ticket_content $content): \Illuminate\Http\RedirectResponse
+    public function deleteContent(Ticket $ticket, Ticket_content $content): \Illuminate\Http\RedirectResponse
     {
         if (Auth::user()->hasPerm('delete-ticket') || Auth::user()->id == $content->user_id) {
             $content->delete();
@@ -283,7 +294,7 @@ class TicketController extends Controller
         if (Auth::user()->hasPerm('update-ticket')) {
             if ($request->input('technician') != '') {
                 // If the ticket already has a technician update the technician
-                if (! isset($ticket->assignedUser->first()->id)) {
+                if (!isset($ticket->assignedUser->first()->id)) {
                     $assignee = new Assigned();
                     $assignee->user_id = $request->input('technician');
                     $assignee->ticket_id = $ticket->id;

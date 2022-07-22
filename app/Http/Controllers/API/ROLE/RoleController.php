@@ -21,11 +21,16 @@ class RoleController extends Controller
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('read-role')) {
-            $roles = Role::all();
+            if ($user->hasVerifiedEmail()) {
 
-            return response()->json($roles);
+                $roles = Role::all();
+
+                return response()->json($roles);
+            } else {
+                return response()->json(['message' => 'Please verify your email address'], 401);
+            }
         } else {
-            return response()->json(['error' => 'You do not have permission to access this page.'], 403);
+            return response()->json(['error' => 'You do not have permission to access this page or verify token'], 403);
         }
     }
 
@@ -48,11 +53,8 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         //create de role
-        $role = new Role();
-        $role->name = $request->name;
-        $role->label = $request->label;
-        $role->color = $request->color;
-        $role->save();
+
+
     }
 
     /**
@@ -68,12 +70,16 @@ class RoleController extends Controller
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('read-role')) {
             //get permissions of role
-            $role = Role::find($request->RoleId);
-            $permissions = $role->permissions;
+            if ($user->hasVerifiedEmail()) {
+                $role = Role::find($request->RoleId);
+                $permissions = $role->permissions;
 
-            return response()->json($permissions);
+                return response()->json($permissions);
+            } else {
+                return response()->json(['message' => 'Please verify your email address'], 403);
+            }
         } else {
-            return response()->json(['error' => 'You do not have permission to access this page.'], 403);
+            return response()->json(['error' => 'You do not have permission to access this page or verify token.'], 403);
         }
     }
 
@@ -90,14 +96,18 @@ class RoleController extends Controller
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('update-role')) {
-            $role = Role::find($request->RoleId);
-            $permission = Permission::find($request->PermissionId);
-            if ($role && $permission) {
-                $role->permissions()->attach($permission);
+            if ($user->hasVerifiedEmail()) {
+                $role = Role::find($request->RoleId);
+                $permission = Permission::find($request->PermissionId);
+                if ($role && $permission) {
+                    $role->permissions()->attach($permission);
 
-                return response()->json(['success' => 'Permission added.']);
+                    return response()->json(['success' => 'Permission added.']);
+                } else {
+                    return response()->json(['error' => 'Role or Permission not found.'], 404);
+                }
             } else {
-                return response()->json(['error' => 'Role or Permission not found.'], 404);
+                return response()->json(['message' => 'Please verify your email address'], 403);
             }
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);
@@ -118,13 +128,17 @@ class RoleController extends Controller
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('update-role')) {
             $role = Role::find($request->RoleId);
-            $permission = Permission::find($request->PermissionId);
-            if ($role && $permission) {
-                $role->permissions()->detach($permission);
+            if ($user->hasVerifiedEmail()) {
+                $permission = Permission::find($request->PermissionId);
+                if ($role && $permission) {
+                    $role->permissions()->detach($permission);
 
-                return response()->json(['success' => 'Permission deleted.']);
+                    return response()->json(['success' => 'Permission deleted.']);
+                } else {
+                    return response()->json(['error' => 'Role or Permission not found.'], 404);
+                }
             } else {
-                return response()->json(['error' => 'Role or Permission not found.'], 404);
+                return response()->json(['message' => 'Please verify your email address'], 403);
             }
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);
@@ -144,13 +158,17 @@ class RoleController extends Controller
         $api_token = $request->header('Authorization');
         $user = UserController::verify_token($api_token);
         if ($user && $user->hasPerm('delete-role')) {
-            $role = Role::find($request->RoleId);
-            if ($role) {
-                $role->delete();
+            if ($user->hasVerifiedEmail()) {
+                $role = Role::find($request->RoleId);
+                if ($role) {
+                    $role->delete();
 
-                return response()->json(['success' => 'Role deleted.']);
+                    return response()->json(['success' => 'Role deleted.']);
+                } else {
+                    return response()->json(['error' => 'Role not found.'], 404);
+                }
             } else {
-                return response()->json(['error' => 'Role not found.'], 404);
+                return response()->json(['message' => 'Please verify your email address'], 403);
             }
         } else {
             return response()->json(['error' => 'You do not have permission to access this page.'], 403);

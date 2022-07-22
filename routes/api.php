@@ -56,3 +56,7 @@ Route::get('/dashboard/role/{RoleId}', [RoleController::class, 'show']);
 Route::post('/dashboard/role/{RoleId}', [RoleController::class, 'addPermission']);
 Route::delete('/dashboard/role/{RoleId}/perm/{PermissionId}', [RoleController::class, 'deletePermission']);
 Route::delete('/dashboard/role/{RoleId}', [RoleController::class, 'destroy']);
+
+//verify token
+
+Route::post('/verify_token', [AuthController::class, 'verify_tokenAPI']);

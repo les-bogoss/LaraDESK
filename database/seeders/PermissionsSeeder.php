@@ -23,9 +23,9 @@ class PermissionsSeeder extends Seeder
 
         //input all roles
         DB::table('roles')->insert([
-            ['color' => 'FFFFFF', 'name' => 'admin', 'label' => 'administrator'],        //id 1
-            ['color' => 'FFFFFF', 'name' => 'technician', 'label' => 'technician'],      //id 2
-            ['color' => 'FFFFFF', 'name' => 'user', 'label' => 'user of the platform'],  //id 3
+            ['color' => '#8CC8FF', 'name' => 'admin', 'label' => 'administrators have all rights on the platform they are here to assist technician and users'],        //id 1
+            ['color' => '#EF9D23', 'name' => 'technician', 'label' => 'technicians helps users by responding to tickets opened by users'],      //id 2
+            ['color' => '#2b2d42', 'name' => 'user', 'label' => 'users are opening tickets to get helped by technicians'],  //id 3
         ]);
 
         //input all permissions

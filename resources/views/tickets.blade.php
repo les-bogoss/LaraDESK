@@ -12,29 +12,29 @@
             <div class="tickets-create">
                 <div class="create-bg">
                     <button name="createRoleButton">+ Create Ticket</button>
-        <input id="search-bar" onkeyup="searchTicket()" style="background: rgb(131, 131, 131)"><i class="fa fa-search"></i></input>
-        <script>
-            function searchTicket() {
-                // Declare variables
-                var input, filter, ul, li, a, i, txtValue;
-                input = document.getElementById('search-bar');
-                filter = input.value.toUpperCase();
-                ul = document.getElementById("ticket-list");
-                li = ul.getElementsByClassName('ticket-item');
+                    <div id="search"><input id="search-bar" onkeyup="searchTickets()" /><i class="fa fa-search"></i>
+                    </div>
+                    <script>
+                        function searchTickets() {
+                            // Declare variables
+                            var input, filter, ul, li, a, i, txtValue;
+                            input = document.getElementById('search-bar');
+                            filter = input.value.toUpperCase();
+                            ul = document.getElementById("ticket-list");
+                            li = ul.getElementsByClassName('ticket-item');
 
-                // Loop through all list items, and hide those who don't match the search query
-                for (i = 0; i < li.length; i++) {
-                    a = li[i].getElementsByTagName("div")[0].getElementsByTagName("div")[0].getElementsByTagName("h1")[0];
-                    console.log(a);
-                    txtValue = a.textContent || a.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
-            }
-        </script>
+                            // Loop through all list items, and hide those who don't match the search query
+                            for (i = 0; i < li.length; i++) {
+                                a = li[i].getElementsByTagName("div")[0].getElementsByTagName("div")[0].getElementsByTagName("h1")[0];
+                                txtValue = a.textContent || a.innerText;
+                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                    li[i].style.display = "";
+                                } else {
+                                    li[i].style.display = "none";
+                                }
+                            }
+                        }
+                    </script>
                 </div>
             </div>
             <div id="createRole" class="modal">
@@ -79,35 +79,6 @@
                     </form>
                 </div>
             </div>
-
-            <script>
-                var modal = document.getElementById("createRole");
-
-                // Get the button that opens the modal
-                var btn = document.getElementById("createRoleButton");
-
-                // Get the <span> element that closes the modal
-                var span = document.getElementsByClassName("close")[0];
-
-                // When the user clicks on the button, open the modal
-                btn.onclick = function() {
-                    modal.style.display = "flex";
-                }
-                @error('*')
-                    modal.style.display = "flex";
-                @enderror
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                    modal.style.display = "none";
-                }
-
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
-            </script>
         @endif
         <div class="ticket-list-wrapper">
             <div class="tickets" id="ticket-list">
@@ -144,19 +115,31 @@
                     <h1 class="ticket-title">{{ $ticket->title }}</h1>
                     <div class="ticket-info-header-buttons">
                         @if (Auth::user()->hasPerm('delete-ticket'))
-                            <button name="warningButton" class="ticket-info-header-button" data-msg="to delete this ticket"
-                                data-method="DELETE"
-                                data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">DELETE</button>
+                            <x-button color="danger" name="warningButton" data-msg="to delete this ticket"
+                                data-method="DELETE" data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">
+                                DELETE</x-button>
                         @endif
                     </div>
                     <div class="ticket-content">
-                        <form action="{{ route('tickets.createContent', ['ticket' => $ticket]) }}" method="POST">
+                        <form action="{{ route('tickets.createContent', ['ticket' => $ticket]) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
+                            <label for="image" id="image-label">
+                                <div class="button-component btn-primary" style="width: fit-content; margin-bottom: .2em;">
+                                    <i class="fa-solid fa-paperclip"></i> Attach Image
+                                </div>
+                            </label>
+                            <input type="file" name="image" id="image" accept="image/*" style="display: none;"
+                                onchange="loadFile(event)">
+                            <img src="" id="output" style="height:250px;display: none;">
+                            <button style="display: none;" id="delete-image" type="button"
+                                onclick="deleteImage()">X</button>
                             <textarea placeholder="{{ $ticket->status_id >= 4 ? 'ticket clos' : 'Ecrivez qlq chose ...' }}" type="text"
                                 name="content" @if ($ticket->status_id >= 4) readonly @endif id="input-content"></textarea>
                             <button id="submit_content_button" type="submit" class="submit-message"
                                 @if ($ticket->status_id >= 4) disabled @endif>submit</button>
                         </form>
+                        {{-- display all tickets contents --}}
                         @foreach ($ticket->ticket_content->reverse() as $tc)
                             <div class="ticket-content-card">
                                 <div class="ticket-content-card-header">
@@ -170,21 +153,30 @@
                                                 <li class="role" style="background-color: {{ $role->color }}">
                                                     {{ $role->name }}</li>
                                             @endforeach
-                                            @if ($ticket->assignedUser()->first()->first_name . ' ' . $ticket->assignedUser()->first()->last_name == $tc->user()->first()->first_name . ' ' . $tc->user()->first()->last_name)
-                                                <li class="role" style="background-color: #ffc107;">
-                                                    Assigned</li>
+                                            @if ($ticket->assignedUser()->first())
+                                                @if ($ticket->assignedUser()->first()->first_name . ' ' . $ticket->assignedUser()->first()->last_name ==
+                                                    $tc->user()->first()->first_name . ' ' . $tc->user()->first()->last_name)
+                                                    <li class="role" style="background-color: #ffc107;">
+                                                        Assigned</li>
+                                                @endif
                                             @endif
                                         </ul>
 
                                         <p class="time">{{ $tc->created_at->diffForHumans() }}</p>
                                     </div>
                                     @if (Auth::user()->hasPerm('delete-ticket') || Auth::user()->id == $tc->user_id)
-                                        <button name="warningButton" data-msg="to delete this message" data-method="DELETE"
+                                        <button name="warningButton" data-msg="to delete this message"
+                                            data-method="DELETE"
                                             data-route="{{ route('tickets.deleteContent', ['ticket' => $ticket, 'content' => $tc]) }}"><i
                                                 class="fa-solid fa-trash-can"></i></button>
                                     @endif
                                 </div>
-                                <p>{!! $tc->text !!}</p>
+                                @if ($tc->media != null)
+                                    <img src="{{ $tc->media }}" alt="image in the ticket content">
+                                @endif
+                                @if ($tc->text != null)
+                                    <p>{!! $tc->text !!}</p>
+                                @endif
                             </div>
                         @endforeach
                     </div>
@@ -301,60 +293,18 @@
             </form>
         </div>
     </div>
-
     <script>
-        var modal = document.querySelectorAll('.modal')
-        modal.forEach(element => {
-            var span = element.querySelectorAll('.close');
-            var open_button = document.getElementsByName(element.id + "Button")
-
-            open_button.forEach(button => {
-                button.addEventListener('click', () => {
-                    element.style.display = "flex";
-                    if (element.id == "warning") {
-                        element.querySelectorAll("#warning_message").forEach(element => {
-                            element.innerHTML = button.dataset.msg;
-                            document.getElementById("warning_form").action = button.dataset
-                                .route;
-                            document.getElementById("warning_form").querySelector(
-                                    "[name=_method]")
-                                .value = button.dataset.method;
-                        });
-                    }
-                });
-
-                span.forEach(bt => {
-                    bt.addEventListener('click', () => {
-                        element.style.display = "none";
-                    });
-                });
-
-
-                if (element.id == "createRole") {
-                    @error('*')
-                        modal.style.display = "flex";
-                    @enderror
-                }
-            })
-        })
-        window.onclick = function(event) {
-            modal.forEach(element => {
-                if (event.target == element) {
-                    element.style.display = "none";
-                }
-            });
-        }
-
         var ticket = document.getElementById('ticket-{{ $ticket->id }}');
-        document.getElementsByClassName('tickets-wrapper')[0].scrollTo(0, ticket.offsetTop - 185);
+        document.getElementsByClassName('tickets-wrapper')[0].scrollTo(0, ticket.offsetTop - 140);
 
         var textarea = document.getElementById("input-content");
 
         function submitOnEnter(event) {
             if (event.which === 13 && !event.shiftKey) {
-                event.target.form.submit();
-                event
-                    .preventDefault(); // Prevents the addition of a new line in the text field (not needed in a lot of cases)
+                if (document.getElementById("submit_content_button").disabled == false) {
+                    document.getElementById("submit_content_button").click();
+                    event.preventDefault();
+                }
             }
         }
         document.getElementById("submit_content_button").onclick = function() {
@@ -370,6 +320,104 @@
         @if ($ticket->status_id < 4)
             textarea.focus();
         @endif
+
+        const ticketList = document.querySelector('.tickets-wrapper');
+
+        function resizeMobileTicketList() {
+            if (window.matchMedia("(max-width: 1024px)").matches) {
+                ticketList.style.display = 'none';
+            } else {
+                ticketList.style.display = 'block';
+            }
+        }
+
+        window.onresize = resizeMobileTicketList;
+        resizeMobileTicketList();
+
+        function loadFile(event) {
+            var output = document.getElementById('output');
+            output.style.display = "inline-block";
+            document.getElementById('image-label').style.display = "none";
+            document.getElementById('delete-image').style.display = "inline-block";
+
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src)
+            }
+        };
+
+        function deleteImage() {
+            document.getElementById('output').style.display = "none";
+            document.getElementById('image-label').style.display = "inline-block";
+            document.getElementById('delete-image').style.display = "none";
+            document.getElementById('image').value = "";
+        }
+    </script>
+
+    <a href="{{ route('tickets.index') }}">
+        <button class="return">
+            <i class="fas fa-arrow-left"></i>
+            <span>Retour</span>
+        </button>
+    </a>
+@else
+    <script>
+        const ticket = document.querySelector('.ticket');
+
+        function resizeMobileTicket() {
+            if (window.matchMedia("(max-width: 1024px)").matches) {
+                ticket.style.display = 'none';
+            } else {
+                ticket.style.display = 'block';
+            }
+        }
+
+        window.onresize = resizeMobileTicket;
+        resizeMobileTicket();
     </script>
 @endisset
+<script>
+    var modal = document.querySelectorAll('.modal')
+    modal.forEach(element => {
+        console.log(modal)
+        var span = element.querySelectorAll('.close');
+        var open_button = document.getElementsByName(element.id + "Button")
+
+        open_button.forEach(button => {
+            button.addEventListener('click', () => {
+                element.style.display = "flex";
+                if (element.id == "warning") {
+                    element.querySelectorAll("#warning_message").forEach(element => {
+                        element.innerHTML = button.dataset.msg;
+                        document.getElementById("warning_form").action = button.dataset
+                            .route;
+                        document.getElementById("warning_form").querySelector(
+                                "[name=_method]")
+                            .value = button.dataset.method;
+                    });
+                }
+            });
+
+            span.forEach(bt => {
+                bt.addEventListener('click', () => {
+                    element.style.display = "none";
+                });
+            });
+
+
+            if (element.id == "createRole") {
+                @error('*')
+                    modal.style.display = "flex";
+                @enderror
+            }
+        })
+    })
+    window.onclick = function(event) {
+        modal.forEach(element => {
+            if (event.target == element) {
+                element.style.display = "none";
+            }
+        });
+    }
+</script>
 @endsection

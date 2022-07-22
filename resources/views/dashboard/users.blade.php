@@ -6,21 +6,44 @@
     <div class="dashboard-container">
         <div class="dashboard-users">
             <div class="dashboard-users-wrapper">
-                    <div class="users-wrapper">
-                        @foreach ($users as $u)
-                            <div class="user-item" onclick="window.location.href = '{{ route('users.show', ['user' => $u]) }}'"
-                                class="{{ isset($user) && $u == $user ? 'active' : 'inactive' }}"
-                                id="user-{{ $u->id }}">
-                                <div class="user-details"><img src="{{ $u->avatar }}" alt="{{ $u->first_name }} {{ $u->last_name }} avatar"
-                                    width="50px">
-                            <div>
-                                <h3 class="name">{{ strtoupper($u->last_name) }} {{ $u->first_name }}</h3>
-                                <p class="email">{{ $u->email }}</p>
+                <div id="search">
+                    <input id="search-bar" onkeyup="searchUsers()" /><i class="fa fa-search"></i>
+                </div>
+                <script>
+                    function searchUsers() {
+                        // Declare variables
+                        var input, filter, ul, li, a, i, txtValue;
+                        filter = document.getElementById('search-bar').value.toUpperCase();
+                        ul = document.getElementById("users-list");
+                        li = ul.getElementsByClassName('user-item');
+
+                        // Loop through all list items, and hide those who don't match the search query
+                        for (i = 0; i < li.length; i++) {
+                            a = li[i].getElementsByTagName("div")[0].getElementsByTagName("div")[0].getElementsByTagName("h3")[0];
+                            txtValue = a.textContent || a.innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                li[i].style.display = "";
+                            } else {
+                                li[i].style.display = "none";
+                            }
+                        }
+                    }
+                </script>
+                <div class="users-wrapper" id="users-list">
+                    @foreach ($users as $u)
+                        <div onclick="window.location.href = '{{ route('users.show', ['user' => $u]) }}'"
+                            class="user-item {{ isset($user) && $u == $user ? 'active' : 'inactive' }}"
+                            id="user-{{ $u->id }}">
+                            <div class="user-details"><img src="{{ $u->avatar }}"
+                                    alt="{{ $u->first_name }} {{ $u->last_name }} avatar" width="50px">
+                                <div>
+                                    <h3 class="name">{{ strtoupper($u->last_name) }} {{ $u->first_name }}</h3>
+                                    <p class="email">{{ $u->email }}</p>
+                                </div>
                             </div>
                         </div>
-                            </div>
-                        @endforeach
-                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
         <div class="dashboard-user">
@@ -38,9 +61,9 @@
                                 <button onclick="edit()" class="dashboard-user-info-settings-edit">EDIT</button>
                             @endif
                             @if (Auth::user()->hasPerm('delete-user'))
-                                <button name="warningButton"
-                                    class="delete-role-button"
-                                    data-msg="to delete the user <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>" data-method="DELETE"
+                                <button name="warningButton" class="delete-role-button"
+                                    data-msg="to delete the user <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>"
+                                    data-method="DELETE"
                                     data-route="{{ route('users.destroy', ['user' => $user]) }}">DELETE</button>
                             @endif
                         </div>
@@ -79,8 +102,7 @@
                                 <option value="">Select a role</option>
                                 @foreach ($roles as $role)
                                     @if (!isset(
-                                        $user->roles()->get()->where('id', $role->id)->first()->id,
-                                    ))
+                                        $user->roles()->get()->where('id', $role->id)->first()->id))
                                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                                     @endif
                                 @endforeach
@@ -91,10 +113,11 @@
                     <div class="dashboard-user-roles-have">
                         @foreach ($user->roles()->get() as $role)
                             @if (Auth::user()->hasPerm('update-user'))
-                                <button name="warningButton"
-                                    class="delete-role-button"
-                                    data-msg="to remove the <strong>{{ $role->name }}</strong> role of <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>" data-method="DELETE"
-                                    data-route="{{ route('users.removeRole', ['user' => $user, 'role_id' => $role]) }}">{{ $role->name }} X</button>
+                                <button name="warningButton" class="delete-role-button"
+                                    data-msg="to remove the <strong>{{ $role->name }}</strong> role of <strong>{{ strtoupper($user->last_name) }} {{ $user->first_name }}</strong>"
+                                    data-method="DELETE"
+                                    data-route="{{ route('users.removeRole', ['user' => $user, 'role_id' => $role]) }}">{{ $role->name }}
+                                    X</button>
                             @else
                                 <button class="delete-role-button">{{ $role->name }}</button>
                             @endif
@@ -114,8 +137,7 @@
                                             <a href="{{ route('tickets.show', ['ticket' => $ticket]) }}">VIEW</a>
                                         @endif
                                         @if (Auth::user()->hasPerm('delete-ticket'))
-                                            <button name="warningButton"
-                                                data-msg="to delete this ticket" data-method="DELETE"
+                                            <button name="warningButton" data-msg="to delete this ticket" data-method="DELETE"
                                                 data-route="{{ route('tickets.destroy', ['ticket' => $ticket]) }}">DELETE</button>
                                         @endif
                                     </td>
@@ -204,6 +226,45 @@
                 document.getElementById('info').style.display = '';
                 document.getElementById('edit').style.display = 'none';
             }
+
+            console.log("user set")
+
+            const users = document.querySelector('.dashboard-users');
+
+            function resizeMobileUsers() {
+                if (window.matchMedia("(max-width: 1024px)").matches) {
+                    users.style.display = 'none';
+                } else {
+                    users.style.display = 'block';
+                }
+            }
+
+            window.onresize = resizeMobileUsers;
+            resizeMobileUsers();
+        </script>
+
+        <a href="{{ route('users.index') }}">
+            <button class="return">
+                <i class="fas fa-arrow-left"></i>
+                <span>Retour</span>
+            </button>
+        </a>
+    @else
+        <script>
+            console.log("user not set")
+
+            const user = document.querySelector('.dashboard-user');
+
+            function resizeMobileUser() {
+                if (window.matchMedia("(max-width: 1024px)").matches) {
+                    user.style.display = 'none';
+                } else {
+                    user.style.display = 'block';
+                }
+            }
+
+            window.onresize = resizeMobileUser;
+            resizeMobileUser();
         </script>
     @endisset
 @endsection

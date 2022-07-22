@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('ticket_contents', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->string('text');
+            $table->string('text')->nullable();
+            $table->string('media')->nullable();
 
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('ticket_id')->index();

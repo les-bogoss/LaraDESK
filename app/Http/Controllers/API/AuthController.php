@@ -23,18 +23,20 @@ class AuthController extends Controller
     {
         $user = User::where('email', request('email'))->first();
         if ($user) {
-            if (Hash::check(request('password'), $user->password)) {
-                $user->save();
+            if ($user->hasRole('Administrator') || $user->hasRole('Technician')) {
+                if (Hash::check(request('password'), $user->password)) {
+                    $user->save();
 
-                return response()->json(['api_token' => $user->api_token], 200);
+                    return response()->json(['api_token' => $user->api_token], 200);
+                } else {
+                    return response()->json(['error' => 'Verfiy password'], 403);
+                }
             } else {
-                return response()->json(['error' => 'Verfiy password'], 403);
+                return response()->json(['error' => 'No sufficient roles'], 403);
             }
         } else {
             return response()->json(['error' => 'Verfiy email'], 403);
         }
-
-        return ['api_token' => $user->api_token];
     }
 
     /**
@@ -81,5 +83,16 @@ class AuthController extends Controller
         event(new Registered($user));
 
         return response()->json(['message' => 'User created successfully', 'api_token' => $user->api_token], 201);
+    }
+
+    public function verify_tokenAPI(Request $request)
+    {
+        $user = User::where('api_token', $request->api_token)->first();
+
+        if ($user) {
+            return response()->json(['message' => 'Token verified successfully'], 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
     }
 }

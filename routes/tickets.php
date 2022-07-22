@@ -4,7 +4,6 @@ use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['api', 'verified']], function () {
-    Route::post('/register', [TicketController::class, 'create']);
     Route::get('/tickets', [TicketController::class, 'index'])->middleware(['auth'])->name('tickets.index');
     Route::post('/tickets', [TicketController::class, 'store'])->middleware(['auth', 'perm:create-ticket'])->name('tickets.store');
     Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->middleware(['auth'])->name('tickets.show');
